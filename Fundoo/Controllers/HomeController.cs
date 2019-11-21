@@ -18,7 +18,7 @@ namespace Fundoo.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
+        [Route("Registration")]
         public async Task<IActionResult> AddUser(RegistrationModel registrationModel)
         {
             var result = await this._businessRegistration.AddUser(registrationModel);

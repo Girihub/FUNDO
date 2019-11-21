@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Linq;
 namespace RepositoryLayer.Services
 {
     public class AccountRL : IAccountRL
@@ -16,31 +16,41 @@ namespace RepositoryLayer.Services
         {
             _appDbContext = appDbContext;
         }
-        public async Task<bool> AddUser(RegistrationModel registrationModel)
-        {
-            var Model = new RegistrationModel()
-            {
-                FirstName = registrationModel.FirstName,
-                LastName = registrationModel.LastName,
-                MobileNumber=registrationModel.MobileNumber,
-                Email=registrationModel.Email,
-                Password=registrationModel.Password
-            };
+        public async Task<Tuple<bool, string>> AddUser(RegistrationModel registrationModel)
+        {            
             try
             {
-                  _appDbContext.Add(Model);
+                var Model = new RegistrationModel()
+                {
+                    FirstName = registrationModel.FirstName,
+                    LastName = registrationModel.LastName,
+                    MobileNumber = registrationModel.MobileNumber,
+                    Email = registrationModel.Email,
+                    Password = registrationModel.Password
+                };
+
+                var queryAllCustomers = from cust in _appDbContext.Registration
+                                        select cust;
+                foreach(var email in queryAllCustomers)
+                {
+                    if(email.Email.Equals(Model.Email))
+                    {
+                        return Tuple.Create(false, "Email already exist....");
+                    }
+                }
+                _appDbContext.Add(Model);
                 var result = await _appDbContext.SaveChangesAsync();
                 
                 if (result > 0)
                 {
-                    return true;
+                    return Tuple.Create(true, "Registered Successfully....");
                 }
             }
             catch (Exception e)
             {
                 throw e;
             }            
-            return false;
+            return Tuple.Create(false, "Error Occures");
         }
     }
 }

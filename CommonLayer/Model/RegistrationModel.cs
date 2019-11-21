@@ -8,7 +8,7 @@ namespace CommonLayer.Model
         /// Gets or sets Id of user
         /// </summary>        
         [Key]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets First Name of user

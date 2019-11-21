@@ -4,21 +4,22 @@ using RepositoryLayer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BussinessLayer.Services
 {
     public class AccountBL : IAccountBL
     {
-        private IAccountRL repository;
+        private readonly IAccountRL _repository;
 
         public AccountBL(IAccountRL repository)
         {
-            this.repository = repository;
+            this._repository = repository;
         }
 
-        public bool AddUser(RegistrationModel registrationModel)
+        public async Task<bool> AddUser(RegistrationModel registrationModel)
         {
-            return this.repository.AddUser(registrationModel);
+            return await this._repository.AddUser(registrationModel);
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using CommonLayer.Model;
-
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Interfaces
 {
     public interface IAccountRL
     {
-        bool AddUser(RegistrationModel registrationModel);
+        Task<bool> AddUser(RegistrationModel registrationModel);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using CommonLayer.Model;
+using System.Threading.Tasks;
 
 namespace BussinessLayer.Interfaces
 {
     public interface IAccountBL
     {
-        bool AddUser(RegistrationModel registrationModel);
+        Task<bool> AddUser(RegistrationModel registrationModel);
     }
 }

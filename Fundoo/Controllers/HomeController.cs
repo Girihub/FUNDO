@@ -1,6 +1,8 @@
-﻿using BussinessLayer.Services;
+﻿using BussinessLayer.Interfaces;
+using BussinessLayer.Services;
 using CommonLayer.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Fundoo.Controllers
 {
@@ -8,18 +10,19 @@ namespace Fundoo.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
-        private readonly AccountBL businessRegistration;
+        private readonly IAccountBL _businessRegistration;
 
-        public HomeController(AccountBL businessRegistration)
+        public HomeController(IAccountBL businessRegistration)
         {
-            this.businessRegistration = businessRegistration;
+            this._businessRegistration = businessRegistration;
         }
 
         [HttpPost]
-        public IActionResult AddUser(RegistrationModel registrationModel)
+        [Route("add")]
+        public async Task<IActionResult> AddUser(RegistrationModel registrationModel)
         {
-            var result = this.businessRegistration.AddUser(registrationModel);
-            return this.Ok(new { result });
+            var result = await this._businessRegistration.AddUser(registrationModel);
+            return Ok(new { result });
         }
     }
 }   

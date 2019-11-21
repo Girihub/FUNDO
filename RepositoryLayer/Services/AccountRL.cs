@@ -29,8 +29,8 @@ namespace RepositoryLayer.Services
                     Password = registrationModel.Password
                 };
 
-                var queryAllCustomers = from cust in _appDbContext.Registration
-                                        select cust;
+                var queryAllCustomers = from table in _appDbContext.Registration
+                                        select table;
                 foreach(var email in queryAllCustomers)
                 {
                     if(email.Email.Equals(Model.Email))

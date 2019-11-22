@@ -21,5 +21,10 @@ namespace BussinessLayer.Services
         {
             return await this._repository.AddUser(registrationModel);
         }
+
+        public async Task<Tuple<bool, string>> LoginUser(LoginModel loginModel)
+        {
+            return await this._repository.LoginUser(loginModel);
+        }
     }
 }

@@ -24,5 +24,14 @@ namespace Fundoo.Controllers
             var result = await this._businessRegistration.AddUser(registrationModel);
             return Ok(new { result });
         }
+
+
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> LoginUser(LoginModel loginModel)
+        {
+            var result = await this._businessRegistration.LoginUser(loginModel);
+            return Ok(new { result });
+        }
     }
 }   

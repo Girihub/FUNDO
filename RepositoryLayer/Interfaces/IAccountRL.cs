@@ -7,5 +7,7 @@ namespace RepositoryLayer.Interfaces
     public interface IAccountRL
     {
         Task<Tuple<bool,string>> AddUser(RegistrationModel registrationModel);
+
+        Task<Tuple<bool, string>> LoginUser(LoginModel loginModel);
     }
 }

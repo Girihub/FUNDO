@@ -1,11 +1,12 @@
-﻿using BussinessLayer.Interfaces;
-using BussinessLayer.Services;
-using CommonLayer.Model;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿
 
 namespace Fundoo.Controllers
 {
+    using BussinessLayer.Interfaces;
+    using CommonLayer.Model;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Threading.Tasks;
+
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController : ControllerBase
@@ -31,6 +32,14 @@ namespace Fundoo.Controllers
         public async Task<IActionResult> LoginUser(LoginModel loginModel)
         {
             var result = await this._businessRegistration.LoginUser(loginModel);
+            return Ok(new { result });
+        }
+
+        [HttpPost]
+        [Route("ForgotPassword")]
+        public IActionResult ForgotPassword(ForgotPasswordModel forgotPassword)
+        {
+            var result = this._businessRegistration.ForgotPassword(forgotPassword);
             return Ok(new { result });
         }
     }

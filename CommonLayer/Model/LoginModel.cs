@@ -1,7 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿//----------------------------------------------------
+// <copyright file="LoginModel.cs" company="Bridgelabz">
+// Company copyright tag.
+// </copyright>
+//----------------------------------------------------
 
 namespace CommonLayer.Model
 {
+    using System.ComponentModel.DataAnnotations;
+
+    /// <summary>
+    /// Model class for Login of user
+    /// </summary>
     public class LoginModel
     {
         /// <summary>

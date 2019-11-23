@@ -1,22 +1,27 @@
-﻿using CommonLayer.Model;
-using RepositoryLayer.Context;
-using RepositoryLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Security.Cryptography;
+﻿
 
 namespace RepositoryLayer.Services
 {
+    using CommonLayer.Model;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Interfaces;
+    using System;
+    using System.Threading.Tasks;
+    using System.Linq;
+    using Experimental.System.Messaging;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Security.Claims;
+    using Microsoft.IdentityModel.Tokens;
+    using RepositoryLayer.MSMQ;
+    using System.Text;
+
     public class AccountRL : IAccountRL
     {
-        private readonly AuthenticationContext _appDbContext;
+        private readonly AuthenticationContext appDbContext;
 
         public AccountRL(AuthenticationContext appDbContext)
         {
-            _appDbContext = appDbContext;
+            this.appDbContext = appDbContext;
         }
         public async Task<Tuple<bool, string>> AddUser(RegistrationModel registrationModel)
         {            
@@ -33,7 +38,7 @@ namespace RepositoryLayer.Services
                 };
                                
                 
-                var queryAllUsers = from table in _appDbContext.Registration
+                var queryAllUsers = from table in this.appDbContext.Registration
                                         select table;
                 foreach(var email in queryAllUsers)
                 {
@@ -42,8 +47,8 @@ namespace RepositoryLayer.Services
                         return Tuple.Create(false, "Email already exist....");
                     }
                 }
-                _appDbContext.Add(Model);
-                var result = await _appDbContext.SaveChangesAsync();
+                this.appDbContext.Add(Model);
+                var result = await this.appDbContext.SaveChangesAsync();
                 
                 if (result > 0)
                 {
@@ -81,7 +86,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var queryAllUsers = from table in _appDbContext.Registration
+                var queryAllUsers = from table in this.appDbContext.Registration
                                         select table;
 
                 foreach (var email in queryAllUsers)
@@ -99,11 +104,45 @@ namespace RepositoryLayer.Services
                     }
                 }
 
-                var result = await _appDbContext.SaveChangesAsync();
-               return Tuple.Create(false, "Email does not exist");
+                var result = await this.appDbContext.SaveChangesAsync();
+               return Tuple.Create(false, "Email is wrong");
 
             }
             catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public string ForgotPassword(ForgotPasswordModel forgotPassword)
+        {
+            try
+            {
+                //// lambda expression to get the particular user from db
+                var user = this.appDbContext.Registration.Where(g => g.Email == forgotPassword.Email).FirstOrDefault();
+
+                if (user.Email.Equals(forgotPassword.Email))
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var tokenDescriptor = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                            //// Claims the identity
+                            new Claim("Email", user.Email.ToString())
+                        }),
+                        Expires = DateTime.UtcNow.AddDays(1)
+                    };
+                    var secureToken = tokenHandler.CreateToken(tokenDescriptor);
+                    var token = tokenHandler.WriteToken(secureToken);
+
+                    SendMessage.ForgotPasswordMessage(forgotPassword.Email, token);
+
+                    return "token has been sent on "+ forgotPassword.Email;
+                }
+                return "Invalid email";
+            }
+            catch(Exception e)
             {
                 throw e;
             }

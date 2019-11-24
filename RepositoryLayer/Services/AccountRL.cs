@@ -175,11 +175,6 @@ namespace RepositoryLayer.Services
                             if (resetPassword.NewPassword.Equals(resetPassword.ConfirmPassword))
                             {
                                 user.Password = this.Encrypt(resetPassword.ConfirmPassword);
-
-                                //var author = appDbContext.Registration.First(a => this.Decrypt(a.Password) == resetPassword.OldPassword);
-                                //author.Password = this.Encrypt(resetPassword.OldPassword);
-                                //appDbContext.SaveChanges();
-
                                 this.appDbContext.SaveChangesAsync();
                                 return "Password reset successfully";
                             }

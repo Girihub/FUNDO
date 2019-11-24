@@ -97,7 +97,19 @@ namespace RepositoryLayer.Services
                         {
                             if (this.Decrypt(password.Password).Equals(loginModel.Password))
                             {
-                                return Tuple.Create(true, "Logged in Successfully");
+                                var tokenHandler = new JwtSecurityTokenHandler();
+                                var tokenDescriptor = new SecurityTokenDescriptor
+                                {
+                                    Subject = new ClaimsIdentity(new Claim[]
+                                    {
+                                    //// Claims the identity
+                                    new Claim("Email", loginModel.Email.ToString())
+                                    }),
+                                    Expires = DateTime.UtcNow.AddDays(1)
+                                };
+                                var secureToken = tokenHandler.CreateToken(tokenDescriptor);
+                                var token = tokenHandler.WriteToken(secureToken);
+                                return Tuple.Create(true, "Logged in Successfully. Your token is " + token);
                             }
                         }
                         return Tuple.Create(false, "Password does not match with email");
@@ -140,6 +152,43 @@ namespace RepositoryLayer.Services
 
                     return "token has been sent on "+ forgotPassword.Email;
                 }
+                return "Invalid email";
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public string ResetPassword(ResetPasswordModel resetPassword)
+        {
+            try
+            {
+                var AllUsers = from table in this.appDbContext.Registration
+                                    select table;
+                foreach(var user in AllUsers.ToList())
+                {
+                    if (user.Email.Equals(resetPassword.Email))
+                    {
+                        if (this.Decrypt(user.Password).Equals(resetPassword.OldPassword))
+                        {
+                            if (resetPassword.NewPassword.Equals(resetPassword.ConfirmPassword))
+                            {
+                                user.Password = this.Encrypt(resetPassword.ConfirmPassword);
+
+                                //var author = appDbContext.Registration.First(a => this.Decrypt(a.Password) == resetPassword.OldPassword);
+                                //author.Password = this.Encrypt(resetPassword.OldPassword);
+                                //appDbContext.SaveChanges();
+
+                                this.appDbContext.SaveChangesAsync();
+                                return "Password reset successfully";
+                            }
+                            return "NewPassword and ConfirmPassword does not match";
+                        }
+                        return "Incorrest old password";
+                    }
+                }
+
                 return "Invalid email";
             }
             catch(Exception e)

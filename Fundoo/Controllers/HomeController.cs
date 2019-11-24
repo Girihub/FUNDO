@@ -42,5 +42,13 @@ namespace Fundoo.Controllers
             var result = this._businessRegistration.ForgotPassword(forgotPassword);
             return Ok(new { result });
         }
+
+        [HttpPost]
+        [Route("ResetPassword")]
+        public IActionResult ResetPassword(ResetPasswordModel resetPassword)
+        {
+            var result = this._businessRegistration.ResetPassword(resetPassword);
+            return Ok(new { result });
+        }
     }
 }   

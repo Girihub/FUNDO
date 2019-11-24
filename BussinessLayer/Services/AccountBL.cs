@@ -54,6 +54,11 @@ namespace BussinessLayer.Services
         public string ForgotPassword(ForgotPasswordModel forgotPassword)
         {
             return this.repository.ForgotPassword(forgotPassword);
-        }        
+        }
+
+        public string ResetPassword(ResetPasswordModel resetPassword)
+        {
+            return this.repository.ResetPassword(resetPassword);
+        }
     }
 }

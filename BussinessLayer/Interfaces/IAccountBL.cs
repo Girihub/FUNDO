@@ -30,5 +30,7 @@ namespace BussinessLayer.Interfaces
         Task<Tuple<bool, string>> LoginUser(LoginModel loginModel);
 
         string ForgotPassword(ForgotPasswordModel forgotPassword);
+
+        string ResetPassword(ResetPasswordModel resetPassword);
     }
 }

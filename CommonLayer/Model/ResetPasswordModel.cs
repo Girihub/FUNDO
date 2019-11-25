@@ -4,10 +4,13 @@
 // </copyright>
 //----------------------------------------------------
 
-using System.ComponentModel.DataAnnotations;
-
 namespace CommonLayer.Model
 {
+    using System.ComponentModel.DataAnnotations;
+
+    /// <summary>
+    /// ResetPasswordModel as a class
+    /// </summary>
     public class ResetPasswordModel
     {
         /// <summary>
@@ -35,7 +38,7 @@ namespace CommonLayer.Model
         public string NewPassword { get; set; }
 
         /// <summary>
-        /// Confirm new password
+        /// Gets or sets ConfirmPassword of user. Confirm new password
         /// </summary>
         public string ConfirmPassword { get; set; }
     }

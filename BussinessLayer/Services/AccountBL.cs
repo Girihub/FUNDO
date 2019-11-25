@@ -51,11 +51,21 @@ namespace BussinessLayer.Services
             return await this.repository.LoginUser(loginModel);
         }
 
+        /// <summary>
+        /// Method to recover the password
+        /// </summary>
+        /// <param name="forgotPassword">forgotPassword as a parameter</param>
+        /// <returns>returns string output</returns>
         public string ForgotPassword(ForgotPasswordModel forgotPassword)
         {
             return this.repository.ForgotPassword(forgotPassword);
         }
 
+        /// <summary>
+        /// Method to reset the password
+        /// </summary>
+        /// <param name="resetPassword">resetPassword as a parameter</param>
+        /// <returns>returns string output</returns>
         public string ResetPassword(ResetPasswordModel resetPassword)
         {
             return this.repository.ResetPassword(resetPassword);

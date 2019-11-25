@@ -1,10 +1,17 @@
-﻿
+﻿//----------------------------------------------------
+// <copyright file="Data.cs" company="Bridgelabz">
+// Company copyright tag.
+// </copyright>
+//----------------------------------------------------
 
 namespace RepositoryLayer.Migrations
 {
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Migrations;
 
+    /// <summary>
+    /// Data as a class
+    /// </summary>
     public partial class Data : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

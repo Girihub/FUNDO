@@ -29,8 +29,18 @@ namespace BussinessLayer.Interfaces
         /// <returns>returns boolean value and string</returns>
         Task<Tuple<bool, string>> LoginUser(LoginModel loginModel);
 
+        /// <summary>
+        /// Method declaration to recover the password
+        /// </summary>
+        /// <param name="forgotPassword">forgotPassword as a parameter</param>
+        /// <returns>returns string output</returns>
         string ForgotPassword(ForgotPasswordModel forgotPassword);
 
+        /// <summary>
+        /// Method declaration to reset the password
+        /// </summary>
+        /// <param name="resetPassword">resetPassword as a parameter</param>
+        /// <returns>returns string output</returns>
         string ResetPassword(ResetPasswordModel resetPassword);
     }
 }

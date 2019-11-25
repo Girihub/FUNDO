@@ -1,4 +1,8 @@
-﻿
+﻿//----------------------------------------------------
+// <copyright file="Data.cs" company="Bridgelabz">
+// Company copyright tag.
+// </copyright>
+//----------------------------------------------------
 
 namespace RepositoryLayer.Migrations
 {

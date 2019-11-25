@@ -1,7 +1,12 @@
-﻿
+﻿//----------------------------------------------------
+// <copyright file="Startup.cs" company="Bridgelabz">
+// Company copyright tag.
+// </copyright>
+//----------------------------------------------------
 
 namespace Fundoo
 {
+    using System.Text;
     using BussinessLayer.Interfaces;
     using BussinessLayer.Services;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -14,28 +19,39 @@ namespace Fundoo
     using Microsoft.IdentityModel.Tokens;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;
-    using RepositoryLayer.Services;
-    using System.Text;
+    using RepositoryLayer.Services;    
 
+    /// <summary>
+    /// Startup as a class
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="configuration">configuration as a parameter</param>
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets field Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// ConfigureServices method
+        /// </summary>
+        /// <param name="services">services as a parameter</param>
+        //// This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<AuthenticationContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("connectionDb")));
-
-           
-            services.AddTransient<IAccountBL,AccountBL>();
-            services.AddTransient<IAccountRL,AccountRL>();
+            options.UseSqlServer(this.Configuration.GetConnectionString("connectionDb")));
+            
+            services.AddTransient<IAccountBL, AccountBL>();
+            services.AddTransient<IAccountRL, AccountRL>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -59,7 +75,12 @@ namespace Fundoo
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// Configure as a method
+        /// </summary>
+        /// <param name="app">app as a parameter</param>
+        /// <param name="env">env as a parameter</param>
+        //// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

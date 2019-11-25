@@ -42,5 +42,12 @@ namespace BussinessLayer.Interfaces
         /// <param name="resetPassword">resetPassword as a parameter</param>
         /// <returns>returns string output</returns>
         string ResetPassword(ResetPasswordModel resetPassword);
+
+        /// <summary>
+        /// Method declaration to get the password
+        /// </summary>
+        /// <param name="getPassword">getPassword as a parameter</param>
+        /// <returns>returns string output</returns>
+        string GetPassword(GetPasswordModel getPassword);
     }
 }

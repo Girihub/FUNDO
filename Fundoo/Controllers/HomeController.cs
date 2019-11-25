@@ -83,5 +83,18 @@ namespace Fundoo.Controllers
             var result = this.businessRegistration.ResetPassword(resetPassword);
             return this.Ok(new { result });
         }
+
+        /// <summary>
+        /// API to get password of user
+        /// </summary>
+        /// <param name="getPassword">getPassword as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
+        [HttpPost]
+        [Route("GetPassword")]
+        public IActionResult GetPassword(GetPasswordModel getPassword)
+        {
+            var result = this.businessRegistration.GetPassword(getPassword);
+            return this.Ok(new { result });
+        }
     }
 }   

@@ -237,5 +237,23 @@ namespace RepositoryLayer.Services
                 throw e;
             }
         }
+
+        public string GetPassword(GetPasswordModel getPassword)
+        {
+            try
+            {
+                //// lambda expression to get the particular user from db
+                var user = this.appDbContext.Registration.Where(g => g.Email == getPassword.Email).FirstOrDefault();
+                if(user != null)
+                {
+                    return this.Decrypt(user.Password);
+                }
+                return "Email does not exist";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

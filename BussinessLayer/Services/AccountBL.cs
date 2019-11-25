@@ -70,5 +70,15 @@ namespace BussinessLayer.Services
         {
             return this.repository.ResetPassword(resetPassword);
         }
+
+        /// <summary>
+        /// Method to get the password
+        /// </summary>
+        /// <param name="getPassword">getPassword as a parameter</param>
+        /// <returns>returns string output</returns>
+        public string GetPassword(GetPasswordModel getPassword)
+        {
+            return this.repository.GetPassword(getPassword);
+        }
     }
 }

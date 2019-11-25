@@ -255,5 +255,38 @@ namespace RepositoryLayer.Services
                 throw e;
             }
         }
+
+        public async Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
+        {
+            try
+            {
+                var stream = resetForgetPassword.Token;
+                var handler = new JwtSecurityTokenHandler();
+                var jsonToken = handler.ReadToken(stream);
+                var tokenS = handler.ReadToken(stream) as JwtSecurityToken;
+                var email = tokenS.Claims.First(claim => claim.Type == "Email").Value;
+
+                var user = this.appDbContext.Registration.Where(g => g.Email == email).FirstOrDefault();                
+                if (user != null)
+                {
+                    if(this.Encrypt(resetForgetPassword.NewPassword) == this.Encrypt(resetForgetPassword.ConfirmPassword))
+                    {
+                        if (user.Password != this.Encrypt(resetForgetPassword.NewPassword))
+                        {
+                            user.Password = this.Encrypt(resetForgetPassword.NewPassword);
+                            var result = await this.appDbContext.SaveChangesAsync();
+                            return "Password reset successfully";
+                        }
+                        return "NewPassword cant be same as Old Password";
+                    }
+                    return "NewPassword and ConfirmPassword should be same";
+                }                
+                return "Invalid token for email";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

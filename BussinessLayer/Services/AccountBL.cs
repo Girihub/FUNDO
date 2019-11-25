@@ -80,5 +80,15 @@ namespace BussinessLayer.Services
         {
             return this.repository.GetPassword(getPassword);
         }
+
+        /// <summary>
+        /// Method to reset the forgotten password
+        /// </summary>
+        /// <param name="resetForgetPassword">resetForgetPassword as a parameter</param>
+        /// <returns>returns string output</returns>
+        public async Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
+        {
+            return await this.repository.ResetForgetPassword(resetForgetPassword);
+        }
     }
 }

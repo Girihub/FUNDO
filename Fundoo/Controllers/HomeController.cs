@@ -96,5 +96,18 @@ namespace Fundoo.Controllers
             var result = this.businessRegistration.GetPassword(getPassword);
             return this.Ok(new { result });
         }
+
+        /// <summary>
+        /// API to reset forgotten password of user
+        /// </summary>
+        /// <param name="resetForgetPassword">resetForgetPassword as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
+        [HttpPost]
+        [Route("ResetForgotPassword")]
+        public async Task<IActionResult> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
+        {
+            var result = await this.businessRegistration.ResetForgetPassword(resetForgetPassword);
+            return this.Ok(new { result });
+        }
     }
 }   

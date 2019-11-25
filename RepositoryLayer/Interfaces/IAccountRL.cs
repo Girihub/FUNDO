@@ -34,5 +34,7 @@ namespace RepositoryLayer.Interfaces
         string ResetPassword(ResetPasswordModel resetPassword);
 
         string GetPassword(GetPasswordModel getPassword);
+
+        Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword);
     }
 }

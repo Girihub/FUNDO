@@ -16,15 +16,19 @@ namespace CommonLayer.Model
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Title required")]
+        [RegularExpression("^([a-zA-Z0-9 _]{1,})$", ErrorMessage = "Title should contain atleast 1 character")]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "Description required")]
+        [RegularExpression("^([a-zA-Z0-9 _]{1,})$", ErrorMessage = "Description should contain atleast 1 character")]
         public string Description { get; set; }
 
         public string Image { get; set; }        
 
         public string Color { get; set; }
 
-        public string IsPin { get; set; }
+        public bool IsPin { get; set; }
 
         public DateTime CreatedDate { get; set; }
 
@@ -34,7 +38,7 @@ namespace CommonLayer.Model
 
         public NoteOfType NotesType { get; set; }
 
-        [ForeignKey("Id")]
-        public RegistrationModel UserId { get; set; }
+        [ForeignKey("RegistrationModel")]
+        public int UserId { get; set; }
     }
 }

@@ -33,5 +33,29 @@ namespace Fundoo.Controllers
             var result = await this.businessNotes.AddNote(notesModel);
             return this.Ok(new { result });
         }
+
+        [HttpDelete]
+        [Route("DeleteNote")]
+        public async Task<IActionResult> DeleteNote(int id)
+        {
+            var result = await this.businessNotes.DeleteNote(id);
+            return this.Ok(new { result });
+        }
+
+        [HttpGet]
+        [Route("GetNotes")]
+        public IActionResult GetNotes()
+        {
+            var result = this.businessNotes.GetNotes();
+            return this.Ok(new { result });
+        }
+
+        [HttpGet]
+        [Route("GetNoteById")]
+        public IActionResult GetNote(int id)
+        {
+            var result = this.businessNotes.GetNote(id);
+            return this.Ok(new { result });
+        }
     }
 }

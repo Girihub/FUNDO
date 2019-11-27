@@ -21,7 +21,7 @@ namespace CommonLayer.Model
 
         public DateTime ModifiedDate { get; set; }
 
-        [ForeignKey("Id")]
-        public RegistrationModel UserId { get; set; }
+        [ForeignKey("RegistrationModel")]
+        public int UserId { get; set; }
     }
 }

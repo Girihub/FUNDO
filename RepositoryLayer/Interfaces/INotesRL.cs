@@ -5,6 +5,7 @@
 //----------------------------------------------------
 
 using CommonLayer.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RepositoryLayer.Interfaces
@@ -13,12 +14,12 @@ namespace RepositoryLayer.Interfaces
     {
         Task<string> AddNote(NotesModel notesModel);
 
-        string DeleteNote(int id);
+        Task<string> DeleteNote(int id);
 
-        string GetNotes();
+        IList<NotesModel> GetNotes();
 
         string UpdateNote(int id, NotesModel notesModel);
 
-        string GetNote(int id);
+        IList<NotesModel> GetNote(int id);
     }
 }

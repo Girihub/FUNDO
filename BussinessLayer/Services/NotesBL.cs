@@ -7,6 +7,7 @@
 using BussinessLayer.Interfaces;
 using CommonLayer.Model;
 using RepositoryLayer.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BussinessLayer.Services
@@ -25,19 +26,19 @@ namespace BussinessLayer.Services
             return await this.repository.AddNote(notesModel);
         }
 
-        public string DeleteNote(int id)
+        public async Task<string> DeleteNote(int id)
         {
-            throw new System.NotImplementedException();
+            return await this.repository.DeleteNote(id);
         }
 
-        public string GetNote(int id)
+        public IList<NotesModel> GetNote(int id)
         {
-            throw new System.NotImplementedException();
+            return this.repository.GetNote(id);
         }
 
-        public string GetNotes()
+        public IList<NotesModel> GetNotes()
         {
-            throw new System.NotImplementedException();
+            return this.repository.GetNotes();
         }
 
         public string UpdateNote(int id, NotesModel notesModel)

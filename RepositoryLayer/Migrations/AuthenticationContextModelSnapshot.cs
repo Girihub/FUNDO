@@ -21,13 +21,17 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("CommonLayer.Model.LabelModel", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<string>("Lable");
 
                     b.Property<DateTime>("ModifiedDate");
+
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -36,7 +40,9 @@ namespace RepositoryLayer.Migrations
 
             modelBuilder.Entity("CommonLayer.Model.NotesModel", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Color");
 
@@ -46,7 +52,7 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<string>("Image");
 
-                    b.Property<string>("IsPin");
+                    b.Property<bool>("IsPin");
 
                     b.Property<DateTime>("ModifiedDate");
 
@@ -55,6 +61,8 @@ namespace RepositoryLayer.Migrations
                     b.Property<string>("Reminder");
 
                     b.Property<string>("Title");
+
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -85,22 +93,6 @@ namespace RepositoryLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Registration");
-                });
-
-            modelBuilder.Entity("CommonLayer.Model.LabelModel", b =>
-                {
-                    b.HasOne("CommonLayer.Model.RegistrationModel", "UserId")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("CommonLayer.Model.NotesModel", b =>
-                {
-                    b.HasOne("CommonLayer.Model.RegistrationModel", "UserId")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

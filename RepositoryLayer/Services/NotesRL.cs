@@ -3,6 +3,7 @@ using RepositoryLayer.Context;
 using RepositoryLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,22 +20,74 @@ namespace RepositoryLayer.Services
 
         public async Task<string> AddNote(NotesModel notesModel)
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.appDbContext.Notes.Add(notesModel);
+                var result = await this.appDbContext.SaveChangesAsync();
+                return "Note added";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        public string DeleteNote(int id)
+        public async Task<string> DeleteNote(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var notes = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+
+                if(notes != null)
+                {
+                    this.appDbContext.Notes.Remove(notes);
+                    var result = await this.appDbContext.SaveChangesAsync();
+                    return "Note deleted";
+                }
+                return "Note not present in the table";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        public string GetNote(int id)
+        public IList<NotesModel> GetNote(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<NotesModel> notes = new List<NotesModel>();
+                var note = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+                if(note != null)
+                {
+                    notes.Add(note);
+                    return notes;
+                }
+
+                return notes;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
 
-        public string GetNotes()
+        public IList<NotesModel> GetNotes()
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<NotesModel> notes = new List<NotesModel>();
+
+                foreach (var line in appDbContext.Notes)
+                {
+                    notes.Add(line);
+                }
+                return notes;
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
         }
 
         public string UpdateNote(int id, NotesModel notesModel)

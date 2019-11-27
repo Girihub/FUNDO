@@ -23,8 +23,14 @@ namespace RepositoryLayer.Context
         }
 
         /// <summary>
-        /// Gets or sets for Registration
+        /// Gets or sets for Registration. Creates Database for Registration
         /// </summary>
-        public DbSet<RegistrationModel> Registration { get; set; }         
+        public DbSet<RegistrationModel> Registration { get; set; }
+
+        public DbSet<RegistrationModel> Notes { get; set; }
+
+        public DbSet<RegistrationModel> Lables { get; set; }
+
+
     }
 }

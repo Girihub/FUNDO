@@ -54,6 +54,11 @@ namespace Fundoo
             services.AddTransient<IAccountBL, AccountBL>();
             services.AddTransient<IAccountRL, AccountRL>();
 
+            services.AddTransient<INotesBL, NotesBL>();
+            services.AddTransient<INotesRL, NotesRL>();
+
+            services.AddTransient<ILableBL, LableBL>();
+            services.AddTransient<ILableRL, LableRL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddAuthentication(x =>

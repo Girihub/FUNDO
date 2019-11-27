@@ -58,13 +58,8 @@ namespace RepositoryLayer.Services
             {
                 List<NotesModel> notes = new List<NotesModel>();
                 var note = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
-                if(note != null)
-                {
                     notes.Add(note);
                     return notes;
-                }
-
-                return notes;
             }
             catch(Exception e)
             {
@@ -92,7 +87,16 @@ namespace RepositoryLayer.Services
 
         public string UpdateNote(int id, NotesModel notesModel)
         {
-            throw new NotImplementedException();
+            var note = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+
+            notesModel = note;
+            if(note != null)
+            {
+                appDbContext.Notes.Add(notesModel);
+                return "Update Successful...";
+            }
+
+            return "Enter valid Id";
         }
     }
 }

@@ -43,7 +43,7 @@ namespace BussinessLayer.Services
 
         public string UpdateNote(int id, NotesModel notesModel)
         {
-            throw new System.NotImplementedException();
+            return this.repository.UpdateNote(id, notesModel);
         }
     }
 }

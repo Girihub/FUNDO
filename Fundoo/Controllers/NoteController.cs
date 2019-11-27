@@ -57,5 +57,13 @@ namespace Fundoo.Controllers
             var result = this.businessNotes.GetNote(id);
             return this.Ok(new { result });
         }
+
+        [HttpPut]
+        [Route("UpdateNote")]
+        public IActionResult UpdateNote(int id, NotesModel notesModel)
+        {
+            var result = this.businessNotes.UpdateNote(id, notesModel);
+            return this.Ok(new { result });
+        }
     }
 }

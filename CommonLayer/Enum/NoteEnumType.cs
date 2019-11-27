@@ -1,18 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
-namespace CommonLayer.Enum
+namespace CommonLayer.Model
 {
     public class NoteEnumType
     {
-        public enum NoteType
+        public enum NoteOfType
         {
-            Archive,
+            /// <summary>
+            /// The is note
+            /// </summary>
+            IsNote,
 
-            Trash,
+            /// <summary>
+            /// The is archive
+            /// </summary>
+            IsArchive,
 
-            IsNote
+            /// <summary>
+            /// The is trash
+            /// </summary>
+            IsTrash,
+
+            /// <summary>
+            /// The is pin
+            /// </summary>
+            //IsPin
         }
     }
 }

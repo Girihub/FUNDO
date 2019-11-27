@@ -6,10 +6,10 @@
 
 namespace CommonLayer.Model
 {
-    using CommonLayer.Enum;
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using static CommonLayer.Model.NoteEnumType;
 
     public class NotesModel
     {
@@ -32,7 +32,7 @@ namespace CommonLayer.Model
 
         public string Reminder { get; set; }
 
-        public NoteEnumType NoteType { get; set; }
+        public NoteOfType NotesType { get; set; }
 
         [ForeignKey("Id")]
         public RegistrationModel UserId { get; set; }

@@ -11,6 +11,7 @@ namespace Fundoo.Controllers
     using System.Linq;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
+    using CommonLayer.Model;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -19,5 +20,18 @@ namespace Fundoo.Controllers
     public class NoteController : ControllerBase
     {
         private readonly INotesBL businessNotes;
+
+        public NoteController(INotesBL businessNotes)
+        {
+            this.businessNotes = businessNotes;
+        }
+
+        [HttpPost]
+        [Route("AddNote")]
+        public async Task<IActionResult> AddNote(NotesModel notesModel)
+        {
+            var result = await this.businessNotes.AddNote(notesModel);
+            return this.Ok(new { result });
+        }
     }
 }

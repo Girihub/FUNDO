@@ -5,12 +5,13 @@
 //----------------------------------------------------
 
 using CommonLayer.Model;
+using System.Threading.Tasks;
 
 namespace BussinessLayer.Interfaces
 {
     public interface INotesBL
     {
-        string AddNote(NotesModel notesModel);
+        Task<string> AddNote(NotesModel notesModel);
 
         string DeleteNote(int id);
 

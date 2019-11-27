@@ -27,9 +27,9 @@ namespace RepositoryLayer.Context
         /// </summary>
         public DbSet<RegistrationModel> Registration { get; set; }
 
-        public DbSet<RegistrationModel> Notes { get; set; }
+        public DbSet<NotesModel> Notes { get; set; }
 
-        public DbSet<RegistrationModel> Lables { get; set; }
+        public DbSet<LabelModel> Lables { get; set; }
 
 
     }

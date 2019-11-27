@@ -6,14 +6,23 @@
 
 using BussinessLayer.Interfaces;
 using CommonLayer.Model;
+using RepositoryLayer.Interfaces;
+using System.Threading.Tasks;
 
 namespace BussinessLayer.Services
 {
     public class NotesBL : INotesBL
     {
-        public string AddNote(NotesModel notesModel)
+        private readonly INotesRL repository;
+
+        public NotesBL(INotesRL repository)
         {
-            throw new System.NotImplementedException();
+            this.repository = repository;
+        }
+
+        public async Task<string> AddNote(NotesModel notesModel)
+        {
+            return await this.repository.AddNote(notesModel);
         }
 
         public string DeleteNote(int id)

@@ -5,12 +5,13 @@
 //----------------------------------------------------
 
 using CommonLayer.Model;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Interfaces
 {
     public interface INotesRL
     {
-        string AddNote(NotesModel notesModel);
+        Task<string> AddNote(NotesModel notesModel);
 
         string DeleteNote(int id);
 

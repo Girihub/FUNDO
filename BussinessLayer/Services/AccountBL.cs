@@ -9,6 +9,7 @@ namespace BussinessLayer.Services
     using System;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
+    using CommonLayer.Constants;
     using CommonLayer.Model;
     using RepositoryLayer.Interfaces;
 
@@ -46,7 +47,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    throw new Exception("RegistrationModel can not be null");
+                    throw new Exception(ErrorMessages.nullModel);
                 }
             }
             catch (Exception E)
@@ -70,7 +71,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    throw new Exception("LoginModel can not be null");
+                    throw new Exception(ErrorMessages.nullModel);
                 }
             }
             catch (Exception E)
@@ -94,7 +95,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    throw new Exception("ForgotPasswordModel can not be null");
+                    throw new Exception(ErrorMessages.nullModel);
                 }
             }
             catch (Exception E)
@@ -118,7 +119,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    throw new Exception("ResetPasswordModel can not be null");
+                    throw new Exception(ErrorMessages.nullModel);
                 }
             }
             catch (Exception E)
@@ -142,7 +143,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    throw new Exception("GetPasswordModel can not be null");
+                    throw new Exception(ErrorMessages.nullModel);
                 }
             }
             catch (Exception E)
@@ -166,7 +167,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    throw new Exception("ResetForgetPasswordModel can not be null");
+                    throw new Exception(ErrorMessages.nullModel);
                 }
             }
             catch (Exception E)

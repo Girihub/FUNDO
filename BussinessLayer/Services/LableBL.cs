@@ -7,6 +7,7 @@
 namespace BussinessLayer.Services
 {
     using BussinessLayer.Interfaces;
+    using CommonLayer.Constants;
     using CommonLayer.Model;
     using RepositoryLayer.Interfaces;
     using System;
@@ -20,31 +21,94 @@ namespace BussinessLayer.Services
         public LableBL(ILableRL repository)
         {
             this.repository = repository;
-        }
+        }        
 
         public async Task<string> AddLable(LabelModel lableModel)
         {
-            return await this.repository.AddLable(lableModel);
+            try
+            {
+                if(lableModel != null)
+                {
+                    return await this.repository.AddLable(lableModel);
+                }
+                else
+                {
+                    return ErrorMessages.nullModel;
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
 
         public async Task<string> DeleteLable(int id)
         {
-            return await this.repository.DeleteLable(id);
+            try
+            {
+                if(id.Equals(null))
+                {
+                    return ErrorMessages.invalidId;
+                }
+                else
+                {
+                    return await this.repository.DeleteLable(id);
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
 
         public async Task<IList<LabelModel>> GetLable(int id)
         {
-            return await this.repository.GetLable(id);
+            try
+            {
+                if (!id.Equals(null))
+                {
+                    return await this.repository.GetLable(id);
+                }
+                else
+                {
+                    throw new Exception(ErrorMessages.invalidId);
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
 
         public async Task<IList<LabelModel>> GetLables()
-        {            
-            return await this.repository.GetLables();
+        {
+            try
+            {
+                return await this.repository.GetLables();
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
 
         public async Task<string> UpdateLable(int id, LabelModel labelModel)
         {
-            return await this.repository.UpdateLable(id, labelModel);
+            try
+            {
+                if (labelModel != null)
+                {
+                    return await this.repository.UpdateLable(id, labelModel);
+                }
+                else
+                {
+                    return ErrorMessages.nullModel;
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
     }
 }

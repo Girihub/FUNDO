@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interfaces;
 using System;
@@ -87,15 +88,17 @@ namespace RepositoryLayer.Services
 
         public string UpdateNote(int id, NotesModel notesModel)
         {
-            var note = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+            var notes = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
 
-            notesModel = note;
-            if(note != null)
+            if (notes != null)
             {
-                appDbContext.Notes.Add(notesModel);
-                return "Update Successful...";
+               
+                notes.Title = notesModel.Title;
+                notes.Description = notesModel.Description;
+                appDbContext.Entry(notes).State = EntityState.Modified;
+                this.appDbContext.SaveChanges();
+                return "Updated";
             }
-
             return "Enter valid Id";
         }
     }

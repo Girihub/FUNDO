@@ -2,19 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Interfaces
 {
     public interface ILableRL
     {
-        string AddLable(LabelModel lableModel);
+        Task<string> AddLable(LabelModel lableModel);
 
-        string DeleteLable(int id);
+        Task<string> DeleteLable(int id);
 
-        string UpdateLable(int id, LabelModel labelModel);
+        Task<string> UpdateLable(int id, LabelModel labelModel);
 
-        string GetLables();
+        Task<IList<LabelModel>> GetLables();
 
-        string GetLable(int id);
+        Task<IList<LabelModel>> GetLable(int id);
     }
 }

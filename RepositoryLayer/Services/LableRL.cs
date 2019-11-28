@@ -1,36 +1,113 @@
 ﻿using CommonLayer.Model;
+using Microsoft.EntityFrameworkCore;
+using RepositoryLayer.Context;
 using RepositoryLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RepositoryLayer.Services
 {
     public class LableRL : ILableRL
     {
-        public string AddLable(LabelModel lableModel)
+        private readonly AuthenticationContext appDbContext;
+
+        public LableRL(AuthenticationContext appDbContext)
         {
-            throw new NotImplementedException();
+            this.appDbContext = appDbContext;
         }
 
-        public string DeleteLable(int id)
+        public async Task<string> AddLable(LabelModel lableModel)
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.appDbContext.Lables.Add(lableModel);
+                await this.appDbContext.SaveChangesAsync();
+                return "Lable Added";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        public string GetLable(int id)
+        public async Task<string> DeleteLable(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();
+                if(lable != null)
+                {
+                    this.appDbContext.Remove(lable);
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Lable removed";
+                }
+
+                return "Enter valid id";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        public string GetLables()
+        public async Task<IList<LabelModel>> GetLable(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<LabelModel> labelModels = new List<LabelModel>();
+                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();
+                if(lable == null)
+                {
+                    throw new Exception();
+                }
+
+                labelModels.Add(lable);
+                await this.appDbContext.SaveChangesAsync();
+                return labelModels;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        public string UpdateLable(int id, LabelModel labelModel)
+        public async Task<IList<LabelModel>> GetLables()
         {
-            throw new NotImplementedException();
+            List<LabelModel> labelModels = new List<LabelModel>(); 
+
+            foreach(var lable in this.appDbContext.Lables)
+            {
+                labelModels.Add(lable);
+            }
+            await this.appDbContext.SaveChangesAsync();
+            return labelModels;
+            
+        }
+
+        public async Task<string> UpdateLable(int id, LabelModel labelModel)
+        {
+            try
+            {
+                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();
+                if(lable == null)
+                {
+                    return "Enter valid Id";
+                }
+                lable.Lable = labelModel.Lable;
+                lable.CreatedDate = labelModel.CreatedDate;
+                lable.ModifiedDate = labelModel.ModifiedDate;
+                lable.UserId = labelModel.UserId;
+                appDbContext.Entry(lable).State = EntityState.Modified;
+                await this.appDbContext.SaveChangesAsync();
+                return "Updated...";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

@@ -88,18 +88,32 @@ namespace RepositoryLayer.Services
 
         public string UpdateNote(int id, NotesModel notesModel)
         {
-            var notes = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
-
-            if (notes != null)
+            try
             {
-               
-                notes.Title = notesModel.Title;
-                notes.Description = notesModel.Description;
-                appDbContext.Entry(notes).State = EntityState.Modified;
-                this.appDbContext.SaveChanges();
-                return "Updated";
+                var notes = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+                
+                if (notes != null)
+                {
+                    notes.Title = notesModel.Title;
+                    notes.Description = notesModel.Description;
+                    notes.Image = notesModel.Image;
+                    notes.Color = notesModel.Color;
+                    notes.IsPin = notesModel.IsPin;
+                    notes.CreatedDate = notesModel.CreatedDate;
+                    notes.ModifiedDate = notesModel.ModifiedDate;
+                    notes.Reminder = notesModel.Reminder;
+                    notes.NotesType = notesModel.NotesType;
+                    appDbContext.Entry(notes).State = EntityState.Modified;
+                    this.appDbContext.SaveChanges();
+                    return "Updated";
+                }
+
+                return "Enter valid Id";
             }
-            return "Enter valid Id";
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

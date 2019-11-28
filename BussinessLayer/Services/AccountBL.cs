@@ -38,7 +38,21 @@ namespace BussinessLayer.Services
         /// <returns>boolean value and string</returns>
         public async Task<Tuple<bool, string>> AddUser(RegistrationModel registrationModel)
         {
-            return await this.repository.AddUser(registrationModel);
+            try
+            {
+                if (registrationModel != null)
+                {
+                    return await this.repository.AddUser(registrationModel);
+                }
+                else
+                {
+                    throw new Exception("RegistrationModel can not be null");
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
         }
 
         /// <summary>
@@ -48,7 +62,21 @@ namespace BussinessLayer.Services
         /// <returns>boolean value and string</returns>
         public async Task<Tuple<bool, string>> LoginUser(LoginModel loginModel)
         {
-            return await this.repository.LoginUser(loginModel);
+            try
+            {
+                if (loginModel != null)
+                {
+                    return await this.repository.LoginUser(loginModel);
+                }
+                else
+                {
+                    throw new Exception("LoginModel can not be null");
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
         }
 
         /// <summary>
@@ -58,7 +86,21 @@ namespace BussinessLayer.Services
         /// <returns>returns string output</returns>
         public string ForgotPassword(ForgotPasswordModel forgotPassword)
         {
-            return this.repository.ForgotPassword(forgotPassword);
+            try
+            {
+                if(forgotPassword != null)
+                {
+                    return this.repository.ForgotPassword(forgotPassword);
+                }
+                else
+                {
+                    throw new Exception("ForgotPasswordModel can not be null");
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
 
         /// <summary>
@@ -68,7 +110,21 @@ namespace BussinessLayer.Services
         /// <returns>returns string output</returns>
         public string ResetPassword(ResetPasswordModel resetPassword)
         {
-            return this.repository.ResetPassword(resetPassword);
+            try
+            {
+                if(resetPassword != null)
+                {
+                    return this.repository.ResetPassword(resetPassword);
+                }
+                else
+                {
+                    throw new Exception("ResetPasswordModel can not be null");
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
 
         /// <summary>
@@ -78,7 +134,21 @@ namespace BussinessLayer.Services
         /// <returns>returns string output</returns>
         public string GetPassword(GetPasswordModel getPassword)
         {
-            return this.repository.GetPassword(getPassword);
+            try
+            {
+                if(getPassword != null)
+                {
+                    return this.repository.GetPassword(getPassword);
+                }
+                else
+                {
+                    throw new Exception("GetPasswordModel can not be null");
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
 
         /// <summary>
@@ -88,7 +158,21 @@ namespace BussinessLayer.Services
         /// <returns>returns string output</returns>
         public async Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
         {
-            return await this.repository.ResetForgetPassword(resetForgetPassword);
+            try
+            {
+                if(resetForgetPassword != null)
+                {
+                    return await this.repository.ResetForgetPassword(resetForgetPassword);
+                }
+                else
+                {
+                    throw new Exception("ResetForgetPasswordModel can not be null");
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }            
         }
     }
 }

@@ -8,32 +8,43 @@ namespace BussinessLayer.Services
 {
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
+    using RepositoryLayer.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public class LableBL : ILableBL
     {
-        public string AddLable(LabelModel lableModel)
+        private readonly ILableRL repository;
+
+        public LableBL(ILableRL repository)
         {
-            throw new System.NotImplementedException();
+            this.repository = repository;
         }
 
-        public string DeleteLable(int id)
+        public async Task<string> AddLable(LabelModel lableModel)
         {
-            throw new System.NotImplementedException();
+            return await this.repository.AddLable(lableModel);
         }
 
-        public string GetLable(int id)
+        public async Task<string> DeleteLable(int id)
         {
-            throw new System.NotImplementedException();
+            return await this.repository.DeleteLable(id);
         }
 
-        public string GetLables()
+        public async Task<IList<LabelModel>> GetLable(int id)
         {
-            throw new System.NotImplementedException();
+            return await this.repository.GetLable(id);
         }
 
-        public string UpdateLable(int id, LabelModel labelModel)
+        public async Task<IList<LabelModel>> GetLables()
+        {            
+            return await this.repository.GetLables();
+        }
+
+        public async Task<string> UpdateLable(int id, LabelModel labelModel)
         {
-            throw new System.NotImplementedException();
+            return await this.repository.UpdateLable(id, labelModel);
         }
     }
 }

@@ -1,15 +1,20 @@
-﻿using CommonLayer.Model;
-using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Context;
-using RepositoryLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//----------------------------------------------------
+// <copyright file="LableRL.cs" company="Bridgelabz">
+// Company copyright tag.
+// </copyright>
+//----------------------------------------------------
 
 namespace RepositoryLayer.Services
 {
+    using CommonLayer.Model;
+    using Microsoft.EntityFrameworkCore;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class LableRL : ILableRL
     {
         private readonly AuthenticationContext appDbContext;

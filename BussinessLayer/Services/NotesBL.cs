@@ -4,16 +4,16 @@
 // </copyright>
 //----------------------------------------------------
 
-using BussinessLayer.Interfaces;
-using CommonLayer.Constants;
-using CommonLayer.Model;
-using RepositoryLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace BussinessLayer.Services
 {
+    using BussinessLayer.Interfaces;
+    using CommonLayer.Constants;
+    using CommonLayer.Model;
+    using RepositoryLayer.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class NotesBL : INotesBL
     {
         private readonly INotesRL repository;

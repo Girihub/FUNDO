@@ -1,24 +1,41 @@
-﻿using CommonLayer.Model;
-using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Context;
-using RepositoryLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//----------------------------------------------------
+// <copyright file="NotesRL.cs" company="Bridgelabz">
+// Company copyright tag.
+// </copyright>
+//----------------------------------------------------
 
 namespace RepositoryLayer.Services
 {
+    using CommonLayer.Model;
+    using Microsoft.EntityFrameworkCore;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Interfaces;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public class NotesRL : INotesRL
     {
+        /// <summary>
+        /// private field appDbContext to access database
+        /// </summary>
         private readonly AuthenticationContext appDbContext;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotesRL"/> class.
+        /// </summary>
+        /// <param name="appDbContext"></param>
         public NotesRL(AuthenticationContext appDbContext)
         {
             this.appDbContext = appDbContext;
         }
 
+        /// <summary>
+        /// Method to add note in table
+        /// </summary>
+        /// <param name="notesModel">notesModel as a parameter</param>
+        /// <returns>returns string value</returns>
         public async Task<string> AddNote(NotesModel notesModel)
         {
             try
@@ -33,6 +50,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to delete note from table
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <returns>returns result in string</returns>
         public async Task<string> DeleteNote(int id)
         {
             try
@@ -45,6 +67,7 @@ namespace RepositoryLayer.Services
                     var result = await this.appDbContext.SaveChangesAsync();
                     return "Note deleted";
                 }
+
                 return "Note not present in the table";
             }
             catch (Exception e)
@@ -53,6 +76,12 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to get note from table by passing id as a parameter
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <returns>returns required 
+        /// note in list format</returns>
         public IList<NotesModel> GetNote(int id)
         {
             try
@@ -78,6 +107,7 @@ namespace RepositoryLayer.Services
                 {
                     notes.Add(line);
                 }
+
                 return notes;
             }
             catch(Exception e)

@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//----------------------------------------------------
+// <copyright file="ErrorMessages.cs" company="Bridgelabz">
+// Company copyright tag.
+// </copyright>
+//----------------------------------------------------
 
 namespace CommonLayer.Constants
 {
+    /// <summary>
+    /// Class to throw errors
+    /// </summary>
     public class ErrorMessages
     {
         public static string nullModel = "Model can not be null";

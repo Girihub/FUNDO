@@ -6,26 +6,29 @@
 
 namespace RepositoryLayer.Services
 {
-    using CommonLayer.Model;
-    using Microsoft.EntityFrameworkCore;
-    using RepositoryLayer.Context;
-    using RepositoryLayer.Interfaces;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CommonLayer.Model;
+    using Microsoft.EntityFrameworkCore;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Interfaces;        
 
+    /// <summary>
+    /// NotesRL as a class
+    /// </summary>
     public class NotesRL : INotesRL
     {
         /// <summary>
-        /// private field appDbContext to access database
+        /// private field appDBContext to access database
         /// </summary>
         private readonly AuthenticationContext appDbContext;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotesRL"/> class.
         /// </summary>
-        /// <param name="appDbContext"></param>
+        /// <param name="appDbContext">appDBContext as a parameter</param>
         public NotesRL(AuthenticationContext appDbContext)
         {
             this.appDbContext = appDbContext;
@@ -61,7 +64,7 @@ namespace RepositoryLayer.Services
             {
                 var notes = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
 
-                if(notes != null)
+                if (notes != null)
                 {
                     this.appDbContext.Notes.Remove(notes);
                     var result = await this.appDbContext.SaveChangesAsync();
@@ -91,31 +94,41 @@ namespace RepositoryLayer.Services
                     notes.Add(note);
                     return notes;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
         }
 
+        /// <summary>
+        /// Method to display all notes
+        /// </summary>
+        /// <returns>returns all notes</returns>
         public IList<NotesModel> GetNotes()
         {
             try
             {
                 List<NotesModel> notes = new List<NotesModel>();
 
-                foreach (var line in appDbContext.Notes)
+                foreach (var line in this.appDbContext.Notes)
                 {
                     notes.Add(line);
                 }
 
                 return notes;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
         }
 
+        /// <summary>
+        /// Method to update note
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <param name="notesModel">notesModel as a parameter</param>
+        /// <returns>returns result in string format</returns>
         public string UpdateNote(int id, NotesModel notesModel)
         {
             try
@@ -133,7 +146,7 @@ namespace RepositoryLayer.Services
                     notes.ModifiedDate = notesModel.ModifiedDate;
                     notes.Reminder = notesModel.Reminder;
                     notes.NotesType = notesModel.NotesType;
-                    appDbContext.Entry(notes).State = EntityState.Modified;
+                    this.appDbContext.Entry(notes).State = EntityState.Modified;
                     this.appDbContext.SaveChanges();
                     return "Updated";
                 }

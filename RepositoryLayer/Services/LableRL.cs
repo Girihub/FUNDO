@@ -6,24 +6,39 @@
 
 namespace RepositoryLayer.Services
 {
-    using CommonLayer.Model;
-    using Microsoft.EntityFrameworkCore;
-    using RepositoryLayer.Context;
-    using RepositoryLayer.Interfaces;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CommonLayer.Model;
+    using Microsoft.EntityFrameworkCore;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Interfaces;
 
+    /// <summary>
+    /// LableRL as a class
+    /// </summary>
     public class LableRL : ILableRL
     {
+        /// <summary>
+        /// private field appDBContext to access database
+        /// </summary>
         private readonly AuthenticationContext appDbContext;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LableRL"/> class.
+        /// </summary>
+        /// <param name="appDbContext">appDBContext as a parameter</param>
         public LableRL(AuthenticationContext appDbContext)
         {
             this.appDbContext = appDbContext;
         }
 
+        /// <summary>
+        /// Method implementation to add label
+        /// </summary>
+        /// <param name="lableModel">lableModel as a parameter</param>
+        /// <returns>returns result in string format</returns>
         public async Task<string> AddLable(LabelModel lableModel)
         {
             try
@@ -38,12 +53,17 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to delete label
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <returns>returns result in string format</returns>
         public async Task<string> DeleteLable(int id)
         {
             try
             {
                 var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();
-                if(lable != null)
+                if (lable != null)
                 {
                     this.appDbContext.Remove(lable);
                     await this.appDbContext.SaveChangesAsync();
@@ -58,6 +78,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to dispaly label by id
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <returns>returns result in list format</returns>
         public async Task<IList<LabelModel>> GetLable(int id)
         {
             try
@@ -79,6 +104,10 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to dispaly all labels
+        /// </summary>
+        /// <returns>returns result in list format</returns>
         public async Task<IList<LabelModel>> GetLables()
         {
             List<LabelModel> labelModels = new List<LabelModel>(); 
@@ -92,6 +121,12 @@ namespace RepositoryLayer.Services
             
         }
 
+        /// <summary>
+        /// Method to update label
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <param name="labelModel">labelModel as a parameter</param>
+        /// <returns>returns result in string format</returns>
         public async Task<string> UpdateLable(int id, LabelModel labelModel)
         {
             try
@@ -105,7 +140,7 @@ namespace RepositoryLayer.Services
                 lable.CreatedDate = labelModel.CreatedDate;
                 lable.ModifiedDate = labelModel.ModifiedDate;
                 lable.UserId = labelModel.UserId;
-                appDbContext.Entry(lable).State = EntityState.Modified;
+                this.appDbContext.Entry(lable).State = EntityState.Modified;
                 await this.appDbContext.SaveChangesAsync();
                 return "Updated...";
             }

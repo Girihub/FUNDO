@@ -6,26 +6,37 @@
 
 namespace Fundoo.Controllers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
+    /// <summary>
+    /// NoteController class to implement API
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class NoteController : ControllerBase
     {
+        /// <summary>
+        /// private field of business interface
+        /// </summary>
         private readonly INotesBL businessNotes;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NoteController"/> class.
+        /// </summary>
+        /// <param name="businessNotes">businessNotes as a parameter</param>
         public NoteController(INotesBL businessNotes)
         {
             this.businessNotes = businessNotes;
         }
 
+        /// <summary>
+        /// API for add note
+        /// </summary>
+        /// <param name="notesModel">notesModel as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("AddNote")]
         public async Task<IActionResult> AddNote(NotesModel notesModel)
@@ -34,6 +45,11 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API for delete note
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
         [HttpDelete]
         [Route("DeleteNote")]
         public async Task<IActionResult> DeleteNote(int id)
@@ -42,6 +58,10 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API to get all notes
+        /// </summary>
+        /// <returns>return result in JSON format</returns>
         [HttpGet]
         [Route("GetNotes")]
         public IActionResult GetNotes()
@@ -50,6 +70,11 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API to get note by id
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
         [HttpGet]
         [Route("GetNoteById")]
         public IActionResult GetNote(int id)
@@ -58,6 +83,12 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API to update note
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <param name="notesModel">notesModel as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
         [HttpPut]
         [Route("UpdateNote")]
         public IActionResult UpdateNote(int id, NotesModel notesModel)

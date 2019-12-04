@@ -43,6 +43,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
+               
                 this.appDbContext.Notes.Add(notesModel);
                 var result = await this.appDbContext.SaveChangesAsync();
                 return "Note added";

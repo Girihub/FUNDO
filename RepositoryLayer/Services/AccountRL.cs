@@ -10,6 +10,7 @@ namespace RepositoryLayer.Services
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
+    using System.Text;
     using System.Threading.Tasks;        
     using CommonLayer.Model;        
     using Microsoft.IdentityModel.Tokens;
@@ -135,10 +136,12 @@ namespace RepositoryLayer.Services
                                 {
                                     Subject = new ClaimsIdentity(new Claim[]
                                     {
-                                    //// Claims the identity
-                                    new Claim("Email", loginModel.Email.ToString())
+                                        //// Claims the identity
+                                        new Claim("Id", email.Id.ToString()),
+                                        new Claim("Email", email.Email.ToString())
                                     }),
-                                    Expires = DateTime.UtcNow.AddDays(1)
+                                    Expires = DateTime.UtcNow.AddDays(1),
+                                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")), SecurityAlgorithms.HmacSha256Signature)
                                 };
                                 var secureToken = tokenHandler.CreateToken(tokenDescriptor);
                                 var token = tokenHandler.WriteToken(secureToken);

@@ -6,9 +6,11 @@
 
 namespace Fundoo.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -16,6 +18,7 @@ namespace Fundoo.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LableController : ControllerBase
     {
         /// <summary>
@@ -41,6 +44,8 @@ namespace Fundoo.Controllers
         [Route("AddLable")]
         public async Task<IActionResult> AddLable(LabelModel lableModel)
         {
+            var Id = User.FindFirst("Id")?.Value;
+            lableModel.UserId = Convert.ToInt32(Id);
             var result = await this.businessLable.AddLable(lableModel);
             return this.Ok(new { result });
         }

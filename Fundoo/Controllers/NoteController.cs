@@ -9,6 +9,7 @@ namespace Fundoo.Controllers
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -16,6 +17,7 @@ namespace Fundoo.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class NoteController : ControllerBase
     {
         /// <summary>

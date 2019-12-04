@@ -44,8 +44,8 @@ namespace Fundoo.Controllers
         [Route("AddLable")]
         public async Task<IActionResult> AddLable(LabelModel lableModel)
         {
-            var Id = User.FindFirst("Id")?.Value;
-            lableModel.UserId = Convert.ToInt32(Id);
+            var UserId = User.FindFirst("Id")?.Value;
+            lableModel.UserId = Convert.ToInt32(UserId);
             var result = await this.businessLable.AddLable(lableModel);
             return this.Ok(new { result });
         }

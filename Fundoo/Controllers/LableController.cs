@@ -10,6 +10,7 @@ namespace Fundoo.Controllers
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -42,11 +43,11 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("AddLable")]
-        public async Task<IActionResult> AddLable(LabelModel lableModel)
+        public async Task<IActionResult> AddLable(LabelRequest labelRequest)
         {
             var UserId = User.FindFirst("Id")?.Value;
-            lableModel.UserId = Convert.ToInt32(UserId);
-            var result = await this.businessLable.AddLable(lableModel);
+            int Userid = Convert.ToInt32(UserId);
+            var result = await this.businessLable.AddLable(labelRequest, Userid);
             return this.Ok(new { result });
         }
 
@@ -59,7 +60,8 @@ namespace Fundoo.Controllers
         [Route("DeleteLable")]
         public async Task<IActionResult> DeleteLable(int id)
         {
-            var result = await this.businessLable.DeleteLable(id);
+            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessLable.DeleteLable(id, UserId);
             return this.Ok(new { result });
         }
 
@@ -71,8 +73,14 @@ namespace Fundoo.Controllers
         [Route("GetAllLables")]
         public async Task<IActionResult> GetLables()
         {
-            var result = await this.businessLable.GetLables();
-            return this.Ok(new { result });
+            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessLable.GetLables(UserId);
+            if(result.Count != 0)
+            {
+                return this.Ok(new { result });
+            }
+            var message = "Labels not present";
+            return this.Ok(new { result, message });
         }
 
         /// <summary>
@@ -85,7 +93,12 @@ namespace Fundoo.Controllers
         public async Task<IActionResult> GetLable(int id)
         {
             var result = await this.businessLable.GetLable(id);
-            return this.Ok(new { result });
+            var message = "Labels not present";
+            if (result[0] != null)
+            {
+                return this.Ok(new { result });
+            }            
+            return this.Ok(new { result, message });
         }
 
         /// <summary>
@@ -96,9 +109,10 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPut]
         [Route("UpadateLable")]
-        public async Task<IActionResult> UpdateLable(int id, LabelModel labelModel)
+        public async Task<IActionResult> UpdateLable(int id, LabelRequest labelRequest)
         {
-            var result = await this.businessLable.UpdateLable(id, labelModel);
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessLable.UpdateLable(id, labelRequest, UserId);
             return this.Ok(new { result });
         }
     }

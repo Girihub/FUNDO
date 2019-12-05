@@ -9,6 +9,7 @@ namespace BussinessLayer.Services
     using BussinessLayer.Interfaces;
     using CommonLayer.Constants;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using RepositoryLayer.Interfaces;
     using System;
     using System.Collections.Generic;
@@ -23,13 +24,13 @@ namespace BussinessLayer.Services
             this.repository = repository;
         }        
 
-        public async Task<string> AddLable(LabelModel lableModel)
+        public async Task<string> AddLable(LabelRequest labelRequest, int UserId)
         {
             try
             {
-                if(lableModel != null)
+                if(labelRequest != null)
                 {
-                    return await this.repository.AddLable(lableModel);
+                    return await this.repository.AddLable(labelRequest, UserId);
                 }
                 else
                 {
@@ -42,7 +43,7 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public async Task<string> DeleteLable(int id)
+        public async Task<string> DeleteLable(int id, int UserId)
         {
             try
             {
@@ -52,7 +53,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    return await this.repository.DeleteLable(id);
+                    return await this.repository.DeleteLable(id, UserId);
                 }
             }
             catch (Exception E)
@@ -80,11 +81,11 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public async Task<IList<LabelModel>> GetLables()
+        public async Task<IList<LabelModel>> GetLables(int UserId)
         {
             try
             {
-                return await this.repository.GetLables();
+                return await this.repository.GetLables(UserId);
             }
             catch (Exception E)
             {
@@ -92,13 +93,13 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public async Task<string> UpdateLable(int id, LabelModel labelModel)
+        public async Task<string> UpdateLable(int id, LabelRequest labelRequest, int UserId)
         {
             try
             {
-                if (labelModel != null)
+                if (labelRequest != null)
                 {
-                    return await this.repository.UpdateLable(id, labelModel);
+                    return await this.repository.UpdateLable(id, labelRequest, UserId);
                 }
                 else
                 {

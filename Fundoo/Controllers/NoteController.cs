@@ -59,7 +59,9 @@ namespace Fundoo.Controllers
         [Route("DeleteNote")]
         public async Task<IActionResult> DeleteNote(int id)
         {
-            var result = await this.businessNotes.DeleteNote(id);
+            var UserId = User.FindFirst("Id")?.Value;
+            var Userid = Convert.ToInt32(UserId);
+            var result = await this.businessNotes.DeleteNote(id, Userid);
             return this.Ok(new { result });
         }
 
@@ -100,6 +102,8 @@ namespace Fundoo.Controllers
         [Route("UpdateNote")]
         public IActionResult UpdateNote(int id, NotesModel notesModel)
         {
+            var UserId = User.FindFirst("Id")?.Value;
+            notesModel.UserId = Convert.ToInt32(UserId);
             var result = this.businessNotes.UpdateNote(id, notesModel);
             return this.Ok(new { result });
         }

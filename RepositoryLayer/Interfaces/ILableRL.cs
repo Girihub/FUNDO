@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Model;
+using CommonLayer.Request;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,13 +9,13 @@ namespace RepositoryLayer.Interfaces
 {
     public interface ILableRL
     {
-        Task<string> AddLable(LabelModel lableModel);
+        Task<string> AddLable(LabelRequest labelRequest, int UserId);
 
-        Task<string> DeleteLable(int id);
+        Task<string> DeleteLable(int id, int UserId);
 
-        Task<string> UpdateLable(int id, LabelModel labelModel);
+        Task<string> UpdateLable(int id, LabelRequest labelRequest, int UserId);
 
-        Task<IList<LabelModel>> GetLables();
+        Task<IList<LabelModel>> GetLables(int UserId);
 
         Task<IList<LabelModel>> GetLable(int id);
     }

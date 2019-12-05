@@ -61,11 +61,11 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in string</returns>
-        public async Task<string> DeleteNote(int id)
+        public async Task<string> DeleteNote(int id, int Userid)
         {
             try
             {
-                var notes = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == Userid).FirstOrDefault();
 
                 if (notes != null)
                 {
@@ -74,7 +74,7 @@ namespace RepositoryLayer.Services
                     return "Note deleted";
                 }
 
-                return "Note not present in the table";
+                return "Note not found";
             }
             catch (Exception e)
             {
@@ -139,7 +139,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var notes = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == notesModel.UserId).FirstOrDefault();
                 
                 if (notes != null)
                 {
@@ -148,8 +148,8 @@ namespace RepositoryLayer.Services
                     notes.Image = notesModel.Image;
                     notes.Color = notesModel.Color;
                     notes.IsPin = notesModel.IsPin;
-                    notes.CreatedDate = notesModel.CreatedDate;
-                    notes.ModifiedDate = notesModel.ModifiedDate;
+                    notes.CreatedDate = notes.CreatedDate;
+                    notes.ModifiedDate = DateTime.Now;
                     notes.AddReminder = notesModel.AddReminder;
                     notes.IsNote = notesModel.IsNote;
                     notes.IsArchive = notesModel.IsArchive;

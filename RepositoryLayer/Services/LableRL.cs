@@ -11,6 +11,7 @@ namespace RepositoryLayer.Services
     using System.Linq;
     using System.Threading.Tasks;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Microsoft.EntityFrameworkCore;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;
@@ -39,14 +40,19 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="lableModel">lableModel as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> AddLable(LabelModel lableModel)
+        public async Task<string> AddLable(LabelRequest labelRequest, int UserId)
         {
             try
             {
-                lableModel.CreatedDate = DateTime.Now;
-                lableModel.ModifiedDate = DateTime.Now;
+                var label = new LabelModel()
+                {
+                    Lable = labelRequest.Lable,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                    UserId = UserId
+                };
                 
-                this.appDbContext.Lables.Add(lableModel);
+                this.appDbContext.Lables.Add(label);
                 await this.appDbContext.SaveChangesAsync();
                 return "Lable Added";
             }
@@ -61,16 +67,16 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> DeleteLable(int id)
+        public async Task<string> DeleteLable(int id, int UserId)
         {
             try
             {
-                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();
+                var lable = this.appDbContext.Lables.Where(g => g.Id == id && g.UserId == UserId).FirstOrDefault();
                 if (lable != null)
                 {
                     this.appDbContext.Remove(lable);
                     await this.appDbContext.SaveChangesAsync();
-                    return "Lable removed";
+                    return "Label removed";
                 }
 
                 return "Enter valid id";
@@ -91,12 +97,7 @@ namespace RepositoryLayer.Services
             try
             {
                 List<LabelModel> labelModels = new List<LabelModel>();
-                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();
-                if(lable == null)
-                {
-                    throw new Exception();
-                }
-
+                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();                
                 labelModels.Add(lable);
                 await this.appDbContext.SaveChangesAsync();
                 return labelModels;
@@ -111,13 +112,16 @@ namespace RepositoryLayer.Services
         /// Method to dispaly all labels
         /// </summary>
         /// <returns>returns result in list format</returns>
-        public async Task<IList<LabelModel>> GetLables()
+        public async Task<IList<LabelModel>> GetLables(int UserId)
         {
             List<LabelModel> labelModels = new List<LabelModel>(); 
 
             foreach(var lable in this.appDbContext.Lables)
             {
-                labelModels.Add(lable);
+                if(lable.UserId == UserId)
+                {
+                    labelModels.Add(lable);
+                }
             }
             await this.appDbContext.SaveChangesAsync();
             return labelModels;
@@ -130,19 +134,18 @@ namespace RepositoryLayer.Services
         /// <param name="id">id as a parameter</param>
         /// <param name="labelModel">labelModel as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> UpdateLable(int id, LabelModel labelModel)
+        public async Task<string> UpdateLable(int id, LabelRequest labelRequest, int UserId)
         {
             try
             {
-                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();
+                var lable = this.appDbContext.Lables.Where(g => g.Id == id && g.UserId == UserId).FirstOrDefault();
                 if(lable == null)
                 {
                     return "Enter valid Id";
                 }
-                lable.Lable = labelModel.Lable;
-                lable.CreatedDate = labelModel.CreatedDate;
-                lable.ModifiedDate = labelModel.ModifiedDate;
-                lable.UserId = labelModel.UserId;
+                lable.Lable = labelRequest.Lable;
+                lable.ModifiedDate = DateTime.Now;
+                lable.UserId = UserId;
                 this.appDbContext.Entry(lable).State = EntityState.Modified;
                 await this.appDbContext.SaveChangesAsync();
                 return "Updated...";

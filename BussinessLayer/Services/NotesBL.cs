@@ -42,13 +42,13 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public async Task<string> DeleteNote(int id)
+        public async Task<string> DeleteNote(int id, int Userid)
         {
             try
             {
                 if (!id.Equals(null))
                 {
-                    return await this.repository.DeleteNote(id);
+                    return await this.repository.DeleteNote(id, Userid);
                 }
                 else
                 {

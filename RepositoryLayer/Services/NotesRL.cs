@@ -11,6 +11,7 @@ namespace RepositoryLayer.Services
     using System.Linq;
     using System.Threading.Tasks;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Microsoft.EntityFrameworkCore;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;        
@@ -39,14 +40,18 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="notesModel">notesModel as a parameter</param>
         /// <returns>returns string value</returns>
-        public async Task<string> AddNote(NotesModel notesModel)
+        public async Task<string> AddNote(NoteRequest noteRequest, int UserId)
         {
             try
             {
-                notesModel.AddReminder = DateTime.Now;
-                notesModel.CreatedDate = DateTime.Now;
-                notesModel.ModifiedDate = DateTime.Now;
-                this.appDbContext.Notes.Add(notesModel);
+                var note = new NotesModel()
+                {
+                    AddReminder = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                    UserId = UserId,
+                    ModifiedDate = DateTime.Now,
+            };
+                this.appDbContext.Notes.Add(note);
                 var result = await this.appDbContext.SaveChangesAsync();
                 return "Note added";
             }

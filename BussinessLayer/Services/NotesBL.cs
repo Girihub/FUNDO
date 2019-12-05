@@ -9,6 +9,7 @@ namespace BussinessLayer.Services
     using BussinessLayer.Interfaces;
     using CommonLayer.Constants;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using RepositoryLayer.Interfaces;
     using System;
     using System.Collections.Generic;
@@ -23,13 +24,13 @@ namespace BussinessLayer.Services
             this.repository = repository;
         }
 
-        public async Task<string> AddNote(NotesModel notesModel)
+        public async Task<string> AddNote(NoteRequest noteRequest, int UserId)
         {
             try
             {
-                if(notesModel != null)
+                if(noteRequest != null)
                 {
-                    return await this.repository.AddNote(notesModel);
+                    return await this.repository.AddNote(noteRequest, UserId);
                 }
                 else
                 {

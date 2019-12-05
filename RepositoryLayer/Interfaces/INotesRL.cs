@@ -5,6 +5,7 @@
 //----------------------------------------------------
 
 using CommonLayer.Model;
+using CommonLayer.Request;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace RepositoryLayer.Interfaces
 {
     public interface INotesRL
     {
-        Task<string> AddNote(NotesModel notesModel);
+        Task<string> AddNote(NoteRequest noteRequest, int UserId);
 
         Task<string> DeleteNote(int id, int Userid);
 

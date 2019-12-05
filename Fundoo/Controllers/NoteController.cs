@@ -10,6 +10,7 @@ namespace Fundoo.Controllers
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -42,11 +43,10 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("AddNote")]
-        public async Task<IActionResult> AddNote(NotesModel notesModel)
+        public async Task<IActionResult> AddNote(NoteRequest noteRequest)
         {
-            var UserId = User.FindFirst("Id")?.Value;
-            notesModel.UserId = Convert.ToInt32(UserId);
-            var result = await this.businessNotes.AddNote(notesModel);
+            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.AddNote(noteRequest, UserId);
             return this.Ok(new { result });
         }
 

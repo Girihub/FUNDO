@@ -127,28 +127,24 @@ namespace RepositoryLayer.Services
                 {
                     if (email.Email.Equals(loginModel.Email))
                     {
-                        foreach (var password in queryAllUsers)
+                        if (this.Decrypt(email.Password).Equals(loginModel.Password))
                         {
-                            if (this.Decrypt(password.Password).Equals(loginModel.Password))
+                            var tokenHandler = new JwtSecurityTokenHandler();
+                            var tokenDescriptor = new SecurityTokenDescriptor
                             {
-                                var tokenHandler = new JwtSecurityTokenHandler();
-                                var tokenDescriptor = new SecurityTokenDescriptor
+                                Subject = new ClaimsIdentity(new Claim[]
                                 {
-                                    Subject = new ClaimsIdentity(new Claim[]
-                                    {
                                         //// Claims the identity
                                         new Claim("Id", email.Id.ToString()),
                                         new Claim("Email", email.Email.ToString())
-                                    }),
-                                    Expires = DateTime.UtcNow.AddDays(1),
-                                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")), SecurityAlgorithms.HmacSha256Signature)
-                                };
-                                var secureToken = tokenHandler.CreateToken(tokenDescriptor);
-                                var token = tokenHandler.WriteToken(secureToken);
-                                return Tuple.Create(true, "Logged in Successfully. Your token is " + token);
-                            }
+                                }),
+                                Expires = DateTime.Now.AddMinutes(120),
+                                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")), SecurityAlgorithms.HmacSha256Signature)
+                            };
+                            var secureToken = tokenHandler.CreateToken(tokenDescriptor);
+                            var token = tokenHandler.WriteToken(secureToken);
+                            return Tuple.Create(true, "Logged in Successfully. Your token is " + token);
                         }
-
                         return Tuple.Create(false, "Password does not match with email");
                     }
                 }

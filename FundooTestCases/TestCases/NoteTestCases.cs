@@ -36,9 +36,11 @@ namespace FundooTestCases.TestCases
                 IsPin = true,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                Reminder = "reminder",
-                NotesType = 0,
-                UserId = 1
+                AddReminder = DateTime.Now,
+                UserId = 1,
+                IsNote = false,
+                IsArchive =false,
+                IsTrash = false
             };
 
             //// act          
@@ -66,9 +68,11 @@ namespace FundooTestCases.TestCases
                 IsPin = true,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                Reminder = "reminder",
-                NotesType = 0,
-                UserId = 1
+                AddReminder = DateTime.Now,
+                UserId = 1,
+                IsNote = false,
+                IsArchive = false,
+                IsTrash = false
             };
 
             //// act          
@@ -117,9 +121,11 @@ namespace FundooTestCases.TestCases
                 IsPin = true,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                Reminder = "reminder",
-                NotesType = 0,
-                UserId = 1
+                AddReminder = DateTime.Now,
+                UserId = 1,
+                IsNote = false,
+                IsArchive = false,
+                IsTrash = false
             };
 
             //// act          
@@ -147,9 +153,11 @@ namespace FundooTestCases.TestCases
                 IsPin = true,
                 CreatedDate = DateTime.Now,
                 ModifiedDate = DateTime.Now,
-                Reminder = "reminder",
-                NotesType = 0,
-                UserId = 1
+                AddReminder = DateTime.Now,
+                UserId = 1,
+                IsNote = false,
+                IsArchive = false,
+                IsTrash = false
             };
 
             //// act          

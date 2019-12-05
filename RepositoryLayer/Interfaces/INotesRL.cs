@@ -16,7 +16,7 @@ namespace RepositoryLayer.Interfaces
 
         Task<string> DeleteNote(int id);
 
-        IList<NotesModel> GetNotes();
+        IList<NotesModel> GetNotes(int UserId);
 
         string UpdateNote(int id, NotesModel notesModel);
 

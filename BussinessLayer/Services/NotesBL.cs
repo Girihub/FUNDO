@@ -81,11 +81,11 @@ namespace BussinessLayer.Services
             
         }
 
-        public IList<NotesModel> GetNotes()
+        public IList<NotesModel> GetNotes(int UserId)
         {
             try
             {
-                return this.repository.GetNotes();
+                return this.repository.GetNotes(UserId);
             }
             catch (Exception E)
             {

@@ -43,15 +43,10 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var label = new LabelModel()
-                {
-                    Lable = lableModel.Lable,
-                    CreatedDate = DateTime.Now,
-                    ModifiedDate = DateTime.Now,
-                    UserId = lableModel.UserId
-                };
+                lableModel.CreatedDate = DateTime.Now;
+                lableModel.ModifiedDate = DateTime.Now;
                 
-                this.appDbContext.Lables.Add(label);
+                this.appDbContext.Lables.Add(lableModel);
                 await this.appDbContext.SaveChangesAsync();
                 return "Lable Added";
             }

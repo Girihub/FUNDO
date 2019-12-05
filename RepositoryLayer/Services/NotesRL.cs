@@ -43,7 +43,9 @@ namespace RepositoryLayer.Services
         {
             try
             {
-               
+                notesModel.AddReminder = DateTime.Now;
+                notesModel.CreatedDate = DateTime.Now;
+                notesModel.ModifiedDate = DateTime.Now;
                 this.appDbContext.Notes.Add(notesModel);
                 var result = await this.appDbContext.SaveChangesAsync();
                 return "Note added";
@@ -105,7 +107,7 @@ namespace RepositoryLayer.Services
         /// Method to display all notes
         /// </summary>
         /// <returns>returns all notes</returns>
-        public IList<NotesModel> GetNotes()
+        public IList<NotesModel> GetNotes(int UserId)
         {
             try
             {
@@ -113,7 +115,10 @@ namespace RepositoryLayer.Services
 
                 foreach (var line in this.appDbContext.Notes)
                 {
-                    notes.Add(line);
+                    if(UserId == line.UserId)
+                    {
+                        notes.Add(line);
+                    }
                 }
 
                 return notes;
@@ -145,8 +150,10 @@ namespace RepositoryLayer.Services
                     notes.IsPin = notesModel.IsPin;
                     notes.CreatedDate = notesModel.CreatedDate;
                     notes.ModifiedDate = notesModel.ModifiedDate;
-                    notes.Reminder = notesModel.Reminder;
-                    notes.NotesType = notesModel.NotesType;
+                    notes.AddReminder = notesModel.AddReminder;
+                    notes.IsNote = notesModel.IsNote;
+                    notes.IsArchive = notesModel.IsArchive;
+                    notes.IsTrash = notesModel.IsTrash;
                     this.appDbContext.Entry(notes).State = EntityState.Modified;
                     this.appDbContext.SaveChanges();
                     return "Updated";

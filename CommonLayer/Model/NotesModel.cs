@@ -41,6 +41,8 @@ namespace CommonLayer.Model
         /// <summary>
         /// Gets or sets Color of user
         /// </summary>
+        [Required(ErrorMessage = "Color code required")]
+        [RegularExpression("^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))$", ErrorMessage = "Enter valid 6 letters color code. eg. #0f0f0f")]
         public string Color { get; set; }
 
         /// <summary>
@@ -61,17 +63,27 @@ namespace CommonLayer.Model
         /// <summary>
         /// Gets or sets Reminder of user
         /// </summary>
-        public string Reminder { get; set; }
-
-        /// <summary>
-        /// Gets or sets NotesType of user
-        /// </summary>
-        public NoteOfType NotesType { get; set; }
-
+        public DateTime AddReminder { get; set; }
+        
         /// <summary>
         /// Gets or sets UserId of user
         /// </summary>
         [ForeignKey("RegistrationModel")]
         public int UserId { get; set; }
+
+        /// <summary>
+        /// Gets or sets IsNote of user
+        /// </summary>
+        public bool IsNote { get; set; }
+
+        /// <summary>
+        /// Gets or sets IsArchive of user
+        /// </summary>
+        public bool IsArchive { get; set; }
+
+        /// <summary>
+        /// Gets or sets IsTrash of user
+        /// </summary>
+        public bool IsTrash { get; set; }
     }
 }

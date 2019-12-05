@@ -10,8 +10,8 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20191127092857_Notes")]
-    partial class Notes
+    [Migration("20191205075349_test1")]
+    partial class test1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,7 +29,8 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Lable");
+                    b.Property<string>("Lable")
+                        .IsRequired();
 
                     b.Property<DateTime>("ModifiedDate");
 
@@ -46,23 +47,30 @@ namespace RepositoryLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Color");
+                    b.Property<DateTime>("AddReminder");
+
+                    b.Property<string>("Color")
+                        .IsRequired();
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .IsRequired();
 
                     b.Property<string>("Image");
 
+                    b.Property<bool>("IsArchive");
+
+                    b.Property<bool>("IsNote");
+
                     b.Property<bool>("IsPin");
+
+                    b.Property<bool>("IsTrash");
 
                     b.Property<DateTime>("ModifiedDate");
 
-                    b.Property<int>("NotesType");
-
-                    b.Property<string>("Reminder");
-
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.Property<int>("UserId");
 

@@ -6,6 +6,7 @@
 
 namespace Fundoo.Controllers
 {
+    using System;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
@@ -43,6 +44,8 @@ namespace Fundoo.Controllers
         [Route("AddNote")]
         public async Task<IActionResult> AddNote(NotesModel notesModel)
         {
+            var UserId = User.FindFirst("Id")?.Value;
+            notesModel.UserId = Convert.ToInt32(UserId);
             var result = await this.businessNotes.AddNote(notesModel);
             return this.Ok(new { result });
         }
@@ -68,7 +71,9 @@ namespace Fundoo.Controllers
         [Route("GetNotes")]
         public IActionResult GetNotes()
         {
-            var result = this.businessNotes.GetNotes();
+            var UserId = User.FindFirst("Id")?.Value;
+            var Userid = Convert.ToInt32(UserId);
+            var result = this.businessNotes.GetNotes(Userid);
             return this.Ok(new { result });
         }
 

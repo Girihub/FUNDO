@@ -6,6 +6,7 @@
 
 namespace Fundoo
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Common;
     using System.Text;
@@ -100,6 +101,7 @@ namespace Fundoo
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")),
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ClockSkew=TimeSpan.Zero
                    
                 };
             });

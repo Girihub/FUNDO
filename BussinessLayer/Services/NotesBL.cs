@@ -41,7 +41,7 @@ namespace BussinessLayer.Services
             {
                 throw new Exception(E.Message);
             }            
-        }
+        }        
 
         public async Task<string> DeleteNote(int id, int Userid)
         {
@@ -111,6 +111,37 @@ namespace BussinessLayer.Services
             {
                 throw new Exception(E.Message);
             }            
+        }
+
+        public async Task<string> Archive(int Id, int UserId)
+        {
+            try
+            {
+                if (Id > 0)
+                {
+                    return await this.repository.Archive(Id, UserId);
+                }
+                else
+                {
+                    return "Enter valid Id";
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> UnArchive(int Id, int UserId)
+        {
+            try
+            {
+                return await this.repository.UnArchive(Id, UserId);
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
         }
     }
 }

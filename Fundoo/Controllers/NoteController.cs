@@ -106,5 +106,23 @@ namespace Fundoo.Controllers
             var result = await this.businessNotes.UpdateNote(id, noteUpdate, UserId);
             return this.Ok(new { result });
         }
+
+        [HttpPut]
+        [Route("Archive")]
+        public async Task<IActionResult> Archive(int Id)
+        {
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.Archive(Id, UserId);
+            return this.Ok(new { result });
+        }
+
+        [HttpPut]
+        [Route("UnArchive")]
+        public async Task<IActionResult> UnArchive(int Id)
+        {
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.UnArchive(Id, UserId);
+            return this.Ok(new { result });
+        }
     }
 }

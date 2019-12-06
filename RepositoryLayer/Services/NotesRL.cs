@@ -50,7 +50,7 @@ namespace RepositoryLayer.Services
                     Description = noteRequest.Description,
                     Image = noteRequest.Image,
                     Color = noteRequest.Color,
-                    IsPin = noteRequest.IsPin,
+                    IsPin = false,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
                     AddReminder = noteRequest.AddReminder,
@@ -187,6 +187,47 @@ namespace RepositoryLayer.Services
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public async Task<string> Archive(int Id, int UserId)
+        {
+            try
+            {
+                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+                if(note != null)
+                {
+                    note.IsArchive = true;
+                    note.IsPin = false;
+                    this.appDbContext.Entry(note).State = EntityState.Modified;
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Note archived";
+                }
+                return "Enter valid id";
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> UnArchive(int Id, int UserId)
+        {
+            try
+            {
+                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+                if (note != null)
+                {
+                    note.IsArchive = false;
+                    this.appDbContext.Entry(note).State = EntityState.Modified;
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Note unarchived";
+                }
+                return "Enter valid id";
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
             }
         }
     }

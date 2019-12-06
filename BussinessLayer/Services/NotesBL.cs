@@ -94,13 +94,13 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public string UpdateNote(int id, NotesModel notesModel)
+        public async Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int UserId)
         {
             try
             {
-                if(notesModel != null)
+                if(noteUpdate != null)
                 {
-                    return this.repository.UpdateNote(id, notesModel);
+                    return await this.repository.UpdateNote(id, noteUpdate, UserId);
                 }
                 else
                 {

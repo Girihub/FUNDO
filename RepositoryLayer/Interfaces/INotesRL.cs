@@ -19,7 +19,7 @@ namespace RepositoryLayer.Interfaces
 
         IList<NotesModel> GetNotes(int UserId);
 
-        string UpdateNote(int id, NotesModel notesModel);
+        Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int UserId);
 
         IList<NotesModel> GetNote(int id);
     }

@@ -100,11 +100,10 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPut]
         [Route("UpdateNote")]
-        public IActionResult UpdateNote(int id, NotesModel notesModel)
+        public async Task<IActionResult> UpdateNote(int id, NoteUpdate noteUpdate)
         {
-            var UserId = User.FindFirst("Id")?.Value;
-            notesModel.UserId = Convert.ToInt32(UserId);
-            var result = this.businessNotes.UpdateNote(id, notesModel);
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.UpdateNote(id, noteUpdate, UserId);
             return this.Ok(new { result });
         }
     }

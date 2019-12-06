@@ -46,10 +46,18 @@ namespace RepositoryLayer.Services
             {
                 var note = new NotesModel()
                 {
-                    AddReminder = DateTime.Now,
+                    Title = noteRequest.Title,
+                    Description = noteRequest.Description,
+                    Image = noteRequest.Image,
+                    Color = noteRequest.Color,
+                    IsPin = noteRequest.IsPin,
                     CreatedDate = DateTime.Now,
-                    UserId = UserId,
                     ModifiedDate = DateTime.Now,
+                    AddReminder = noteRequest.AddReminder,
+                    UserId = UserId,
+                    IsNote = noteRequest.IsNote,
+                    IsArchive = false,
+                    IsTrash = false                    
             };
                 this.appDbContext.Notes.Add(note);
                 var result = await this.appDbContext.SaveChangesAsync();
@@ -140,31 +148,41 @@ namespace RepositoryLayer.Services
         /// <param name="id">id as a parameter</param>
         /// <param name="notesModel">notesModel as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public string UpdateNote(int id, NotesModel notesModel)
+        public async Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int UserId)
         {
             try
             {
-                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == notesModel.UserId).FirstOrDefault();
+                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == UserId).FirstOrDefault();
                 
-                if (notes != null)
+                if (notes == null)
                 {
-                    notes.Title = notesModel.Title;
-                    notes.Description = notesModel.Description;
-                    notes.Image = notesModel.Image;
-                    notes.Color = notesModel.Color;
-                    notes.IsPin = notesModel.IsPin;
-                    notes.CreatedDate = notes.CreatedDate;
-                    notes.ModifiedDate = DateTime.Now;
-                    notes.AddReminder = notesModel.AddReminder;
-                    notes.IsNote = notesModel.IsNote;
-                    notes.IsArchive = notesModel.IsArchive;
-                    notes.IsTrash = notesModel.IsTrash;
-                    this.appDbContext.Entry(notes).State = EntityState.Modified;
-                    this.appDbContext.SaveChanges();
-                    return "Updated";
+                    return "Enter valid Id";
+                } 
+                if(noteUpdate.Title != null)
+                {
+                    notes.Title = noteUpdate.Title;
                 }
-
-                return "Enter valid Id";
+                if (noteUpdate.Description != null)
+                {
+                    notes.Description = noteUpdate.Description;
+                }
+                if (noteUpdate.Image != null)
+                {
+                    notes.Image = noteUpdate.Image;
+                }
+                if (noteUpdate.Color != null)
+                {
+                    notes.Color = noteUpdate.Color;
+                }
+                notes.IsPin = noteUpdate.IsPin;
+                notes.ModifiedDate = DateTime.Now;
+                notes.AddReminder = noteUpdate.AddReminder;
+                notes.IsNote = noteUpdate.IsNote;
+                notes.IsArchive = noteUpdate.IsArchive;
+                notes.IsTrash = noteUpdate.IsTrash;
+                this.appDbContext.Entry(notes).State = EntityState.Modified;
+                await this.appDbContext.SaveChangesAsync();
+                return "Updated";                
             }
             catch (Exception e)
             {

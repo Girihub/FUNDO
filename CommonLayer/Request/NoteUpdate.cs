@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿
 
 namespace CommonLayer.Request
 {
-    public class NoteRequest
-    {        
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
+    public class NoteUpdate
+    {
         /// <summary>
         /// Gets or sets Title of user
-        /// </summary>
-        [Required(ErrorMessage = "Title required")]
-        [RegularExpression("^([a-zA-Z0-9 _]{1,})$", ErrorMessage = "Title should contain atleast 1 character")]
+        /// </summary>        
         public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets Description of user
         /// </summary>
-        [Required(ErrorMessage = "Description required")]
-        [RegularExpression("^([a-zA-Z0-9 _]{1,})$", ErrorMessage = "Description should contain atleast 1 character")]
         public string Description { get; set; }
 
         /// <summary>
@@ -30,9 +25,7 @@ namespace CommonLayer.Request
         /// <summary>
         /// Gets or sets Color of user
         /// </summary>
-        [Required(ErrorMessage = "Color code required")]
         [RegularExpression("^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))$", ErrorMessage = "Enter valid 6 letters color code. eg. #0f0f0f")]
-        [DefaultValue(true)]
         public string Color { get; set; }
 
         /// <summary>

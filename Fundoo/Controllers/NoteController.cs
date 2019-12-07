@@ -12,6 +12,7 @@ namespace Fundoo.Controllers
     using CommonLayer.Model;
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -174,6 +175,15 @@ namespace Fundoo.Controllers
             }
             var message = "No pinned notes";
             return this.Ok(new { result, message });
+        }
+
+        [HttpPost]
+        [Route("AddImage")]
+        public async Task<IActionResult> AddImage(IFormFile formFile, int Id )
+        {
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.AddImage(formFile, Id, UserId);
+            return this.Ok(new { result });
         }
     }
 }

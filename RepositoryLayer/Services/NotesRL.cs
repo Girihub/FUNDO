@@ -10,8 +10,10 @@ namespace RepositoryLayer.Services
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using CloudinaryDotNet;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;        
@@ -347,6 +349,23 @@ namespace RepositoryLayer.Services
             {
                 throw new Exception(E.Message);
             }
+        }
+
+        public async Task<string> AddImage(IFormFile formFile, int Id, int UserId)
+        {
+            ImageCloudinary cloudiNary = new ImageCloudinary();
+            Account account = new Account(cloudiNary.CLOUD_NAME, cloudiNary.API_KEY, cloudiNary.API_SECCRET_KEY);
+            cloudiNary.cloudinary = new Cloudinary(account);
+
+            var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+            if(note != null)
+            {
+                note.Image = cloudiNary.uploadImage(formFile);
+                await this.appDbContext.SaveChangesAsync();
+                return "Image uploaded successfully";
+            }
+
+            return "Enter valid id";
         }
     }
 }

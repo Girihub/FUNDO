@@ -10,6 +10,7 @@ namespace BussinessLayer.Services
     using CommonLayer.Constants;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using Microsoft.AspNetCore.Http;
     using RepositoryLayer.Interfaces;
     using System;
     using System.Collections.Generic;
@@ -199,6 +200,25 @@ namespace BussinessLayer.Services
             try
             {
                 return this.repository.GetAllPinned(UserId);
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> AddImage(IFormFile formFile, int Id, int UserId)
+        {
+            try
+            {
+                if (Id > 0)
+                {
+                    return await this.repository.AddImage(formFile, Id, UserId);
+                }
+                else
+                {
+                    return "Enter valid Id";
+                }
             }
             catch (Exception E)
             {

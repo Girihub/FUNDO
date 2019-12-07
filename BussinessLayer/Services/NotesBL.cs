@@ -132,11 +132,73 @@ namespace BussinessLayer.Services
             }
         }
 
-        public async Task<string> UnArchive(int Id, int UserId)
+        public IList<NotesModel> GetAllArchives(int UserId)
         {
             try
             {
-                return await this.repository.UnArchive(Id, UserId);
+                return this.repository.GetAllArchives(UserId);
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> Trash(int Id, int UserId)
+        {
+            try
+            {
+                if(Id > 0)
+                {
+                    return await this.repository.Trash(Id, UserId);
+                }
+                else
+                {
+                    return "Enter valid Id";
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public IList<NotesModel> GetAllTrashed(int UserId)
+        {
+            try
+            {
+                return this.repository.GetAllTrashed(UserId);
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> Pin(int Id, int UserId)
+        {
+            try
+            {
+                if (Id > 0)
+                {
+                    return await this.repository.Pin(Id, UserId);
+                }
+                else
+                {
+                    return "Enter valid Id";
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public IList<NotesModel> GetAllPinned(int UserId)
+        {
+            try
+            {
+                return this.repository.GetAllPinned(UserId);
             }
             catch (Exception E)
             {

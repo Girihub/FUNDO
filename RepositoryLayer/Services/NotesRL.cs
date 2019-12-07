@@ -197,11 +197,73 @@ namespace RepositoryLayer.Services
                 var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
                 if(note != null)
                 {
-                    note.IsArchive = true;
-                    note.IsPin = false;
-                    this.appDbContext.Entry(note).State = EntityState.Modified;
-                    await this.appDbContext.SaveChangesAsync();
-                    return "Note archived";
+                    if(note.IsArchive == false)
+                    {
+                        note.IsArchive = true;
+                        note.IsPin = false;
+                        this.appDbContext.Entry(note).State = EntityState.Modified;
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Note archived";
+                    }
+                    else
+                    {
+                        note.IsArchive = false;
+                        this.appDbContext.Entry(note).State = EntityState.Modified;
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Note unarchived";
+                    }
+                }
+                return "Enter valid id";
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }        
+
+        public IList<NotesModel> GetAllArchives(int UserId)
+        {
+            try
+            {
+                List<NotesModel> notes = new List<NotesModel>();
+
+                foreach (var line in this.appDbContext.Notes)
+                {
+                    if (UserId == line.UserId && line.IsArchive == true)
+                    {
+                        notes.Add(line);
+                    }
+                }
+                return notes;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> Trash(int Id, int UserId)
+        {
+            try
+            {
+                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+
+                if(note != null)
+                {
+                    if (note.IsTrash == false)
+                    {
+                        note.IsTrash = true;
+                        this.appDbContext.Entry(note).State = EntityState.Modified;
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Note trashed";
+                    }
+                    else
+                    {
+                        note.IsTrash = false;
+                        this.appDbContext.Entry(note).State = EntityState.Modified;
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Note restored";
+                    }
                 }
                 return "Enter valid id";
             }
@@ -211,19 +273,75 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public async Task<string> UnArchive(int Id, int UserId)
+        public IList<NotesModel> GetAllTrashed(int UserId)
+        {
+            try
+            {
+                List<NotesModel> notes = new List<NotesModel>();
+
+                foreach(var row in this.appDbContext.Notes)
+                {
+                    if(row.UserId == UserId && row.IsTrash == true)
+                    {
+                        notes.Add(row);
+                    }
+                }
+
+                return notes;
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> Pin(int Id, int UserId)
         {
             try
             {
                 var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
-                if (note != null)
+
+                if(note != null)
                 {
-                    note.IsArchive = false;
-                    this.appDbContext.Entry(note).State = EntityState.Modified;
-                    await this.appDbContext.SaveChangesAsync();
-                    return "Note unarchived";
+                    if(note.IsPin == false)
+                    {
+                        note.IsPin = true;
+                        this.appDbContext.Entry(note).State = EntityState.Modified;
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Note pinned";
+                    }
+                    else
+                    {
+                        note.IsPin = false;
+                        this.appDbContext.Entry(note).State = EntityState.Modified;
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Note unpinned";
+                    }
                 }
+
                 return "Enter valid id";
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public IList<NotesModel> GetAllPinned(int UserId)
+        {
+            try
+            {
+                List<NotesModel> notes = new List<NotesModel>();
+
+                foreach(var row in this.appDbContext.Notes)
+                {
+                    if(row.UserId == UserId && row.IsPin == true)
+                    {
+                        notes.Add(row);
+                    }
+                }
+
+                return notes;
             }
             catch (Exception E)
             {

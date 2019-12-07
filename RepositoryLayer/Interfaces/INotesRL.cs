@@ -25,6 +25,14 @@ namespace RepositoryLayer.Interfaces
 
         Task<string> Archive(int Id, int UserId);
 
-        Task<string> UnArchive(int Id, int UserId);
+        IList<NotesModel> GetAllArchives(int UserId);
+
+        Task<string> Trash(int Id, int UserId);
+
+        IList<NotesModel> GetAllTrashed(int UserId);
+
+        Task<string> Pin(int Id, int UserId);
+
+        IList<NotesModel> GetAllPinned(int UserId);
     }
 }

@@ -116,13 +116,64 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        [HttpGet]
+        [Route("GetAllArchives")]
+        public IActionResult GetAllArchives()
+        {
+            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = this.businessNotes.GetAllArchives(UserId);
+            if (result.Count != 0)
+            {
+                return this.Ok(new { result });
+            }
+            var message = "No archived notes";
+            return this.Ok(new { result, message });
+        }
+
         [HttpPut]
-        [Route("UnArchive")]
-        public async Task<IActionResult> UnArchive(int Id)
+        [Route("Trash")]
+        public async Task<IActionResult> Trash(int Id)
         {
             int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.UnArchive(Id, UserId);
+            var result = await this.businessNotes.Trash(Id, UserId);
             return this.Ok(new { result });
+        }
+
+        [HttpGet]
+        [Route("GetAllTrashed")]
+        public IActionResult GetAllTrashed()
+        {
+            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = this.businessNotes.GetAllTrashed(UserId);
+            if (result.Count != 0)
+            {
+                return this.Ok(new { result });
+            }
+            var message = "No trashed notes";
+            return this.Ok(new { result, message });
+        }
+
+        [HttpPut]
+        [Route("Pin")]
+        public async Task<IActionResult> Pin(int Id)
+        {
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.Pin(Id, UserId);
+            return this.Ok(new { result });
+        }
+
+        [HttpGet]
+        [Route("GetAllPinned")]
+        public IActionResult GetAllPinned()
+        {
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = this.businessNotes.GetAllPinned(UserId);
+            if (result.Count != 0)
+            {
+                return this.Ok(new { result });
+            }
+            var message = "No pinned notes";
+            return this.Ok(new { result, message });
         }
     }
 }

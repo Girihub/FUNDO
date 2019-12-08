@@ -192,6 +192,12 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to archive and unarchive note
+        /// </summary>
+        /// <param name="Id">Id of note to be archived or unarchived</param>
+        /// <param name="UserId">Id of User</param>
+        /// <returns>returns message after performing the operation</returns>
         public async Task<string> Archive(int Id, int UserId)
         {
             try
@@ -223,6 +229,11 @@ namespace RepositoryLayer.Services
             }
         }        
 
+        /// <summary>
+        /// Method to display all archived notes
+        /// </summary>
+        /// <param name="UserId">Id of User as a parameter</param>
+        /// <returns>returns all the archived notes</returns>
         public IList<NotesModel> GetAllArchives(int UserId)
         {
             try
@@ -244,6 +255,12 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to trash or recover the give note
+        /// </summary>
+        /// <param name="Id">Id of note to be trashed or recovered</param>
+        /// <param name="UserId">Id of User</param>
+        /// <returns>returns message after performing the operation</returns>
         public async Task<string> Trash(int Id, int UserId)
         {
             try
@@ -275,6 +292,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to get all trashed notes
+        /// </summary>
+        /// <param name="UserId">Id of User</param>
+        /// <returns>returns all trashed notes</returns>
         public IList<NotesModel> GetAllTrashed(int UserId)
         {
             try
@@ -297,6 +319,12 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to pin and unpin the given note
+        /// </summary>
+        /// <param name="Id">Id of note to be pinned or unpinned</param>
+        /// <param name="UserId">Id of User</param>
+        /// <returns>returns message after performing the operation</returns>
         public async Task<string> Pin(int Id, int UserId)
         {
             try
@@ -329,6 +357,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to get all pinned notes
+        /// </summary>
+        /// <param name="UserId">Id of User</param>
+        /// <returns>returns all the pinned notes</returns>
         public IList<NotesModel> GetAllPinned(int UserId)
         {
             try
@@ -351,21 +384,62 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to add the image
+        /// </summary>
+        /// <param name="formFile">formFile interface to upload desired image</param>
+        /// <param name="Id">Id of note in which image to be added</param>
+        /// <param name="UserId">Id of logged in User</param>
+        /// <returns>returns message after performing the operation</returns>
         public async Task<string> AddImage(IFormFile formFile, int Id, int UserId)
         {
-            ImageCloudinary cloudiNary = new ImageCloudinary();
-            Account account = new Account(cloudiNary.CLOUD_NAME, cloudiNary.API_KEY, cloudiNary.API_SECCRET_KEY);
-            cloudiNary.cloudinary = new Cloudinary(account);
-
-            var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
-            if(note != null)
+            try
             {
-                note.Image = cloudiNary.uploadImage(formFile);
-                await this.appDbContext.SaveChangesAsync();
-                return "Image uploaded successfully";
-            }
+                ImageCloudinary cloudiNary = new ImageCloudinary();
+                Account account = new Account(cloudiNary.CLOUD_NAME, cloudiNary.API_KEY, cloudiNary.API_SECCRET_KEY);
+                cloudiNary.cloudinary = new Cloudinary(account);
 
-            return "Enter valid id";
+                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+                if (note != null)
+                {
+                    note.Image = cloudiNary.uploadImage(formFile);
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Image uploaded successfully";
+                }
+
+                return "Enter valid id";
+            }
+            catch (Exception E)
+            {
+                return E.Message;
+            }
+        }
+
+        /// <summary>
+        /// Method to add the reminder
+        /// </summary>
+        /// <param name="dateTime">date and time of reminder</param>
+        /// <param name="Id">Id of note</param>
+        /// <param name="UserId">Id of User</param>
+        /// <returns>returns message after performing the operation</returns>
+        public async Task<string> AddReminder(DateTime dateTime, int Id, int UserId)
+        {
+            try
+            {
+                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+
+                if (note != null)
+                {
+                    note.AddReminder = dateTime;
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Reminder added";
+                }
+                return "Enter valid id";
+            }
+            catch (Exception E)
+            {
+                return E.Message;
+            }
         }
     }
 }

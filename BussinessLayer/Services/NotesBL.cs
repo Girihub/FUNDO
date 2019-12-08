@@ -225,5 +225,24 @@ namespace BussinessLayer.Services
                 throw new Exception(E.Message);
             }
         }
+
+        public async Task<string> AddReminder(DateTime dateTime, int Id, int UserId)
+        {
+            try
+            {
+                if (Id > 0)
+                {
+                    return await this.repository.AddReminder(dateTime, Id, UserId);
+                }
+                else
+                {
+                    return "Enter valid Id";
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
     }
 }

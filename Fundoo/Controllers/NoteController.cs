@@ -108,6 +108,11 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API to archive and unarchive note
+        /// </summary>
+        /// <param name="Id">Id of note as a parameter</param>
+        /// <returns>returns result</returns>
         [HttpPut]
         [Route("Archive")]
         public async Task<IActionResult> Archive(int Id)
@@ -117,6 +122,10 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API to display all archived notes
+        /// </summary>
+        /// <returns>returns all archived notes</returns>
         [HttpGet]
         [Route("GetAllArchives")]
         public IActionResult GetAllArchives()
@@ -131,6 +140,11 @@ namespace Fundoo.Controllers
             return this.Ok(new { result, message });
         }
 
+        /// <summary>
+        /// API to trash and to recover note
+        /// </summary>
+        /// <param name="Id">Id of note to be trashed or recovered</param>
+        /// <returns>returns result</returns>
         [HttpPut]
         [Route("Trash")]
         public async Task<IActionResult> Trash(int Id)
@@ -140,6 +154,10 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API to get all trashed notes
+        /// </summary>
+        /// <returns>returns all trashed notes if there is any in trash otherwise returns message</returns>
         [HttpGet]
         [Route("GetAllTrashed")]
         public IActionResult GetAllTrashed()
@@ -154,6 +172,11 @@ namespace Fundoo.Controllers
             return this.Ok(new { result, message });
         }
 
+        /// <summary>
+        /// API to pin and unpin note
+        /// </summary>
+        /// <param name="Id">Id of note to be pinned or unpinned</param>
+        /// <returns>returns message after performing the operation</returns>
         [HttpPut]
         [Route("Pin")]
         public async Task<IActionResult> Pin(int Id)
@@ -163,6 +186,10 @@ namespace Fundoo.Controllers
             return this.Ok(new { result });
         }
 
+        /// <summary>
+        /// API to get all pinned notes
+        /// </summary>
+        /// <returns>returns all pinned notes</returns>
         [HttpGet]
         [Route("GetAllPinned")]
         public IActionResult GetAllPinned()
@@ -177,12 +204,32 @@ namespace Fundoo.Controllers
             return this.Ok(new { result, message });
         }
 
+        /// <summary>
+        /// API to add image
+        /// </summary>
+        /// <param name="formFile">formFile interface to upload desired image</param>
+        /// <param name="Id">Id of note to which image to be added</param>
+        /// <returns>retuns message after performing the operation</returns>
         [HttpPost]
         [Route("AddImage")]
         public async Task<IActionResult> AddImage(IFormFile formFile, int Id )
         {
             int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
             var result = await this.businessNotes.AddImage(formFile, Id, UserId);
+            return this.Ok(new { result });
+        }
+
+        /// <summary>
+        /// API to add reminder in note
+        /// </summary>
+        /// <param name="dateTime">date and time of reminder for note</param>
+        /// <param name="Id">Id of note</param>
+        /// <returns>returns the message</returns>
+        [HttpPost("AddReminder")]
+        public async Task<IActionResult> AddReminder(DateTime dateTime, int Id)
+        {
+            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.AddReminder(dateTime, Id, UserId);
             return this.Ok(new { result });
         }
     }

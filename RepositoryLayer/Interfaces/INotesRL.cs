@@ -7,6 +7,7 @@
 using CommonLayer.Model;
 using CommonLayer.Request;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -37,5 +38,7 @@ namespace RepositoryLayer.Interfaces
         IList<NotesModel> GetAllPinned(int UserId);
 
         Task<string> AddImage(IFormFile formFile, int Id, int UserId);
+
+        Task<string> AddReminder(DateTime dateTime, int Id, int UserId);
     }
 }

@@ -9,6 +9,7 @@ namespace Fundoo.Controllers
     using System;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
+    using CloudinaryDotNet;
     using CommonLayer.Model;
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Authorization;

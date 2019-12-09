@@ -46,7 +46,7 @@ namespace RepositoryLayer.Services
         public async Task<string> AddNote(NoteRequest noteRequest, int userId)
         {
             try
-            {
+            {            
                 var note = new NotesModel()
                 {
                     Title = noteRequest.Title,
@@ -63,7 +63,7 @@ namespace RepositoryLayer.Services
                     IsTrash = false                    
             };
                 this.appDbContext.Notes.Add(note);
-                var result = await this.appDbContext.SaveChangesAsync();
+                await this.appDbContext.SaveChangesAsync();
                 return "Note added";
             }
             catch (Exception e)
@@ -398,7 +398,7 @@ namespace RepositoryLayer.Services
                 var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
                 if (note != null)
                 {
-                    note.Image = cloudiNary.uploadImage(formFile);
+                    note.Image = cloudiNary.UploadImage(formFile);
                     await this.appDbContext.SaveChangesAsync();
                     return "Image uploaded successfully";
                 }

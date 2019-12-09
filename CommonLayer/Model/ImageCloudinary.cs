@@ -13,7 +13,7 @@ namespace CommonLayer.Model
         public string CLOUD_NAME = "dg73vjg5l";
         public string API_KEY = "181472665762826";
         public string API_SECCRET_KEY = "xQdIMqJIZ3OkuIL9nMof9Qc9h7c";
-        public string uploadImage(IFormFile formFile)
+        public string UploadImage(IFormFile formFile)
         {
             try
             {

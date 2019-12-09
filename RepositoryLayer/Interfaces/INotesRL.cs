@@ -40,5 +40,7 @@ namespace RepositoryLayer.Interfaces
         Task<string> AddImage(IFormFile formFile, int Id, int UserId);
 
         Task<string> AddReminder(DateTime dateTime, int Id, int UserId);
+
+        Task<string> ChangeColor(int Id, string color, int UserId);
     }
 }

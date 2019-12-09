@@ -9,8 +9,9 @@ namespace FundooTestCases.TestCases
     using System;
     using BussinessLayer.Services;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Moq;
-    using RepositoryLayer.Interfaces;    
+    using RepositoryLayer.Interfaces;
     using Xunit;
 
     /// <summary>
@@ -27,16 +28,13 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<ILableRL>();
             var business = new LableBL(repository.Object);
-            var model = new LabelModel()
+            var model = new LabelRequest()
             {
-                Lable = "label",
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
-                UserId = 1
+                Lable = "label"
             };
 
             //// act          
-            var data = business.AddLable(model);
+            var data = business.AddLable(model,1);
 
             ////assert
             Assert.NotNull(data);
@@ -53,11 +51,12 @@ namespace FundooTestCases.TestCases
             var business = new LableBL(repository.Object);
             var model = new LabelModel()
             {
-                Id = 1
+                Id = 1,
+                UserId = 1
             };
 
             //// act          
-            var data = business.DeleteLable(model.Id);
+            var data = business.DeleteLable(model.Id, model.UserId);
 
             ////assert
             Assert.NotNull(data);
@@ -72,17 +71,34 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<ILableRL>();
             var business = new LableBL(repository.Object);
+            var model = new LabelRequest()
+            {
+                Lable = "label"
+            };
+
+            //// act          
+            var data = business.UpdateLable(1, model, 1);
+
+            ////assert
+            Assert.NotNull(data);
+        }
+
+        /// <summary>
+        /// test case for get all the labels
+        /// </summary>
+        [Fact]
+        public void GetLables()
+        {
+            ////creating a fake instance of registration interfcae.
+            var repository = new Mock<ILableRL>();
+            var business = new LableBL(repository.Object);
             var model = new LabelModel()
             {
-                Id = 1,
-                Lable = "label",
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
                 UserId = 1
             };
 
             //// act          
-            var data = business.UpdateLable(model.Id, model);
+            var data = business.GetLables(model.UserId);
 
             ////assert
             Assert.NotNull(data);

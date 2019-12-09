@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "Reposito
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{36ADEB7F-847C-4987-BB35-AB519541A9F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundooTestCases", "FundooTestCases\FundooTestCases.csproj", "{B1211BA7-BC26-4C26-8BA9-8DC55E8E990F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FundooTestCases", "FundooTestCases\FundooTestCases.csproj", "{B1211BA7-BC26-4C26-8BA9-8DC55E8E990F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

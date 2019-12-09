@@ -14,6 +14,7 @@ namespace BussinessLayer.Services
     using RepositoryLayer.Interfaces;
     using System;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
     public class NotesBL : INotesBL
@@ -237,6 +238,25 @@ namespace BussinessLayer.Services
                 else
                 {
                     return "Enter valid Id";
+                }
+            }
+            catch (Exception E)
+            {
+                throw new Exception(E.Message);
+            }
+        }
+
+        public async Task<string> ChangeColor(int Id, string color, int UserId)
+        {
+            try
+            {
+                if (!Regex.Match(color, "^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))$").Success)
+                {
+                    return "Enter valid color code. eg. #f02f24 or #fff";
+                }
+                else
+                {
+                    return await this.repository.ChangeColor(Id, color, UserId);
                 }
             }
             catch (Exception E)

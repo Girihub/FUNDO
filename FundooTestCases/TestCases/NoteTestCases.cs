@@ -7,8 +7,10 @@
 namespace FundooTestCases.TestCases
 {
     using System;
+    using System.Collections.Generic;
     using BussinessLayer.Services;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Moq;
     using RepositoryLayer.Interfaces;    
     using Xunit;
@@ -27,24 +29,21 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
-            var model = new NotesModel()
+            var model = new NoteRequest()
             {
                 Title = "title",
                 Description = "description",
                 Image = "image",
                 Color = "color",
                 IsPin = true,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
                 AddReminder = DateTime.Now,
-                UserId = 1,
                 IsNote = false,
                 IsArchive =false,
                 IsTrash = false
             };
 
             //// act          
-            var data = business.AddNote(model);
+            var data = business.AddNote(model, 1);
 
             ////assert
             Assert.NotNull(data);
@@ -59,24 +58,14 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
-            var model = new NotesModel()
+            var model = new NoteUpdate()
             {
                 Title = "title",
-                Description = "description",
-                Image = "image",
-                Color = "color",
-                IsPin = true,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
-                AddReminder = DateTime.Now,
-                UserId = 1,
-                IsNote = false,
-                IsArchive = false,
-                IsTrash = false
+                Description = "description"
             };
 
             //// act          
-            var data = business.AddNote(model);
+            var data = business.UpdateNote(1, model,1);
 
             ////assert
             Assert.NotNull(data);
@@ -93,11 +82,12 @@ namespace FundooTestCases.TestCases
             var business = new NotesBL(repository.Object);
             var model = new NotesModel()
             {
-                Id = 1
+                Id = 1,
+                UserId = 1
             };
 
             //// act          
-            var data = business.DeleteNote(model.Id);
+            var data = business.DeleteNote(model.Id, model.UserId);
 
             ////assert
             Assert.NotNull(data);
@@ -112,24 +102,10 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
-            var model = new NotesModel()
-            {
-                Title = "title",
-                Description = "description",
-                Image = "image",
-                Color = "color",
-                IsPin = true,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
-                AddReminder = DateTime.Now,
-                UserId = 1,
-                IsNote = false,
-                IsArchive = false,
-                IsTrash = false
-            };
+            int id = 1;
 
             //// act          
-            var data = business.AddNote(model);
+            IList<NotesModel> data = business.GetNote(id);
 
             ////assert
             Assert.NotNull(data);
@@ -144,24 +120,21 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
-            var model = new NotesModel()
+            var model = new NoteRequest()
             {
                 Title = "title",
                 Description = "description",
                 Image = "image",
                 Color = "color",
                 IsPin = true,
-                CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now,
                 AddReminder = DateTime.Now,
-                UserId = 1,
                 IsNote = false,
                 IsArchive = false,
                 IsTrash = false
             };
 
             //// act          
-            var data = business.AddNote(model);
+            IList<NotesModel> data = business.GetNotes(1);
 
             ////assert
             Assert.NotNull(data);

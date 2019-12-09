@@ -40,9 +40,10 @@ namespace RepositoryLayer.Services
         /// <summary>
         /// Method to add note in table
         /// </summary>
-        /// <param name="notesModel">notesModel as a parameter</param>
+        /// <param name="noteRequest">noteRequest parameter</param>
+        /// <param name="userId">userId parameter</param>
         /// <returns>returns string value</returns>
-        public async Task<string> AddNote(NoteRequest noteRequest, int UserId)
+        public async Task<string> AddNote(NoteRequest noteRequest, int userId)
         {
             try
             {
@@ -56,7 +57,7 @@ namespace RepositoryLayer.Services
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
                     AddReminder = noteRequest.AddReminder,
-                    UserId = UserId,
+                    UserId = userId,
                     IsNote = noteRequest.IsNote,
                     IsArchive = false,
                     IsTrash = false                    
@@ -75,12 +76,13 @@ namespace RepositoryLayer.Services
         /// Method to delete note from table
         /// </summary>
         /// <param name="id">id as a parameter</param>
+        /// <param name="userId">userId as a parameter</param>
         /// <returns>returns result in string</returns>
-        public async Task<string> DeleteNote(int id, int Userid)
+        public async Task<string> DeleteNote(int id, int userId)
         {
             try
             {
-                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == Userid).FirstOrDefault();
+                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
 
                 if (notes != null)
                 {
@@ -101,8 +103,7 @@ namespace RepositoryLayer.Services
         /// Method to get note from table by passing id as a parameter
         /// </summary>
         /// <param name="id">id as a parameter</param>
-        /// <returns>returns required 
-        /// note in list format</returns>
+        /// <returns>returns required note in list format</returns>
         public IList<NotesModel> GetNote(int id)
         {
             try
@@ -121,8 +122,9 @@ namespace RepositoryLayer.Services
         /// <summary>
         /// Method to display all notes
         /// </summary>
+        /// <param name="userId">userId as a parameter</param>
         /// <returns>returns all notes</returns>
-        public IList<NotesModel> GetNotes(int UserId)
+        public IList<NotesModel> GetNotes(int userId)
         {
             try
             {
@@ -130,7 +132,7 @@ namespace RepositoryLayer.Services
 
                 foreach (var line in this.appDbContext.Notes)
                 {
-                    if(UserId == line.UserId)
+                    if (userId == line.UserId)
                     {
                         notes.Add(line);
                     }
@@ -148,40 +150,31 @@ namespace RepositoryLayer.Services
         /// Method to update note
         /// </summary>
         /// <param name="id">id as a parameter</param>
-        /// <param name="notesModel">notesModel as a parameter</param>
+        /// <param name="noteUpdate">noteUpdate as a parameter</param>
+        /// <param name="userId">userId as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int UserId)
+        public async Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int userId)
         {
             try
             {
-                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == UserId).FirstOrDefault();
+                var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
                 
                 if (notes == null)
                 {
                     return "Enter valid Id";
                 } 
-                if(noteUpdate.Title != null)
+
+                if (noteUpdate.Title != null)
                 {
                     notes.Title = noteUpdate.Title;
                 }
+
                 if (noteUpdate.Description != null)
                 {
                     notes.Description = noteUpdate.Description;
                 }
-                if (noteUpdate.Image != null)
-                {
-                    notes.Image = noteUpdate.Image;
-                }
-                if (noteUpdate.Color != null)
-                {
-                    notes.Color = noteUpdate.Color;
-                }
-                notes.IsPin = noteUpdate.IsPin;
+
                 notes.ModifiedDate = DateTime.Now;
-                notes.AddReminder = noteUpdate.AddReminder;
-                notes.IsNote = noteUpdate.IsNote;
-                notes.IsArchive = noteUpdate.IsArchive;
-                notes.IsTrash = noteUpdate.IsTrash;
                 this.appDbContext.Entry(notes).State = EntityState.Modified;
                 await this.appDbContext.SaveChangesAsync();
                 return "Updated";                
@@ -193,19 +186,19 @@ namespace RepositoryLayer.Services
         }
 
         /// <summary>
-        /// Method to archive and unarchive note
+        /// Method to archive and un-archive note
         /// </summary>
-        /// <param name="Id">Id of note to be archived or unarchived</param>
-        /// <param name="UserId">Id of User</param>
+        /// <param name="id">Id of note to be archived or un-archived</param>
+        /// <param name="userId">Id of User</param>
         /// <returns>returns message after performing the operation</returns>
-        public async Task<string> Archive(int Id, int UserId)
+        public async Task<string> Archive(int id, int userId)
         {
             try
             {
-                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
-                if(note != null)
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
+                if (note != null)
                 {
-                    if(note.IsArchive == false)
+                    if (note.IsArchive == false)
                     {
                         note.IsArchive = true;
                         note.IsPin = false;
@@ -221,20 +214,21 @@ namespace RepositoryLayer.Services
                         return "Note unarchived";
                     }
                 }
+
                 return "Enter valid id";
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
-        }        
+        }
 
         /// <summary>
         /// Method to display all archived notes
         /// </summary>
-        /// <param name="UserId">Id of User as a parameter</param>
+        /// <param name="userId">Id of User as a parameter</param>
         /// <returns>returns all the archived notes</returns>
-        public IList<NotesModel> GetAllArchives(int UserId)
+        public IList<NotesModel> GetAllArchives(int userId)
         {
             try
             {
@@ -242,32 +236,33 @@ namespace RepositoryLayer.Services
 
                 foreach (var line in this.appDbContext.Notes)
                 {
-                    if (UserId == line.UserId && line.IsArchive == true)
+                    if (userId == line.UserId && line.IsArchive == true)
                     {
                         notes.Add(line);
                     }
                 }
+
                 return notes;
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
         /// <summary>
         /// Method to trash or recover the give note
         /// </summary>
-        /// <param name="Id">Id of note to be trashed or recovered</param>
-        /// <param name="UserId">Id of User</param>
+        /// <param name="id">Id of note to be trashed or recovered</param>
+        /// <param name="userId">Id of User</param>
         /// <returns>returns message after performing the operation</returns>
-        public async Task<string> Trash(int Id, int UserId)
+        public async Task<string> Trash(int id, int userId)
         {
             try
             {
-                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
 
-                if(note != null)
+                if (note != null)
                 {
                     if (note.IsTrash == false)
                     {
@@ -284,28 +279,29 @@ namespace RepositoryLayer.Services
                         return "Note restored";
                     }
                 }
+
                 return "Enter valid id";
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
         /// <summary>
         /// Method to get all trashed notes
         /// </summary>
-        /// <param name="UserId">Id of User</param>
+        /// <param name="userId">Id of User</param>
         /// <returns>returns all trashed notes</returns>
-        public IList<NotesModel> GetAllTrashed(int UserId)
+        public IList<NotesModel> GetAllTrashed(int userId)
         {
             try
             {
                 List<NotesModel> notes = new List<NotesModel>();
 
-                foreach(var row in this.appDbContext.Notes)
+                foreach (var row in this.appDbContext.Notes)
                 {
-                    if(row.UserId == UserId && row.IsTrash == true)
+                    if (row.UserId == userId && row.IsTrash == true)
                     {
                         notes.Add(row);
                     }
@@ -313,27 +309,27 @@ namespace RepositoryLayer.Services
 
                 return notes;
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
         /// <summary>
         /// Method to pin and unpin the given note
         /// </summary>
-        /// <param name="Id">Id of note to be pinned or unpinned</param>
-        /// <param name="UserId">Id of User</param>
+        /// <param name="id">Id of note to be pinned or unpinned</param>
+        /// <param name="userId">Id of User</param>
         /// <returns>returns message after performing the operation</returns>
-        public async Task<string> Pin(int Id, int UserId)
+        public async Task<string> Pin(int id, int userId)
         {
             try
             {
-                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
 
-                if(note != null)
+                if (note != null)
                 {
-                    if(note.IsPin == false)
+                    if (note.IsPin == false)
                     {
                         note.IsPin = true;
                         this.appDbContext.Entry(note).State = EntityState.Modified;
@@ -351,26 +347,26 @@ namespace RepositoryLayer.Services
 
                 return "Enter valid id";
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
         /// <summary>
         /// Method to get all pinned notes
         /// </summary>
-        /// <param name="UserId">Id of User</param>
+        /// <param name="userId">Id of User</param>
         /// <returns>returns all the pinned notes</returns>
-        public IList<NotesModel> GetAllPinned(int UserId)
+        public IList<NotesModel> GetAllPinned(int userId)
         {
             try
             {
                 List<NotesModel> notes = new List<NotesModel>();
 
-                foreach(var row in this.appDbContext.Notes)
+                foreach (var row in this.appDbContext.Notes)
                 {
-                    if(row.UserId == UserId && row.IsPin == true)
+                    if (row.UserId == userId && row.IsPin == true)
                     {
                         notes.Add(row);
                     }
@@ -378,9 +374,9 @@ namespace RepositoryLayer.Services
 
                 return notes;
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -388,10 +384,10 @@ namespace RepositoryLayer.Services
         /// Method to add the image
         /// </summary>
         /// <param name="formFile">formFile interface to upload desired image</param>
-        /// <param name="Id">Id of note in which image to be added</param>
-        /// <param name="UserId">Id of logged in User</param>
+        /// <param name="id">Id of note in which image to be added</param>
+        /// <param name="userId">Id of logged in User</param>
         /// <returns>returns message after performing the operation</returns>
-        public async Task<string> AddImage(IFormFile formFile, int Id, int UserId)
+        public async Task<string> AddImage(IFormFile formFile, int id, int userId)
         {
             try
             {
@@ -399,7 +395,7 @@ namespace RepositoryLayer.Services
                 Account account = new Account(cloudiNary.CLOUD_NAME, cloudiNary.API_KEY, cloudiNary.API_SECCRET_KEY);
                 cloudiNary.cloudinary = new Cloudinary(account);
 
-                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
                 if (note != null)
                 {
                     note.Image = cloudiNary.uploadImage(formFile);
@@ -409,9 +405,9 @@ namespace RepositoryLayer.Services
 
                 return "Enter valid id";
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                return E.Message;
+                return e.Message;
             }
         }
 
@@ -419,14 +415,14 @@ namespace RepositoryLayer.Services
         /// Method to add the reminder
         /// </summary>
         /// <param name="dateTime">date and time of reminder</param>
-        /// <param name="Id">Id of note</param>
-        /// <param name="UserId">Id of User</param>
+        /// <param name="id">Id of note</param>
+        /// <param name="userId">Id of User</param>
         /// <returns>returns message after performing the operation</returns>
-        public async Task<string> AddReminder(DateTime dateTime, int Id, int UserId)
+        public async Task<string> AddReminder(DateTime dateTime, int id, int userId)
         {
             try
             {
-                var note = this.appDbContext.Notes.Where(g => g.Id == Id && g.UserId == UserId).FirstOrDefault();
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
 
                 if (note != null)
                 {
@@ -434,11 +430,42 @@ namespace RepositoryLayer.Services
                     await this.appDbContext.SaveChangesAsync();
                     return "Reminder added";
                 }
+
                 return "Enter valid id";
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                return E.Message;
+                return e.Message;
+            }
+        }
+
+        /// <summary>
+        /// Method to add color
+        /// </summary>
+        /// <param name="id">Id of note as a parameter</param>
+        /// <param name="color">color to be added</param>
+        /// <param name="userId">Id of user</param>
+        /// <returns>returns message in string format</returns>
+        public async Task<string> ChangeColor(int id, string color, int userId)
+        {
+            try
+            {
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
+
+                if (note != null)
+                {
+                    note.Color = color;
+                    note.ModifiedDate = DateTime.Now;
+                    this.appDbContext.Entry(note).State = EntityState.Modified;
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Color added";
+                }
+
+                return "Enter valid id";
+            }
+            catch (Exception e)
+            {
+                return e.Message;
             }
         }
     }

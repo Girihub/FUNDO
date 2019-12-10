@@ -6,16 +6,16 @@
 
 namespace BussinessLayer.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Constants;
     using CommonLayer.Model;
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Http;
-    using RepositoryLayer.Interfaces;
-    using System;
-    using System.Collections.Generic;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
+    using RepositoryLayer.Interfaces;    
 
     public class NotesBL : INotesBL
     {
@@ -26,6 +26,12 @@ namespace BussinessLayer.Services
             this.repository = repository;
         }
 
+        /// <summary>
+        /// Method to add note in database
+        /// </summary>
+        /// <param name="noteRequest">noteRequest model as a parameter</param>
+        /// <param name="UserId">Id of user as a parameter</param>
+        /// <returns>returns result</returns>
         public async Task<string> AddNote(NoteRequest noteRequest, int UserId)
         {
             try
@@ -45,6 +51,12 @@ namespace BussinessLayer.Services
             }            
         }        
 
+        /// <summary>
+        /// Method to delete the note
+        /// </summary>
+        /// <param name="id">id of note</param>
+        /// <param name="Userid">id of user</param>
+        /// <returns>returns result</returns>
         public async Task<string> DeleteNote(int id, int Userid)
         {
             try
@@ -64,6 +76,11 @@ namespace BussinessLayer.Services
             }            
         }
 
+        /// <summary>
+        /// Method to display note byid
+        /// </summary>
+        /// <param name="id">id of note to be displayed</param>
+        /// <returns>returns result</returns>
         public IList<NotesModel> GetNote(int id)
         {
             try
@@ -84,6 +101,11 @@ namespace BussinessLayer.Services
             
         }
 
+        /// <summary>
+        /// Method to display notes
+        /// </summary>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public IList<NotesModel> GetNotes(int UserId)
         {
             try
@@ -96,6 +118,13 @@ namespace BussinessLayer.Services
             }            
         }
 
+        /// <summary>
+        /// Method to update note
+        /// </summary>
+        /// <param name="id">id of note to be updated</param>
+        /// <param name="noteUpdate">noteUpdate model as a parameter</param>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public async Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int UserId)
         {
             try
@@ -115,6 +144,12 @@ namespace BussinessLayer.Services
             }            
         }
 
+        /// <summary>
+        /// Method to archive the note
+        /// </summary>
+        /// <param name="Id">id of note to be archived</param>
+        /// <param name="UserId">id os user</param>
+        /// <returns>returns result</returns>
         public async Task<string> Archive(int Id, int UserId)
         {
             try
@@ -134,6 +169,11 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to display archived notes
+        /// </summary>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public IList<NotesModel> GetAllArchives(int UserId)
         {
             try
@@ -146,6 +186,12 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to trash and recover note
+        /// </summary>
+        /// <param name="Id">id of note to be trashed or recovered</param>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public async Task<string> Trash(int Id, int UserId)
         {
             try
@@ -165,6 +211,11 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to display all trashed notes
+        /// </summary>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public IList<NotesModel> GetAllTrashed(int UserId)
         {
             try
@@ -177,6 +228,12 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to pin and unpin the note
+        /// </summary>
+        /// <param name="Id">id of note to be pinned or un-pinned</param>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public async Task<string> Pin(int Id, int UserId)
         {
             try
@@ -196,6 +253,11 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to display all pinned notes
+        /// </summary>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public IList<NotesModel> GetAllPinned(int UserId)
         {
             try
@@ -208,6 +270,13 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to add image
+        /// </summary>
+        /// <param name="formFile">formFile interface to upload desired image</param>
+        /// <param name="Id">id of note</param>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
         public async Task<string> AddImage(IFormFile formFile, int Id, int UserId)
         {
             try
@@ -227,13 +296,36 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to add reminder
+        /// </summary>
+        /// <param name="dateTime">date and time of reminder</param>
+        /// <param name="Id">Id of note</param>
+        /// <param name="UserId">Id of User</param>
+        /// <returns>returns message after performing the operation</returns>
         public async Task<string> AddReminder(DateTime dateTime, int Id, int UserId)
         {
             try
             {
                 if (Id > 0)
                 {
-                    return await this.repository.AddReminder(dateTime, Id, UserId);
+                    //// Reminder should be future time
+                    if(dateTime >= DateTime.Now)
+                    {
+                        if(dateTime.Hour >= DateTime.Now.Hour)
+                        {
+                            if(dateTime.Minute > DateTime.Now.Minute)
+                            {
+                                return await this.repository.AddReminder(dateTime, Id, UserId);
+                            }
+                            return "Enter future time";
+                        }
+                        return "Enter future time";
+                    }
+                    else
+                    {                        
+                        return "Enter future date";
+                    }
                 }
                 else
                 {
@@ -246,6 +338,13 @@ namespace BussinessLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to add color
+        /// </summary>
+        /// <param name="id">Id of note as a parameter</param>
+        /// <param name="color">color to be added</param>
+        /// <param name="userId">Id of user</param>
+        /// <returns>returns message in string format</returns>
         public async Task<string> ChangeColor(int Id, string color, int UserId)
         {
             try

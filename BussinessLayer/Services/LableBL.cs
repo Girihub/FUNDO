@@ -11,6 +11,7 @@ namespace BussinessLayer.Services
     using CommonLayer.Model;
     using CommonLayer.Request;
     using RepositoryLayer.Interfaces;
+    using ServiceStack.Redis;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -30,7 +31,20 @@ namespace BussinessLayer.Services
             {
                 if(labelRequest != null)
                 {
-                    return await this.repository.AddLable(labelRequest, UserId);
+                    using (var client = new RedisClient())
+                    {
+                        string key = UserId.ToString();
+                        if (client != null)
+                        {
+                            var getNotes = client.Get(key);
+                            return await this.repository.AddLable(labelRequest, UserId);
+                        }
+                        else
+                        {
+                            client.Set(key, labelRequest);
+                            return key;
+                        }
+                    }                        
                 }
                 else
                 {

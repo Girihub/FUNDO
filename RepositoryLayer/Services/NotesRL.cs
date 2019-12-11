@@ -132,7 +132,7 @@ namespace RepositoryLayer.Services
 
                 foreach (var line in this.appDbContext.Notes)
                 {
-                    if (userId == line.UserId)
+                    if (userId == line.UserId && line.IsArchive == false && line.IsTrash == false)
                     {
                         notes.Add(line);
                     }

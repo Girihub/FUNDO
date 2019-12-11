@@ -44,7 +44,6 @@ namespace Fundoo.Controllers
         /// <param name="notesModel">notesModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        [Route("AddNote")]
         public async Task<IActionResult> AddNote(NoteRequest noteRequest)
         {
             ////getting the Id of note from token
@@ -58,8 +57,7 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in JSON format</returns>
-        [HttpDelete]
-        [Route("DeleteNote")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(int id)
         {
             ////getting the Id of note from token
@@ -74,7 +72,6 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <returns>return result in JSON format</returns>
         [HttpGet]
-        [Route("GetNotes")]
         public IActionResult GetNotes()
         {
             ////getting the Id of note from token
@@ -90,7 +87,7 @@ namespace Fundoo.Controllers
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpGet]
-        [Route("GetNoteById")]
+        [Route("{id}")]
         public IActionResult GetNote(int id)
         {
             var result = this.businessNotes.GetNote(id);
@@ -104,7 +101,7 @@ namespace Fundoo.Controllers
         /// <param name="notesModel">notesModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPut]
-        [Route("UpdateNote")]
+        [Route("{id }")]
         public async Task<IActionResult> UpdateNote(int id, NoteUpdate noteUpdate)
         {
             ////getting the Id of note from token
@@ -118,8 +115,8 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="Id">Id of note as a parameter</param>
         /// <returns>returns result</returns>
-        [HttpPut]
-        [Route("Archive")]
+        [HttpPost("{Id}/Archive")]
+        //[Route("Archive")]
         public async Task<IActionResult> Archive(int Id)
         {
             ////getting the Id of note from token

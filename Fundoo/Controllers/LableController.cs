@@ -42,7 +42,6 @@ namespace Fundoo.Controllers
         /// <param name="lableModel">labelModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        [Route("AddLable")]
         public async Task<IActionResult> AddLable(LabelRequest labelRequest)
         {
             var UserId = User.FindFirst("Id")?.Value;
@@ -57,7 +56,6 @@ namespace Fundoo.Controllers
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpDelete]
-        [Route("DeleteLable")]
         public async Task<IActionResult> DeleteLable(int id)
         {
             var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
@@ -70,7 +68,6 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <returns>return result in JSON format</returns>
         [HttpGet]
-        [Route("GetAllLables")]
         public async Task<IActionResult> GetLables()
         {
             var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
@@ -88,8 +85,8 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in JSON format</returns>
-        [HttpGet]
-        [Route("GetLableById")]
+        [HttpGet("{id}")]
+        //[Route("GetLableById")]
         public async Task<IActionResult> GetLable(int id)
         {
             var result = await this.businessLable.GetLable(id);
@@ -108,7 +105,7 @@ namespace Fundoo.Controllers
         /// <param name="labelModel">labelModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPut]
-        [Route("UpadateLable")]
+        [Route("{id}")]
         public async Task<IActionResult> UpdateLable(int id, LabelRequest labelRequest)
         {
             int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);

@@ -6,9 +6,15 @@
 
 namespace Fundoo.Controllers
 {
+    using System;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;    
 
     /// <summary>
@@ -107,6 +113,24 @@ namespace Fundoo.Controllers
         public async Task<IActionResult> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
         {
             var result = await this.businessRegistration.ResetForgetPassword(resetForgetPassword);
+            return this.Ok(new { result });
+        }
+
+        /// <summary>
+        /// API to upload profile picture
+        /// </summary>
+        /// <param name="formFile">formFile interface to upload desired image</param>
+        /// <returns>returns result in JSON format</returns>
+        [HttpPost("UploadProfilePicture")]
+        public async Task<IActionResult> UploadProfilePicture(IFormFile formFile)
+        {
+            ////getting the Id of note from token
+            int id = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+
+            ////alternate code to get id from token
+            ////int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+
+            var result = await this.businessRegistration.UploadProfilePicture(id, formFile);
             return this.Ok(new { result });
         }
     }

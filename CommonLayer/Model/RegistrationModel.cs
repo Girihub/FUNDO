@@ -61,5 +61,10 @@ namespace CommonLayer.Model
         [Required(ErrorMessage = "Password?")]
         [RegularExpression("^(?=.*[0-9])(?=.*[a-z])(?=.*_)(?=.*[A-Z]).{4,8}$", ErrorMessage = "Password should be of 4 to 8 letters having atleast 1 upper case letter, 1 lower case letter, 1 digit and 1 _")]
         public string Password { get; set; }
+
+        /// <summary>
+        /// Gets or sets Profile Picture of user
+        /// </summary>
+        public string ProfilePicture { get; set; }
     }
 }

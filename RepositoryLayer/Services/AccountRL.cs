@@ -11,8 +11,10 @@ namespace RepositoryLayer.Services
     using System.Linq;
     using System.Security.Claims;
     using System.Text;
-    using System.Threading.Tasks;        
-    using CommonLayer.Model;        
+    using System.Threading.Tasks;
+    using CloudinaryDotNet;
+    using CommonLayer.Model;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.IdentityModel.Tokens;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;
@@ -281,6 +283,32 @@ namespace RepositoryLayer.Services
                     return "NewPassword and ConfirmPassword should be same";
                 }                
                 return "Invalid token for email";
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public async Task<string> UploadProfilePicture(int id, IFormFile formFile)
+        {
+            try
+            {
+                ImageCloudinary cloudiNary = new ImageCloudinary();
+                Account account = new Account(cloudiNary.CLOUD_NAME, cloudiNary.API_KEY, cloudiNary.API_SECCRET_KEY);
+                cloudiNary.cloudinary = new Cloudinary(account);
+
+                var user = this.appDbContext.Registration.Where(g => g.Id == id).FirstOrDefault();
+                if(user != null)
+                {
+                    user.ProfilePicture = cloudiNary.UploadImage(formFile);
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Profile picture uploaded successfully";
+                }
+                else
+                {
+                    return "Login and authenticate first to upload profile picture";
+                }
             }
             catch (Exception e)
             {

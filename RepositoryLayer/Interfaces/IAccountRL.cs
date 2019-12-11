@@ -9,6 +9,7 @@ namespace RepositoryLayer.Interfaces
     using System;
     using System.Threading.Tasks;
     using CommonLayer.Model;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// IAccountRL interface
@@ -36,5 +37,7 @@ namespace RepositoryLayer.Interfaces
         string GetPassword(GetPasswordModel getPassword);
 
         Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword);
+
+        Task<string> UploadProfilePicture(int id, IFormFile formFile);
     }
 }

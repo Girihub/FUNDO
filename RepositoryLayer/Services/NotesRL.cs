@@ -201,7 +201,6 @@ namespace RepositoryLayer.Services
                     if (note.IsArchive == false)
                     {
                         note.IsArchive = true;
-                        note.IsPin = false;
                         this.appDbContext.Entry(note).State = EntityState.Modified;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note archived";
@@ -236,7 +235,7 @@ namespace RepositoryLayer.Services
 
                 foreach (var line in this.appDbContext.Notes)
                 {
-                    if (userId == line.UserId && line.IsArchive == true)
+                    if (userId == line.UserId && line.IsArchive == true && line.IsTrash == false)
                     {
                         notes.Add(line);
                     }
@@ -366,7 +365,7 @@ namespace RepositoryLayer.Services
 
                 foreach (var row in this.appDbContext.Notes)
                 {
-                    if (row.UserId == userId && row.IsPin == true)
+                    if (row.UserId == userId && row.IsPin == true && row.IsTrash == false && row.IsArchive == false)
                     {
                         notes.Add(row);
                     }

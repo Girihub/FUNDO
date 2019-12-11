@@ -45,9 +45,9 @@ namespace BussinessLayer.Services
                     return ErrorMessages.nullModel;
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
         }        
 
@@ -70,9 +70,9 @@ namespace BussinessLayer.Services
                     return ErrorMessages.invalidId;
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
         }
 
@@ -94,9 +94,9 @@ namespace BussinessLayer.Services
                     throw new Exception("Enter Valid Id");
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception("Enter Valid Id" + E);
+                throw new Exception("Enter Valid Id" + e);
             }
             
         }
@@ -112,9 +112,9 @@ namespace BussinessLayer.Services
             {
                 return this.repository.GetNotes(UserId);
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
         }
 
@@ -138,9 +138,9 @@ namespace BussinessLayer.Services
                     return ErrorMessages.nullModel;
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
         }
 
@@ -163,9 +163,9 @@ namespace BussinessLayer.Services
                     return "Enter valid Id";
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -180,9 +180,9 @@ namespace BussinessLayer.Services
             {
                 return this.repository.GetAllArchives(UserId);
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -205,9 +205,9 @@ namespace BussinessLayer.Services
                     return "Enter valid Id";
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -222,9 +222,9 @@ namespace BussinessLayer.Services
             {
                 return this.repository.GetAllTrashed(UserId);
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -247,9 +247,9 @@ namespace BussinessLayer.Services
                     return "Enter valid Id";
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -264,9 +264,9 @@ namespace BussinessLayer.Services
             {
                 return this.repository.GetAllPinned(UserId);
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -290,9 +290,9 @@ namespace BussinessLayer.Services
                     return "Enter valid Id";
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -332,9 +332,9 @@ namespace BussinessLayer.Services
                     return "Enter valid Id";
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -358,9 +358,9 @@ namespace BussinessLayer.Services
                     return await this.repository.ChangeColor(Id, color, UserId);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
     }

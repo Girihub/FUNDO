@@ -11,6 +11,7 @@ namespace BussinessLayer.Services
     using BussinessLayer.Interfaces;
     using CommonLayer.Constants;
     using CommonLayer.Model;
+    using Microsoft.AspNetCore.Http;
     using RepositoryLayer.Interfaces;
 
     /// <summary>
@@ -50,9 +51,9 @@ namespace BussinessLayer.Services
                     throw new Exception(ErrorMessages.nullModel);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -74,9 +75,9 @@ namespace BussinessLayer.Services
                     throw new Exception(ErrorMessages.nullModel);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }
         }
 
@@ -98,9 +99,9 @@ namespace BussinessLayer.Services
                     throw new Exception(ErrorMessages.nullModel);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
         }
 
@@ -122,9 +123,9 @@ namespace BussinessLayer.Services
                     throw new Exception(ErrorMessages.nullModel);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
         }
 
@@ -146,9 +147,9 @@ namespace BussinessLayer.Services
                     throw new Exception(ErrorMessages.nullModel);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
         }
 
@@ -170,10 +171,22 @@ namespace BussinessLayer.Services
                     throw new Exception(ErrorMessages.nullModel);
                 }
             }
-            catch (Exception E)
+            catch (Exception e)
             {
-                throw new Exception(E.Message);
+                throw new Exception(e.Message);
             }            
+        }
+
+        public async Task<string> UploadProfilePicture(int id, IFormFile formFile)
+        {
+            try
+            {
+                return await this.repository.UploadProfilePicture(id, formFile);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

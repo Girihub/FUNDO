@@ -9,6 +9,7 @@ namespace BussinessLayer.Interfaces
     using System;
     using System.Threading.Tasks;
     using CommonLayer.Model;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// Interface for business layer
@@ -56,5 +57,13 @@ namespace BussinessLayer.Interfaces
         /// <param name="resetForgetPassword">resetForgetPassword as a parameter</param>
         /// <returns>returns string output</returns>
         Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword);
+
+        /// <summary>
+        /// Method declaration to Upload Profile Picture
+        /// </summary>
+        /// <param name="id">id of user</param>
+        /// <param name="formFile">formFile to upload profile picture</param>
+        /// <returns>returns result</returns>
+        Task<string> UploadProfilePicture(int id, IFormFile formFile);
     }
 }

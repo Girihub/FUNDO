@@ -74,7 +74,17 @@ namespace RepositoryLayer.Services
                 var lable = this.appDbContext.Lables.Where(g => g.Id == id && g.UserId == UserId).FirstOrDefault();
                 if (lable != null)
                 {
-                    this.appDbContext.Remove(lable);
+                    ////****** code to remove entries from NoteLabel tabel
+                    var noteLabel = this.appDbContext.NoteLabel.Where(g => g.LabelId == id && g.UserId == UserId).FirstOrDefault();
+                    while(noteLabel != null)
+                    {
+                        this.appDbContext.NoteLabel.Remove(noteLabel);
+                        await this.appDbContext.SaveChangesAsync();
+                        noteLabel = this.appDbContext.NoteLabel.Where(g => g.LabelId == id && g.UserId == UserId).FirstOrDefault();
+                    }
+                    ////*******
+                   
+                    this.appDbContext.Lables.Remove(lable);                    
                     await this.appDbContext.SaveChangesAsync();
                     return "Label removed";
                 }

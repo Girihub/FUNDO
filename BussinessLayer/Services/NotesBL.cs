@@ -368,14 +368,33 @@ namespace BussinessLayer.Services
         /// Method to add label in note
         /// </summary>
         /// <param name="noteId">id of note</param>
-        /// <param name="labelId">id of label</param>
-        /// <param name="userId">returns message</param>
-        /// <returns></returns>
-        public async Task<string> AddLabel(int noteId, int labelId)
+        /// <param name="labelId">id of label to be added in a note</param>
+        /// <param name="userId">id of user</param>
+        /// <returns>returns message</returns>
+        public async Task<string> AddLabel(int noteId, int labelId, int userId)
         {
             try
             {
-                return await this.repository.AddLabel(noteId, labelId);
+                return await this.repository.AddLabel(noteId, labelId, userId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Method to remove label from note
+        /// </summary>
+        /// <param name="noteId">id of note</param>
+        /// <param name="labelId">id of label to be removed from note</param>
+        /// <param name="userId">id of user</param>
+        /// <returns>returns message</returns>
+        public async Task<string> RemoveLabel(int noteId, int labelId, int userId)
+        {
+            try
+            {
+                return await this.repository.RemoveLabel(noteId, labelId, userId);
             }
             catch (Exception e)
             {

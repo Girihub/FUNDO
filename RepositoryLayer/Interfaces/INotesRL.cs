@@ -43,6 +43,8 @@ namespace RepositoryLayer.Interfaces
 
         Task<string> ChangeColor(int Id, string color, int UserId);
 
-        Task<string> AddLabel(int noteId, int labelId);
+        Task<string> AddLabel(int noteId, int labelId, int userId);
+
+        Task<string> RemoveLabel(int noteId, int labelId, int userId);
     }
 }

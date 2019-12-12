@@ -255,12 +255,27 @@ namespace Fundoo.Controllers
         /// API to add label in note
         /// </summary>
         /// <param name="noteId">id of note</param>
-        /// <param name="labelId">id of label</param>
+        /// <param name="labelId">id of label to be added in note</param>
         /// <returns>returns message</returns>
         [HttpPost("{noteId}/Label/{labelId}")]
         public async Task<IActionResult> AddLabel(int noteId, int labelId)
         {
-            var result = await this.businessNotes.AddLabel(noteId, labelId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.AddLabel(noteId, labelId, userId);
+            return this.Ok(new { result });
+        }
+
+        /// <summary>
+        /// API to remove label from note
+        /// </summary>
+        /// <param name="noteId">id of note</param>
+        /// <param name="labelId">id of label to be removed from note</param>
+        /// <returns>returns message</returns>
+        [HttpDelete("{noteId}/Label/{labelId}")]
+        public async Task<IActionResult> RemoveLabel(int noteId, int labelId)
+        {
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.RemoveLabel(noteId, labelId, userId);
             return this.Ok(new { result });
         }
     }

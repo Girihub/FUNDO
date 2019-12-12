@@ -86,6 +86,16 @@ namespace RepositoryLayer.Services
 
                 if (notes != null)
                 {
+                    ////****** code to remove entries from NoteLabel tabel
+                    var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == id && g.UserId == userId).FirstOrDefault();
+                    while (noteLabel != null)
+                    {
+                        this.appDbContext.NoteLabel.Remove(noteLabel);
+                        await this.appDbContext.SaveChangesAsync();
+                        noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == id && g.UserId == userId).FirstOrDefault();
+                    }
+                    ////*******
+
                     this.appDbContext.Notes.Remove(notes);
                     var result = await this.appDbContext.SaveChangesAsync();
                     return "Note deleted";
@@ -201,12 +211,14 @@ namespace RepositoryLayer.Services
                     if (note.IsArchive == false)
                     {
                         note.IsArchive = true;
+                        note.ModifiedDate = DateTime.Now;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note archived";
                     }
                     else
                     {
                         note.IsArchive = false;
+                        note.ModifiedDate = DateTime.Now;
                         this.appDbContext.Entry(note).State = EntityState.Modified;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note unarchived";
@@ -265,12 +277,14 @@ namespace RepositoryLayer.Services
                     if (note.IsTrash == false)
                     {
                         note.IsTrash = true;
+                        note.ModifiedDate = DateTime.Now;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note trashed";
                     }
                     else
                     {
                         note.IsTrash = false;
+                        note.ModifiedDate = DateTime.Now;
                         this.appDbContext.Entry(note).State = EntityState.Modified;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note restored";
@@ -329,12 +343,14 @@ namespace RepositoryLayer.Services
                     if (note.IsPin == false)
                     {
                         note.IsPin = true;
+                        note.ModifiedDate = DateTime.Now;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note pinned";
                     }
                     else
                     {
                         note.IsPin = false;
+                        note.ModifiedDate = DateTime.Now;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note unpinned";
                     }
@@ -394,6 +410,7 @@ namespace RepositoryLayer.Services
                 if (note != null)
                 {
                     note.Image = cloudiNary.UploadImage(formFile);
+                    note.ModifiedDate = DateTime.Now;
                     await this.appDbContext.SaveChangesAsync();
                     return "Image uploaded successfully";
                 }
@@ -422,6 +439,7 @@ namespace RepositoryLayer.Services
                 if (note != null)
                 {
                     note.AddReminder = dateTime;
+                    note.ModifiedDate = DateTime.Now;
                     await this.appDbContext.SaveChangesAsync();
                     return "Reminder added";
                 }
@@ -467,17 +485,18 @@ namespace RepositoryLayer.Services
         /// <summary>
         /// Method to add label in note
         /// </summary>
-        /// <param name="noteId"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public async Task<string> AddLabel(int noteId, int labelId)
+        /// <param name="noteId">id of note</param>
+        /// <param name="labelId">id of label to be added in a note</param>
+        /// <param name="userId">id of user</param>
+        /// <returns>returns message</returns>
+        public async Task<string> AddLabel(int noteId, int labelId, int userId)
         {
             var note = this.appDbContext.Notes.Where(g => g.Id == noteId).FirstOrDefault();
             var label = this.appDbContext.Lables.Where(g => g.Id == labelId).FirstOrDefault();
 
             if(note != null && label != null)
             {
-                if (note.UserId == label.UserId)
+                if (note.UserId == userId && label.UserId == userId)
                 {
                     var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == note.Id && g.LabelId == label.Id).FirstOrDefault();
                     
@@ -492,16 +511,40 @@ namespace RepositoryLayer.Services
                         };
                         this.appDbContext.NoteLabel.Add(model);
                         await this.appDbContext.SaveChangesAsync();
-                        return "Note added successfully";
+                        return "Label added to given note";
                     }
 
-                    return "Already added";
+                    return "Label already added to this note";
                 }
 
-                return "Label does not belong to this note. Check their UserIds";
+                return "Note or label does not belong to this user. Check their UserIds";
             }
 
             return "Check if given note or label present in database";
+        }
+
+        /// <summary>
+        /// Method to remove label from note
+        /// </summary>
+        /// <param name="noteId">id of note</param>
+        /// <param name="labelId">id of label to be removed from note</param>
+        /// <param name="userId">id of user</param>
+        /// <returns>returns message</returns>
+        public async Task<string> RemoveLabel(int noteId, int labelId, int userId)
+        {
+            var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == noteId && g.LabelId == labelId).FirstOrDefault();
+
+            if(noteLabel != null)
+            {
+                if(noteLabel.UserId == userId)
+                {
+                    this.appDbContext.NoteLabel.Remove(noteLabel);
+                    await this.appDbContext.SaveChangesAsync();
+                    return "Label removed from note";
+                }
+            }
+
+            return "Label is not attached to this label";
         }
     }
 }

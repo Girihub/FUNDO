@@ -363,5 +363,24 @@ namespace BussinessLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        /// <summary>
+        /// Method to add label in note
+        /// </summary>
+        /// <param name="noteId">id of note</param>
+        /// <param name="labelId">id of label</param>
+        /// <param name="userId">returns message</param>
+        /// <returns></returns>
+        public async Task<string> AddLabel(int noteId, int labelId)
+        {
+            try
+            {
+                return await this.repository.AddLabel(noteId, labelId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

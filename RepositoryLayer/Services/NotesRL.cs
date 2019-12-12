@@ -201,7 +201,6 @@ namespace RepositoryLayer.Services
                     if (note.IsArchive == false)
                     {
                         note.IsArchive = true;
-                        this.appDbContext.Entry(note).State = EntityState.Modified;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note archived";
                     }
@@ -266,7 +265,6 @@ namespace RepositoryLayer.Services
                     if (note.IsTrash == false)
                     {
                         note.IsTrash = true;
-                        this.appDbContext.Entry(note).State = EntityState.Modified;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note trashed";
                     }
@@ -331,14 +329,12 @@ namespace RepositoryLayer.Services
                     if (note.IsPin == false)
                     {
                         note.IsPin = true;
-                        this.appDbContext.Entry(note).State = EntityState.Modified;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note pinned";
                     }
                     else
                     {
                         note.IsPin = false;
-                        this.appDbContext.Entry(note).State = EntityState.Modified;
                         await this.appDbContext.SaveChangesAsync();
                         return "Note unpinned";
                     }
@@ -457,7 +453,7 @@ namespace RepositoryLayer.Services
                     note.ModifiedDate = DateTime.Now;
                     this.appDbContext.Entry(note).State = EntityState.Modified;
                     await this.appDbContext.SaveChangesAsync();
-                    return "Color added";
+                    return "Color changed";
                 }
 
                 return "Enter valid id";
@@ -466,6 +462,46 @@ namespace RepositoryLayer.Services
             {
                 return e.Message;
             }
+        }
+
+        /// <summary>
+        /// Method to add label in note
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<string> AddLabel(int noteId, int labelId)
+        {
+            var note = this.appDbContext.Notes.Where(g => g.Id == noteId).FirstOrDefault();
+            var label = this.appDbContext.Lables.Where(g => g.Id == labelId).FirstOrDefault();
+
+            if(note != null && label != null)
+            {
+                if (note.UserId == label.UserId)
+                {
+                    var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == note.Id && g.LabelId == label.Id).FirstOrDefault();
+                    
+                    if(noteLabel == null)
+                    {
+                        var model = new NoteLabelModel()
+                        {
+                            NoteId = noteId,
+                            LabelId = labelId,
+                            Delete = false,
+                            UserId = note.UserId
+                        };
+                        this.appDbContext.NoteLabel.Add(model);
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Note added successfully";
+                    }
+
+                    return "Already added";
+                }
+
+                return "Label does not belong to this note. Check their UserIds";
+            }
+
+            return "Check if given note or label present in database";
         }
     }
 }

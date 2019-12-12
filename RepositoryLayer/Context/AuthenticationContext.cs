@@ -31,6 +31,8 @@ namespace RepositoryLayer.Context
 
         public DbSet<LabelModel> Lables { get; set; }
 
+        public DbSet<NoteLabelModel> NoteLabel { get; set; }
+
 
     }
 }

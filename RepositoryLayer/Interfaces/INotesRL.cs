@@ -42,5 +42,7 @@ namespace RepositoryLayer.Interfaces
         Task<string> AddReminder(DateTime dateTime, int Id, int UserId);
 
         Task<string> ChangeColor(int Id, string color, int UserId);
+
+        Task<string> AddLabel(int noteId, int labelId);
     }
 }

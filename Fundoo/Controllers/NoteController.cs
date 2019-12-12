@@ -61,9 +61,9 @@ namespace Fundoo.Controllers
         public async Task<IActionResult> DeleteNote(int id)
         {
             ////getting the Id of note from token
-            var UserId = User.FindFirst("Id")?.Value;
-            var Userid = Convert.ToInt32(UserId);
-            var result = await this.businessNotes.DeleteNote(id, Userid);
+            var userid = User.FindFirst("Id")?.Value;
+            int userId = Convert.ToInt32(userid);
+            var result = await this.businessNotes.DeleteNote(id, userId);
             return this.Ok(new { result });
         }
 
@@ -75,9 +75,9 @@ namespace Fundoo.Controllers
         public IActionResult GetNotes()
         {
             ////getting the Id of note from token
-            var UserId = User.FindFirst("Id")?.Value;
-            var Userid = Convert.ToInt32(UserId);
-            var result = this.businessNotes.GetNotes(Userid);
+            var userid = User.FindFirst("Id")?.Value;
+            int userId = Convert.ToInt32(userid);
+            var result = this.businessNotes.GetNotes(userId);
             return this.Ok(new { result });
         }
 
@@ -105,8 +105,8 @@ namespace Fundoo.Controllers
         public async Task<IActionResult> UpdateNote(int id, NoteUpdate noteUpdate)
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.UpdateNote(id, noteUpdate, UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.UpdateNote(id, noteUpdate, userId);
             return this.Ok(new { result });
         }
 
@@ -115,13 +115,12 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="Id">Id of note as a parameter</param>
         /// <returns>returns result</returns>
-        [HttpPost("{Id}/Archive")]
-        //[Route("Archive")]
-        public async Task<IActionResult> Archive(int Id)
+        [HttpPost("{id}/Archive")]
+        public async Task<IActionResult> Archive(int id)
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.Archive(Id, UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.Archive(id, userId);
             return this.Ok(new { result });
         }
 
@@ -134,8 +133,8 @@ namespace Fundoo.Controllers
         public IActionResult GetAllArchives()
         {
             ////getting the Id of note from token
-            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = this.businessNotes.GetAllArchives(UserId);
+            var userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = this.businessNotes.GetAllArchives(userId);
             if (result.Count != 0)
             {
                 return this.Ok(new { result });
@@ -149,13 +148,12 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="Id">Id of note to be trashed or recovered</param>
         /// <returns>returns result</returns>
-        [HttpPut]
-        [Route("Trash")]
-        public async Task<IActionResult> Trash(int Id)
+        [HttpPost("{id}/Trash")]
+        public async Task<IActionResult> Trash(int id)
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.Trash(Id, UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.Trash(id, userId);
             return this.Ok(new { result });
         }
 
@@ -163,13 +161,12 @@ namespace Fundoo.Controllers
         /// API to get all trashed notes
         /// </summary>
         /// <returns>returns all trashed notes if there is any in trash otherwise returns message</returns>
-        [HttpGet]
-        [Route("GetAllTrashed")]
+        [HttpGet("GetAllTrashed")]
         public IActionResult GetAllTrashed()
         {
             ////getting the Id of note from token
-            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = this.businessNotes.GetAllTrashed(UserId);
+            var userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = this.businessNotes.GetAllTrashed(userId);
             if (result.Count != 0)
             {
                 return this.Ok(new { result });
@@ -183,13 +180,12 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="Id">Id of note to be pinned or unpinned</param>
         /// <returns>returns message after performing the operation</returns>
-        [HttpPut]
-        [Route("Pin")]
-        public async Task<IActionResult> Pin(int Id)
+        [HttpPost("{id}/Pin")]
+        public async Task<IActionResult> Pin(int id)
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.Pin(Id, UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.Pin(id, userId);
             return this.Ok(new { result });
         }
 
@@ -197,13 +193,12 @@ namespace Fundoo.Controllers
         /// API to get all pinned notes
         /// </summary>
         /// <returns>returns all pinned notes</returns>
-        [HttpGet]
-        [Route("GetAllPinned")]
+        [HttpGet("GetAllPinned")]
         public IActionResult GetAllPinned()
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = this.businessNotes.GetAllPinned(UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = this.businessNotes.GetAllPinned(userId);
             if (result.Count != 0)
             {
                 return this.Ok(new { result });
@@ -218,13 +213,12 @@ namespace Fundoo.Controllers
         /// <param name="formFile">formFile interface to upload desired image</param>
         /// <param name="Id">Id of note to which image to be added</param>
         /// <returns>retuns message after performing the operation</returns>
-        [HttpPost]
-        [Route("AddImage")]
-        public async Task<IActionResult> AddImage(IFormFile formFile, int Id )
+        [HttpPost("{id}/AddImage")]
+        public async Task<IActionResult> AddImage(IFormFile formFile, int id)
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.AddImage(formFile, Id, UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.AddImage(formFile, id, userId);
             return this.Ok(new { result });
         }
 
@@ -234,12 +228,12 @@ namespace Fundoo.Controllers
         /// <param name="dateTime">date and time of reminder for note</param>
         /// <param name="Id">Id of note</param>
         /// <returns>returns the message</returns>
-        [HttpPost("AddReminder")]
-        public async Task<IActionResult> AddReminder(DateTime dateTime, int Id)
+        [HttpPost("{id}/AddReminder")]
+        public async Task<IActionResult> AddReminder(DateTime dateTime, int id)
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.AddReminder(dateTime, Id, UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.AddReminder(dateTime, id, userId);
             return this.Ok(new { result });
         }
 
@@ -248,12 +242,25 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="color">color as a parameter</param>
         /// <returns>returns the message</returns>
-        [HttpPatch("ChangeColor")]
-        public async Task<IActionResult> ChangeColor(int Id, string color)
+        [HttpPatch("{id}/ChangeColor")]
+        public async Task<IActionResult> ChangeColor(int id, string color)
         {
             ////getting the Id of note from token
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.ChangeColor(Id, color, UserId);
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            var result = await this.businessNotes.ChangeColor(id, color, userId);
+            return this.Ok(new { result });
+        }
+
+        /// <summary>
+        /// API to add label in note
+        /// </summary>
+        /// <param name="noteId">id of note</param>
+        /// <param name="labelId">id of label</param>
+        /// <returns>returns message</returns>
+        [HttpPost("{noteId}/Label/{labelId}")]
+        public async Task<IActionResult> AddLabel(int noteId, int labelId)
+        {
+            var result = await this.businessNotes.AddLabel(noteId, labelId);
             return this.Ok(new { result });
         }
     }

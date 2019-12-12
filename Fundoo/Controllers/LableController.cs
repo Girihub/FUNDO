@@ -55,7 +55,7 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in JSON format</returns>
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLable(int id)
         {
             var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);

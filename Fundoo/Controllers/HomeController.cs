@@ -7,13 +7,11 @@
 namespace Fundoo.Controllers
 {
     using System;
-    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
-    using Microsoft.AspNetCore.Authorization;
+    using CommonLayer.Request;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;    
 
@@ -39,16 +37,67 @@ namespace Fundoo.Controllers
         }
 
         /// <summary>
-        /// API for registration of user
+        /// API for registration of admin
         /// </summary>
         /// <param name="registrationModel">registrationModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        [Route("Registration")]
-        public async Task<IActionResult> AddUser(RegistrationModel registrationModel)
+        [Route("AdminRegistration")]
+        public async Task<IActionResult> AddAdmin(RegistrationRequest registrationRequest)
         {
-            var result = await this.businessRegistration.AddUser(registrationModel);
+            var result = await this.businessRegistration.AddAdmin(registrationRequest);
+            if (result)
+            {
+                var message = "Registered successfully....";
+                return this.Ok(new { result, message });
+            }
+            else
+            {
+                var message = "Email has already been registered. Use another email";
+                return this.Ok(new { result, message });
+            }
+        }
+
+        /// <summary>
+        /// API for registration of user
+        /// </summary>
+        /// <param name="registrationRequest">registrationRequest as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
+        [HttpPost]
+        [Route("UserRegistration")]
+        public async Task<IActionResult> AddUser(RegistrationRequest registrationRequest)
+        {
+            var result = await this.businessRegistration.AddUser(registrationRequest);
             return this.Ok(new { result });
+        }
+
+        /// <summary>
+        /// API for Login of admin
+        /// </summary>
+        /// <param name="loginModel">loginModel as a parameter</param>
+        /// <returns>returns result</returns>
+        [HttpPost]
+        [Route("AdminLogin")]
+        public async Task<IActionResult> LoginAdmin(LoginModel loginModel)
+        {
+            var result = await this.businessRegistration.LoginAdmin(loginModel);
+            if (result == null)
+            {
+                var flag = false;
+                var message = "Enter valid email";
+                return this.Ok(new { flag, message });
+            }
+            else if (result.Equals("!pass"))
+            {
+                var flag = false;
+                var message = "Enter valid password";
+                return this.Ok(new { flag, message });
+            }
+            else
+            {
+                var message = "Logged in successfully...";
+                return this.Ok(new { message, result,});
+            }
         }
 
         /// <summary>
@@ -57,7 +106,7 @@ namespace Fundoo.Controllers
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        [Route("Login")]
+        [Route("UserLogin")]
         public async Task<IActionResult> LoginUser(LoginModel loginModel)
         {
             var result = await this.businessRegistration.LoginUser(loginModel);

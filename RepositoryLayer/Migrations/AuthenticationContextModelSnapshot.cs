@@ -119,6 +119,12 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<string>("ProfilePicture");
 
+                    b.Property<string>("ServiceType")
+                        .IsRequired();
+
+                    b.Property<string>("UserType")
+                        .IsRequired();
+
                     b.HasKey("Id");
 
                     b.ToTable("Registration");

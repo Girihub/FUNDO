@@ -78,6 +78,7 @@ namespace Fundoo.Controllers
             var userid = User.FindFirst("Id")?.Value;
             int userId = Convert.ToInt32(userid);
             var result = this.businessNotes.GetNotes(userId);
+            
             return this.Ok(new { result });
         }
 

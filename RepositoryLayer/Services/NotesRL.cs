@@ -511,6 +511,12 @@ namespace RepositoryLayer.Services
                         };
                         this.appDbContext.NoteLabel.Add(model);
                         await this.appDbContext.SaveChangesAsync();
+
+                        ////**** Change the modified date of note
+                        note.ModifiedDate = DateTime.Now;
+                        await this.appDbContext.SaveChangesAsync();
+                        ////****
+
                         return "Label added to given note";
                     }
 
@@ -540,6 +546,13 @@ namespace RepositoryLayer.Services
                 {
                     this.appDbContext.NoteLabel.Remove(noteLabel);
                     await this.appDbContext.SaveChangesAsync();
+
+                    ////**** Change the modified date of note
+                    var note = this.appDbContext.Notes.Where(g => g.Id == noteId).FirstOrDefault();                    
+                    note.ModifiedDate = DateTime.Now;
+                    await this.appDbContext.SaveChangesAsync();
+                    ////****
+                    
                     return "Label removed from note";
                 }
             }

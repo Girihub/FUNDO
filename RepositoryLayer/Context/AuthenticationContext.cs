@@ -21,6 +21,7 @@ namespace RepositoryLayer.Context
         public AuthenticationContext(DbContextOptions<AuthenticationContext> options) : base(options)
         {            
         }
+       
 
         /// <summary>
         /// Gets or sets for Registration. Creates Database for Registration

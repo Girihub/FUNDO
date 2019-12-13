@@ -10,8 +10,8 @@ using RepositoryLayer.Context;
 namespace RepositoryLayer.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20191205075349_test1")]
-    partial class test1
+    [Migration("20191212132455_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,25 @@ namespace RepositoryLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Lables");
+                });
+
+            modelBuilder.Entity("CommonLayer.Model.NoteLabelModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Delete");
+
+                    b.Property<int>("LabelId");
+
+                    b.Property<int>("NoteId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NoteLabel");
                 });
 
             modelBuilder.Entity("CommonLayer.Model.NotesModel", b =>
@@ -99,6 +118,8 @@ namespace RepositoryLayer.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired();
+
+                    b.Property<string>("ProfilePicture");
 
                     b.HasKey("Id");
 

@@ -11,6 +11,7 @@ namespace BussinessLayer.Services
     using BussinessLayer.Interfaces;
     using CommonLayer.Constants;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Microsoft.AspNetCore.Http;
     using RepositoryLayer.Interfaces;
 
@@ -34,22 +35,63 @@ namespace BussinessLayer.Services
         }
 
         /// <summary>
-        /// Method to implement Add User
+        /// Method to implement Add Admin
         /// </summary>
-        /// <param name="registrationModel">registration Model</param>
-        /// <returns>boolean value and string</returns>
-        public async Task<Tuple<bool, string>> AddUser(RegistrationModel registrationModel)
+        /// <param name="registrationModel">registration Model as a parameter</param>
+        /// <returns>Returns result</returns>
+        public async Task<bool> AddAdmin(RegistrationRequest registrationRequest)
         {
             try
             {
-                if (registrationModel != null)
+                if (registrationRequest != null)
                 {
-                    return await this.repository.AddUser(registrationModel);
+                    return await this.repository.AddAdmin(registrationRequest);
+                }
+                else
+                {
+                    throw new Exception(ErrorMessages.nullModel);
+                }                
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Method to implement Add User
+        /// </summary>
+        /// <param name="registrationRequest">registrationRequest Model</param>
+        /// <returns>boolean value and string</returns>
+        public async Task<Tuple<bool, string>> AddUser(RegistrationRequest registrationRequest)
+        {
+            try
+            {
+                if (registrationRequest != null)
+                {
+                    return await this.repository.AddUser(registrationRequest);
                 }
                 else
                 {
                     throw new Exception(ErrorMessages.nullModel);
                 }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Method to implement Login of admin
+        /// </summary>
+        /// <param name="loginModel">loginModel as a parameter</param>
+        /// <returns>returns result</returns>
+        public async Task<string> LoginAdmin(LoginModel loginModel)
+        {
+            try
+            {
+                return await this.repository.LoginAdmin(loginModel);
             }
             catch (Exception e)
             {

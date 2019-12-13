@@ -9,6 +9,7 @@ namespace BussinessLayer.Interfaces
     using System;
     using System.Threading.Tasks;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Microsoft.AspNetCore.Http;
 
     /// <summary>
@@ -19,9 +20,9 @@ namespace BussinessLayer.Interfaces
         /// <summary>
         /// Method declaration for registration of user
         /// </summary>
-        /// <param name="registrationModel">registrationModel as a parameter</param>
+        /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns boolean value and string</returns>
-        Task<Tuple<bool, string>> AddUser(RegistrationModel registrationModel);
+        Task<Tuple<bool, string>> AddUser(RegistrationRequest registrationRequest);
 
         /// <summary>
         /// Method declaration for login of user
@@ -65,5 +66,19 @@ namespace BussinessLayer.Interfaces
         /// <param name="formFile">formFile to upload profile picture</param>
         /// <returns>returns result</returns>
         Task<string> UploadProfilePicture(int id, IFormFile formFile);
+
+        /// <summary>
+        /// Method declaration for registration of admin
+        /// </summary>
+        /// <param name="registrationRequest">registrationRequest as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
+        Task<bool> AddAdmin(RegistrationRequest registrationRequest);
+
+        /// <summary>
+        /// Method declaration for login of admin
+        /// </summary>
+        /// <param name="loginModel">loginModel as a parameter</param>
+        /// <returns>returns result in JSON format</returns>
+        Task<string> LoginAdmin(LoginModel loginModel);
     }
 }

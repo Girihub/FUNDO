@@ -82,8 +82,8 @@ namespace RepositoryLayer.Services
                         await this.appDbContext.SaveChangesAsync();
                         noteLabel = this.appDbContext.NoteLabel.Where(g => g.LabelId == id && g.UserId == UserId).FirstOrDefault();
                     }
-                    ////*******
-                   
+                    ////*******                 
+                    
                     this.appDbContext.Lables.Remove(lable);                    
                     await this.appDbContext.SaveChangesAsync();
                     return "Label removed";

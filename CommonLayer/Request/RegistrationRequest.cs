@@ -1,24 +1,18 @@
 ﻿//----------------------------------------------------
-// <copyright file="RegistrationModel.cs" company="Bridgelabz">
+// <copyright file="RegistrationRequest.cs" company="Bridgelabz">
 // Company copyright tag.
 // </copyright>
 //----------------------------------------------------
 
-namespace CommonLayer.Model
+namespace CommonLayer.Request
 {
     using System.ComponentModel.DataAnnotations;
 
     /// <summary>
-    /// Model for Registration of user
+    /// RegistrationRequest as a class
     /// </summary>
-    public class RegistrationModel
+    public class RegistrationRequest
     {
-        /// <summary>
-        /// Gets or sets Id of user
-        /// </summary>        
-        [Key]
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets First Name of user
         /// </summary>
@@ -72,11 +66,5 @@ namespace CommonLayer.Model
         /// </summary>
         [Required]
         public string ServiceType { get; set; }
-
-        /// <summary>
-        /// Gets or sets User Type of user
-        /// </summary>
-        [Required]
-        public string UserType { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace RepositoryLayer.Services
     using System.Threading.Tasks;
     using CloudinaryDotNet;
     using CommonLayer.Model;
+    using CommonLayer.Request;
     using Microsoft.AspNetCore.Http;
     using Microsoft.IdentityModel.Tokens;
     using RepositoryLayer.Context;
@@ -40,22 +41,80 @@ namespace RepositoryLayer.Services
         }
 
         /// <summary>
+        /// Method to register admin
+        /// </summary>
+        /// <param name="registrationRequest">registrationRequest as a parameter</param>
+        /// <returns>returns result</returns>
+        public async Task<bool> AddAdmin(RegistrationRequest registrationRequest)
+        {
+            try
+            {
+                string password = this.Encrypt(registrationRequest.Password);
+                if(registrationRequest.ServiceType.ToLower() != "Advance".ToLower())
+                {
+                    registrationRequest.ServiceType = "Basic";
+                }
+                else
+                {
+                    registrationRequest.ServiceType = "Advance";
+                }
+
+                var model = new RegistrationModel()
+                {
+                    FirstName = registrationRequest.FirstName,
+                    LastName = registrationRequest.LastName,
+                    MobileNumber = registrationRequest.MobileNumber,
+                    Email = registrationRequest.Email,
+                    Password = password,
+                    ProfilePicture = registrationRequest.ProfilePicture,
+                    ServiceType = registrationRequest.ServiceType,
+                    UserType = "Admin"
+                };
+
+                var row = this.appDbContext.Registration.Where(c => c.Email == registrationRequest.Email).FirstOrDefault();
+                if (row == null)
+                {
+                    this.appDbContext.Registration.Add(model);
+                    await this.appDbContext.SaveChangesAsync();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
         /// Method to register user
         /// </summary>
-        /// <param name="registrationModel">registrationModel as a parameter</param>
+        /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns string value and boolean value</returns>
-        public async Task<Tuple<bool, string>> AddUser(RegistrationModel registrationModel)
+        public async Task<Tuple<bool, string>> AddUser(RegistrationRequest registrationRequest)
         {            
             try
             {
-                string password = this.Encrypt(registrationModel.Password);
+                if (registrationRequest.ServiceType.ToLower() != "Advance".ToLower())
+                {
+                    registrationRequest.ServiceType = "Basic";
+                }
+                else
+                {
+                    registrationRequest.ServiceType = "Advance";
+                }
+                string password = this.Encrypt(registrationRequest.Password);
                 var model = new RegistrationModel()
                 {
-                    FirstName = registrationModel.FirstName,
-                    LastName = registrationModel.LastName,
-                    MobileNumber = registrationModel.MobileNumber,
-                    Email = registrationModel.Email,
-                    Password = password
+                    FirstName = registrationRequest.FirstName,
+                    LastName = registrationRequest.LastName,
+                    MobileNumber = registrationRequest.MobileNumber,
+                    Email = registrationRequest.Email,
+                    Password = password,
+                    ProfilePicture = registrationRequest.ProfilePicture,
+                    ServiceType = registrationRequest.ServiceType,
+                    UserType = "User"
                 };                 
                 var queryAllUsers = from table in this.appDbContext.Registration
                                         select table;
@@ -114,6 +173,49 @@ namespace RepositoryLayer.Services
         }
 
         /// <summary>
+        /// Method for Login of admin
+        /// </summary>
+        /// <param name="loginModel">loginModel as a parameter</param>
+        /// <returns>returns result</returns>
+        public async Task<string> LoginAdmin(LoginModel loginModel)
+        {
+            try
+            {
+                var admin = this.appDbContext.Registration.Where(c => c.Email.Equals(loginModel.Email) && c.UserType.Equals("Admin")).FirstOrDefault();
+
+                if (admin != null)
+                {
+                    if(admin.Password == this.Encrypt(loginModel.Password))
+                    {
+                        var tokenHandler = new JwtSecurityTokenHandler();
+                        var tokenDescriptor = new SecurityTokenDescriptor
+                        {
+                            Subject = new ClaimsIdentity(new Claim[]
+                            {
+                                        //// Claims the identity
+                                        new Claim("Id", admin.Id.ToString()),
+                                        new Claim("Email", admin.Email.ToString())
+                            }),
+                            Expires = DateTime.Now.AddMinutes(120),
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")), SecurityAlgorithms.HmacSha256Signature)
+                        };
+                        var secureToken = tokenHandler.CreateToken(tokenDescriptor);
+                        var token = tokenHandler.WriteToken(secureToken);
+                        return token;
+                    }
+
+                    return "!pass";
+                }
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
         /// Method for Login user
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
@@ -127,7 +229,7 @@ namespace RepositoryLayer.Services
 
                 foreach (var email in queryAllUsers)
                 {
-                    if (email.Email.Equals(loginModel.Email))
+                    if (email.Email.Equals(loginModel.Email) && email.UserType.Equals("User"))
                     {
                         if (this.Decrypt(email.Password).Equals(loginModel.Password))
                         {

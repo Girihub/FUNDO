@@ -25,6 +25,22 @@ namespace RepositoryLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NoteLabel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    NoteId = table.Column<int>(nullable: false),
+                    LabelId = table.Column<int>(nullable: false),
+                    Delete = table.Column<bool>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NoteLabel", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Notes",
                 columns: table => new
                 {
@@ -38,8 +54,10 @@ namespace RepositoryLayer.Migrations
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     ModifiedDate = table.Column<DateTime>(nullable: false),
                     AddReminder = table.Column<DateTime>(nullable: false),
-                    NotesType = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false),
+                    IsNote = table.Column<bool>(nullable: false),
+                    IsArchive = table.Column<bool>(nullable: false),
+                    IsTrash = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +74,8 @@ namespace RepositoryLayer.Migrations
                     LastName = table.Column<string>(nullable: false),
                     MobileNumber = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    Password = table.Column<string>(nullable: false)
+                    Password = table.Column<string>(nullable: false),
+                    ProfilePicture = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,6 +87,9 @@ namespace RepositoryLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Lables");
+
+            migrationBuilder.DropTable(
+                name: "NoteLabel");
 
             migrationBuilder.DropTable(
                 name: "Notes");

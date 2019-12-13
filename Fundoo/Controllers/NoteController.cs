@@ -7,10 +7,9 @@
 namespace Fundoo.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
-    using CloudinaryDotNet;
-    using CommonLayer.Model;
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -279,5 +278,19 @@ namespace Fundoo.Controllers
             var result = await this.businessNotes.RemoveLabel(noteId, labelId, userId);
             return this.Ok(new { result });
         }
+
+        /// <summary>
+        /// API for bulk trash
+        /// </summary>
+        /// <param name="noteIds">noteIds as a parameter</param>
+        /// <returns>returns result</returns>
+        [HttpPost("BulkTrash")]
+        public async Task<IActionResult> BulkTrash(IList<int> noteIds)
+        {
+            List<int> list = new List<int>();
+            var result = "ffffyu";
+            return this.Ok(new { result });
+        }
+        
     }
 }

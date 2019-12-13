@@ -559,5 +559,16 @@ namespace RepositoryLayer.Services
 
             return "Label is not attached to this label";
         }
+
+        /// <summary>
+        /// Method to trash notes in bulk
+        /// </summary>
+        /// <param name="userId">id of user</param>
+        /// <param name="noteIds">Ids of notes</param>
+        /// <returns>returns result</returns>
+        public async Task<bool> BulkTrash(int userId, IList<int> noteIds)
+        {
+
+        }
     }
 }

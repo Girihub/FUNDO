@@ -401,5 +401,23 @@ namespace BussinessLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        /// <summary>
+        /// Method to trash notes in bulk
+        /// </summary>
+        /// <param name="userId">id of user</param>
+        /// <param name="noteIds">Ids of notes</param>
+        /// <returns>return result</returns>
+        public async Task<bool> BulkTrash(int userId, IList<int> noteIds)
+        {
+            try
+            {
+                return await this.repository.BulkTrash(userId, noteIds);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

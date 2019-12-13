@@ -7,6 +7,7 @@
 namespace BussinessLayer.Services
 {    
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Constants;
@@ -219,11 +220,51 @@ namespace BussinessLayer.Services
             }            
         }
 
+        /// <summary>
+        /// Method to Upload Profile Picture
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <param name="formFile">formFile interface to select desired image</param>
+        /// <returns>returns result</returns>
         public async Task<string> UploadProfilePicture(int id, IFormFile formFile)
         {
             try
             {
                 return await this.repository.UploadProfilePicture(id, formFile);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Method for User Statistics
+        /// </summary>
+        /// <param name="userId">id of user</param>
+        /// <returns>returns result</returns>
+        public async Task<IDictionary<string, int>> UserStatistics(int userId)
+        {
+            try
+            {
+                return await this.repository.UserStatistics(userId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Method to display user's list
+        /// </summary>
+        /// <param name="userId">id of user</param>
+        /// <returns>returns result</returns>
+        public async Task<IList<RegistrationModel>> UserList(int userId)
+        {
+            try
+            {
+                return await this.repository.UserList(userId);
             }
             catch (Exception e)
             {

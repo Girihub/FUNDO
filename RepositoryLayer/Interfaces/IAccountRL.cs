@@ -7,6 +7,7 @@
 namespace RepositoryLayer.Interfaces
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using CommonLayer.Model;
     using CommonLayer.Request;
@@ -44,5 +45,9 @@ namespace RepositoryLayer.Interfaces
         Task<bool> AddAdmin(RegistrationRequest registrationRequest);
 
         Task<string> LoginAdmin(LoginModel loginModel);
+
+        Task<IDictionary<string, int>> UserStatistics(int userId);
+
+        Task<IList<RegistrationModel>> UserList(int userId);
     }
 }

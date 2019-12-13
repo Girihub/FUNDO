@@ -7,6 +7,7 @@
 namespace RepositoryLayer.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
@@ -341,6 +342,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to get password of user
+        /// </summary>
+        /// <param name="getPassword">getPassword as a parameter</param>
+        /// <returns>returns result</returns>
         public string GetPassword(GetPasswordModel getPassword)
         {
             try
@@ -359,6 +365,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to reset forgotten password
+        /// </summary>
+        /// <param name="resetForgetPassword">resetForgetPassword as a parameter</param>
+        /// <returns>returns result</returns>
         public async Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
         {
             try
@@ -392,6 +403,12 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// Method to Upload Profile Picture
+        /// </summary>
+        /// <param name="id">id of user as a parameter</param>
+        /// <param name="formFile">formFile interface to select desired image</param>
+        /// <returns>returns result</returns>
         public async Task<string> UploadProfilePicture(int id, IFormFile formFile)
         {
             try
@@ -416,6 +433,64 @@ namespace RepositoryLayer.Services
             {
                 throw e;
             }
+        }
+
+        /// <summary>
+        /// Method to display User's Statistics
+        /// </summary>
+        /// <param name="userId">id of user as a parameter</param>
+        /// <returns>returns result</returns>
+        public async Task<IDictionary<string, int>> UserStatistics(int userId)
+        {
+            Dictionary<string, int> dict = new Dictionary<string, int>();
+
+            var user = this.appDbContext.Registration.Where(c => c.Id == userId && c.UserType.Equals("Admin")).FirstOrDefault();
+            if(user != null)
+            {
+                var queryAllUsers = from table in this.appDbContext.Registration
+                                    select table;
+                int advance = 0, basic = 0;
+                foreach(var row in queryAllUsers)
+                {
+                    if (row.ServiceType.Equals("Advance"))
+                    {
+                        advance++;
+                    }
+                    else
+                    {
+                        basic++;
+                    }
+                }
+
+                dict.Add("Advance", advance);
+                dict.Add("Basic", basic);
+                return dict;
+            }
+
+            dict.Add("You are not authorized to see these details", 0);
+            return dict;
+        }
+
+        /// <summary>
+        /// Method to display user's list
+        /// </summary>
+        /// <param name="userId">id of admin user</param>
+        /// <returns>returns result</returns>
+        public async Task<IList<RegistrationModel>> UserList(int userId)
+        {
+            List<RegistrationModel> users = new List<RegistrationModel>();
+
+            var admin = this.appDbContext.Registration.Where(c => c.Id == userId && c.UserType.Equals("Admin")).FirstOrDefault();
+
+            if(admin != null)
+            {
+                foreach(var row in this.appDbContext.Registration)
+                {
+                    users.Add(row);
+                }
+            }
+
+            return users;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace Fundoo.Controllers
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;    
 
@@ -181,6 +182,40 @@ namespace Fundoo.Controllers
 
             var result = await this.businessRegistration.UploadProfilePicture(id, formFile);
             return this.Ok(new { result });
+        }
+
+        /// <summary>
+        /// API for User Statistics
+        /// </summary>
+        /// <returns>returns result</returns>
+        [HttpGet("UserStatistic")]
+        [Authorize]
+        public async Task<IActionResult> UserStatistics()
+        {
+            var userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+            var result = await this.businessRegistration.UserStatistics(userId);
+
+            return this.Ok(new { result });
+        }
+
+        /// <summary>
+        /// API for User's List
+        /// </summary>
+        /// <returns>returns result</returns>
+        [HttpGet("UserList")]
+        [Authorize]
+        public async Task<IActionResult> UserList()
+        {
+            var userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+            var result = await this.businessRegistration.UserList(userId);
+
+            if(result.Count != 0)
+            {
+                return this.Ok(new { result });
+            }
+
+            var message = "No users found";
+            return this.Ok(new { result, message });
         }
     }
 }   

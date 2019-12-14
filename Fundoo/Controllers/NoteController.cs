@@ -300,6 +300,28 @@ namespace Fundoo.Controllers
                 var message = "Enter valid note Ids";
                 return this.Ok(new { result, message });
             }
-        }        
+        }    
+        
+        /// <summary>
+        /// API to search the notes
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(string word)
+        {
+            int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+            var result = await this.businessNotes.Search(word, userId);
+            if(result.Count == 0)
+            {
+                var message = "No notes found";
+                return this.Ok(new { message, result });
+            }
+            else
+            {
+                var message = "Following notes contain " + word;
+                return this.Ok(new { message, result });
+            }
+        }
     }
 }

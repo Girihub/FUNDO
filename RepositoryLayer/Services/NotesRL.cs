@@ -491,42 +491,49 @@ namespace RepositoryLayer.Services
         /// <returns>returns message</returns>
         public async Task<string> AddLabel(int noteId, int labelId, int userId)
         {
-            var note = this.appDbContext.Notes.Where(g => g.Id == noteId).FirstOrDefault();
-            var label = this.appDbContext.Lables.Where(g => g.Id == labelId).FirstOrDefault();
-
-            if(note != null && label != null)
+            try
             {
-                if (note.UserId == userId && label.UserId == userId)
+                var note = this.appDbContext.Notes.Where(g => g.Id == noteId).FirstOrDefault();
+                var label = this.appDbContext.Lables.Where(g => g.Id == labelId).FirstOrDefault();
+
+                if (note != null && label != null)
                 {
-                    var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == note.Id && g.LabelId == label.Id).FirstOrDefault();
-                    
-                    if(noteLabel == null)
+                    if (note.UserId == userId && label.UserId == userId)
                     {
-                        var model = new NoteLabelModel()
+                        var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == note.Id && g.LabelId == label.Id).FirstOrDefault();
+
+                        if (noteLabel == null)
                         {
-                            NoteId = noteId,
-                            LabelId = labelId,
-                            Delete = false,
-                            UserId = note.UserId
-                        };
-                        this.appDbContext.NoteLabel.Add(model);
-                        await this.appDbContext.SaveChangesAsync();
+                            var model = new NoteLabelModel()
+                            {
+                                NoteId = noteId,
+                                LabelId = labelId,
+                                Delete = false,
+                                UserId = note.UserId
+                            };
+                            this.appDbContext.NoteLabel.Add(model);
+                            await this.appDbContext.SaveChangesAsync();
 
-                        ////**** Change the modified date of note
-                        note.ModifiedDate = DateTime.Now;
-                        await this.appDbContext.SaveChangesAsync();
-                        ////****
+                            ////**** Change the modified date of note
+                            note.ModifiedDate = DateTime.Now;
+                            await this.appDbContext.SaveChangesAsync();
+                            ////****
 
-                        return "Label added to given note";
+                            return "Label added to given note";
+                        }
+
+                        return "Label already added to this note";
                     }
 
-                    return "Label already added to this note";
+                    return "Note or label does not belong to this user. Check their UserIds";
                 }
 
-                return "Note or label does not belong to this user. Check their UserIds";
+                return "Check if given note or label present in database";
             }
-
-            return "Check if given note or label present in database";
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -538,26 +545,33 @@ namespace RepositoryLayer.Services
         /// <returns>returns message</returns>
         public async Task<string> RemoveLabel(int noteId, int labelId, int userId)
         {
-            var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == noteId && g.LabelId == labelId).FirstOrDefault();
-
-            if(noteLabel != null)
+            try
             {
-                if(noteLabel.UserId == userId)
+                var noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == noteId && g.LabelId == labelId).FirstOrDefault();
+
+                if (noteLabel != null)
                 {
-                    this.appDbContext.NoteLabel.Remove(noteLabel);
-                    await this.appDbContext.SaveChangesAsync();
+                    if (noteLabel.UserId == userId)
+                    {
+                        this.appDbContext.NoteLabel.Remove(noteLabel);
+                        await this.appDbContext.SaveChangesAsync();
 
-                    ////**** Change the modified date of note
-                    var note = this.appDbContext.Notes.Where(g => g.Id == noteId).FirstOrDefault();                    
-                    note.ModifiedDate = DateTime.Now;
-                    await this.appDbContext.SaveChangesAsync();
-                    ////****
-                    
-                    return "Label removed from note";
+                        ////**** Change the modified date of note
+                        var note = this.appDbContext.Notes.Where(g => g.Id == noteId).FirstOrDefault();
+                        note.ModifiedDate = DateTime.Now;
+                        await this.appDbContext.SaveChangesAsync();
+                        ////****
+
+                        return "Label removed from note";
+                    }
                 }
-            }
 
-            return "Label is not attached to this label";
+                return "Label is not attached to this label";
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -568,25 +582,63 @@ namespace RepositoryLayer.Services
         /// <returns>returns result</returns>
         public async Task<bool> BulkTrash(int userId, List<int> noteIds)
         {
-            foreach(var id in noteIds)
+            try
             {
-                bool found = false;
-                foreach(var note in this.appDbContext.Notes)
+                foreach (var id in noteIds)
                 {
-                    if(id == note.Id && userId == note.UserId)
+                    bool found = false;
+                    foreach (var note in this.appDbContext.Notes)
                     {
-                        note.IsTrash = true;
-                        found = true;
+                        if (id == note.Id && userId == note.UserId)
+                        {
+                            note.IsTrash = true;
+                            found = true;
+                        }
+                    }
+                    if (!found)
+                    {
+                        return false;
                     }
                 }
-                if (!found)
-                {
-                    return false;
-                }
-            }
 
-            await this.appDbContext.SaveChangesAsync();
-            return true;
+                await this.appDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Method to search notes by word
+        /// </summary>
+        /// <param name="word">word as a parameter</param>
+        /// <param name="userId">Id of user</param>
+        /// <returns>returns result</returns>
+        public async Task<IList<NotesModel>> Search(string word, int userId)
+        {
+            try
+            {
+                List<NotesModel> notes = new List<NotesModel>();
+                word = word.ToLower();
+                foreach(var row in this.appDbContext.Notes)
+                {
+                    if(row.UserId == userId)
+                    {
+                        if (row.Title.ToLower().Contains(word) || row.Description.ToLower().Contains(word))
+                        {
+                            notes.Add(row);
+                        }
+                    }
+                }
+
+                return notes;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

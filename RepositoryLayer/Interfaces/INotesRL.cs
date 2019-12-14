@@ -48,5 +48,7 @@ namespace RepositoryLayer.Interfaces
         Task<string> RemoveLabel(int noteId, int labelId, int userId);
 
         Task<bool> BulkTrash(int userId, List<int> noteIds);
+
+        Task<IList<NotesModel>> Search(string word, int userId);
     }
 }

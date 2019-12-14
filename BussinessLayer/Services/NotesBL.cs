@@ -419,5 +419,23 @@ namespace BussinessLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        /// <summary>
+        /// Method to search notes by word
+        /// </summary>
+        /// <param name="word">word as a parameter</param>
+        /// <param name="userId">Id of user as a parameter</param>
+        /// <returns>returns notes if found</returns>
+        public async Task<IList<NotesModel>> Search(string word, int userId)
+        {
+            try
+            {
+                return await this.repository.Search(word, userId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

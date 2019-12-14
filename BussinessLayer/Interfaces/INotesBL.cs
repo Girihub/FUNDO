@@ -47,6 +47,6 @@ namespace BussinessLayer.Interfaces
 
         Task<string> RemoveLabel(int noteId, int labelId, int userId);
 
-        Task<bool> BulkTrash(int userId, IList<int> noteIds);
+        Task<bool> BulkTrash(int userId, List<int> noteIds);
     }
 }

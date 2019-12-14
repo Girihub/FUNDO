@@ -46,5 +46,7 @@ namespace RepositoryLayer.Interfaces
         Task<string> AddLabel(int noteId, int labelId, int userId);
 
         Task<string> RemoveLabel(int noteId, int labelId, int userId);
+
+        Task<bool> BulkTrash(int userId, List<int> noteIds);
     }
 }

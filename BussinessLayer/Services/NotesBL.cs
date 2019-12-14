@@ -408,7 +408,7 @@ namespace BussinessLayer.Services
         /// <param name="userId">id of user</param>
         /// <param name="noteIds">Ids of notes</param>
         /// <returns>return result</returns>
-        public async Task<bool> BulkTrash(int userId, IList<int> noteIds)
+        public async Task<bool> BulkTrash(int userId, List<int> noteIds)
         {
             try
             {

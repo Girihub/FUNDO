@@ -566,9 +566,27 @@ namespace RepositoryLayer.Services
         /// <param name="userId">id of user</param>
         /// <param name="noteIds">Ids of notes</param>
         /// <returns>returns result</returns>
-        public async Task<bool> BulkTrash(int userId, IList<int> noteIds)
+        public async Task<bool> BulkTrash(int userId, List<int> noteIds)
         {
+            foreach(var id in noteIds)
+            {
+                bool found = false;
+                foreach(var note in this.appDbContext.Notes)
+                {
+                    if(id == note.Id && userId == note.UserId)
+                    {
+                        note.IsTrash = true;
+                        found = true;
+                    }
+                }
+                if (!found)
+                {
+                    return false;
+                }
+            }
 
+            await this.appDbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

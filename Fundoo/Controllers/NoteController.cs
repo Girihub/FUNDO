@@ -8,6 +8,7 @@ namespace Fundoo.Controllers
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Request;
@@ -285,12 +286,20 @@ namespace Fundoo.Controllers
         /// <param name="noteIds">noteIds as a parameter</param>
         /// <returns>returns result</returns>
         [HttpPost("BulkTrash")]
-        public async Task<IActionResult> BulkTrash(IList<int> noteIds)
+        public async Task<IActionResult> BulkTrash(List<int> noteIds)
         {
-            List<int> list = new List<int>();
-            var result = "ffffyu";
-            return this.Ok(new { result });
-        }
-        
+            int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+            var result = await this.businessNotes.BulkTrash(userId, noteIds);
+            if (result)
+            {
+                var message = "Notes trashed successfully";
+                return this.Ok(new { result, message });
+            }
+            else
+            {
+                var message = "Enter valid note Ids";
+                return this.Ok(new { result, message });
+            }
+        }        
     }
 }

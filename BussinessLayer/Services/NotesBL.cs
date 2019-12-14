@@ -430,7 +430,34 @@ namespace BussinessLayer.Services
         {
             try
             {
-                return await this.repository.Search(word, userId);
+                if (string.IsNullOrEmpty(word))
+                {
+                    List<NotesModel> note = new List<NotesModel>();
+                    return note;
+                }
+                else
+                {
+                    return await this.repository.Search(word, userId);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Method to collaborate with user
+        /// </summary>
+        /// <param name="usersIds">Ids of users</param>
+        /// <param name="noteIds">Ids of notes</param>
+        /// <param name="collaboratorId">Id of collaborator</param>
+        /// <returns>returns result</returns>
+        public async Task<bool> Collaborate(List<int> usersIds, List<int> noteIds, int collaboratorId)
+        {
+            try
+            {
+                return await this.repository.Collaborate(usersIds, noteIds, collaboratorId);
             }
             catch (Exception e)
             {

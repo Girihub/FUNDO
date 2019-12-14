@@ -640,5 +640,24 @@ namespace RepositoryLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        /// <summary>
+        /// Method to collaborate with user
+        /// </summary>
+        /// <param name="usersIds">Ids of users</param>
+        /// <param name="noteIds">Ids of notes</param>
+        /// <param name="collaboratorId">Id of collaborator</param>
+        /// <returns>returns result</returns>
+        public async Task<bool> Collaborate(List<int> usersIds, List<int> noteIds, int collaboratorId)
+        {
+            try
+            {
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

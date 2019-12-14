@@ -50,5 +50,7 @@ namespace RepositoryLayer.Interfaces
         Task<bool> BulkTrash(int userId, List<int> noteIds);
 
         Task<IList<NotesModel>> Search(string word, int userId);
+
+        Task<bool> Collaborate(List<int> usersIds, List<int> noteIds, int collaboratorId);
     }
 }

@@ -34,6 +34,6 @@ namespace RepositoryLayer.Context
 
         public DbSet<NoteLabelModel> NoteLabel { get; set; }
 
-
+        public DbSet<CollaborateModel> Collaborate { get; set; }
     }
 }

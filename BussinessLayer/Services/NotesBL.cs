@@ -453,11 +453,11 @@ namespace BussinessLayer.Services
         /// <param name="noteIds">Ids of notes</param>
         /// <param name="collaboratorId">Id of collaborator</param>
         /// <returns>returns result</returns>
-        public async Task<bool> Collaborate(List<int> usersIds, List<int> noteIds, int collaboratorId)
+        public async Task<string> Collaborate(int usersId, int noteId, int collaboratorId)
         {
             try
             {
-                return await this.repository.Collaborate(usersIds, noteIds, collaboratorId);
+                return await this.repository.Collaborate(usersId, noteId, collaboratorId);
             }
             catch (Exception e)
             {

@@ -171,6 +171,7 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <param name="formFile">formFile interface to upload desired image</param>
         /// <returns>returns result in JSON format</returns>
+        [Authorize]
         [HttpPost("UploadProfilePicture")]
         public async Task<IActionResult> UploadProfilePicture(IFormFile formFile)
         {

@@ -51,6 +51,6 @@ namespace BussinessLayer.Interfaces
 
         Task<IList<NotesModel>> Search(string word, int userId);
 
-        Task<bool> Collaborate(List<int> usersIds, List<int> noteIds, int collaboratorId);
+        Task<string> Collaborate(int usersId, int noteId, int collaboratorId);
     }
 }

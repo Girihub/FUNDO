@@ -17,6 +17,7 @@ namespace RepositoryLayer.Services
     using CommonLayer.Model;
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;
@@ -32,13 +33,16 @@ namespace RepositoryLayer.Services
         /// </summary>
         private readonly AuthenticationContext appDbContext;
 
+        private readonly IConfiguration configuration;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountRL"/> class.
         /// </summary>
         /// <param name="appDbContext">appDBContext as a parameter</param>
-        public AccountRL(AuthenticationContext appDbContext)
+        public AccountRL(AuthenticationContext appDbContext, IConfiguration configuration)
         {
             this.appDbContext = appDbContext;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -198,7 +202,7 @@ namespace RepositoryLayer.Services
                                         new Claim("Email", admin.Email.ToString())
                             }),
                             Expires = DateTime.Now.AddMinutes(120),
-                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")), SecurityAlgorithms.HmacSha256Signature)
+                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])), SecurityAlgorithms.HmacSha256Signature)
                         };
                         var secureToken = tokenHandler.CreateToken(tokenDescriptor);
                         var token = tokenHandler.WriteToken(secureToken);
@@ -414,7 +418,18 @@ namespace RepositoryLayer.Services
             try
             {
                 ImageCloudinary cloudiNary = new ImageCloudinary();
-                Account account = new Account(cloudiNary.CLOUD_NAME, cloudiNary.API_KEY, cloudiNary.API_SECCRET_KEY);
+
+                var cloudeName = configuration["Cloudinary:CloudName"];
+                var keyName = configuration["Cloudinary:ApiKey"];
+                var secretKey = configuration["Cloudinary:SecretKey"];
+
+                Account account = new Account()
+                {
+                    Cloud = cloudeName,
+                    ApiKey = keyName,
+                    ApiSecret = secretKey
+                };
+                
                 cloudiNary.cloudinary = new Cloudinary(account);
 
                 var user = this.appDbContext.Registration.Where(g => g.Id == id).FirstOrDefault();

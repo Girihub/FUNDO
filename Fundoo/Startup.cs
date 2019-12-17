@@ -65,7 +65,7 @@ namespace Fundoo
 
             services.AddTransient<ILableBL, LableBL>();
             services.AddTransient<ILableRL, LableRL>();
-            
+
 
             //services.AddAuthentication(x =>
             //{
@@ -86,6 +86,7 @@ namespace Fundoo
             //    };
             //});
 
+            var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

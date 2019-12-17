@@ -15,6 +15,7 @@ namespace RepositoryLayer.Services
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;        
 
@@ -28,13 +29,16 @@ namespace RepositoryLayer.Services
         /// </summary>
         private readonly AuthenticationContext appDbContext;
 
+        private readonly IConfiguration configuration;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NotesRL"/> class.
         /// </summary>
         /// <param name="appDbContext">appDBContext as a parameter</param>
-        public NotesRL(AuthenticationContext appDbContext)
+        public NotesRL(AuthenticationContext appDbContext, IConfiguration configuration)
         {
             this.appDbContext = appDbContext;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -403,7 +407,17 @@ namespace RepositoryLayer.Services
             try
             {
                 ImageCloudinary cloudiNary = new ImageCloudinary();
-                Account account = new Account(cloudiNary.CLOUD_NAME, cloudiNary.API_KEY, cloudiNary.API_SECCRET_KEY);
+                var cloudeName = configuration["Cloudinary:CloudName"];
+                var keyName = configuration["Cloudinary:ApiKey"];
+                var secretKey = configuration["Cloudinary:SecretKey"];
+
+                Account account = new Account()
+                {
+                    Cloud = cloudeName,
+                    ApiKey = keyName,
+                    ApiSecret = secretKey
+                };
+                
                 cloudiNary.cloudinary = new Cloudinary(account);
 
                 var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
@@ -648,11 +662,46 @@ namespace RepositoryLayer.Services
         /// <param name="noteIds">Ids of notes</param>
         /// <param name="collaboratorId">Id of collaborator</param>
         /// <returns>returns result</returns>
-        public async Task<bool> Collaborate(List<int> usersIds, List<int> noteIds, int collaboratorId)
+        public async Task<string> Collaborate(int usersId, int noteId, int collaboratorId)
         {
             try
             {
-                return true;
+                //// check collaborator has the access to given note id
+                var note = this.appDbContext.Notes.Where(c => c.UserId == collaboratorId && c.Id == noteId).FirstOrDefault();
+                if(note != null)
+                {
+                    if(usersId == collaboratorId)
+                    {
+                        return "You already have access to note " + noteId;
+                    }
+
+                    var user = this.appDbContext.Registration.Where(c => c.Id == usersId).FirstOrDefault();
+                    if(user != null)
+                    {
+                        var colab = this.appDbContext.Collaborate.Where(c => c.CollaboratedBy == collaboratorId && c.CollaboratedWith == usersId && c.NoteId == noteId).FirstOrDefault();
+                        if (colab != null)
+                        {
+                            return "You already have access to note " + noteId;
+                        }
+
+                        var model = new CollaborateModel()
+                        {
+                            CollaboratedBy = collaboratorId,
+                            CollaboratedWith = usersId,
+                            NoteId = noteId
+                        };
+
+                        this.appDbContext.Collaborate.Add(model);
+                        await this.appDbContext.SaveChangesAsync();
+                        return "Collaborate successfully...";
+                    }
+                    else
+                    {
+                        return "Check user id you want to collaborate with";
+                    }
+                }
+
+                return "Check note id and user id";
             }
             catch (Exception e)
             {

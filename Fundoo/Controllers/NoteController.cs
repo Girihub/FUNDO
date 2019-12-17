@@ -324,13 +324,20 @@ namespace Fundoo.Controllers
             }
         }
 
-
+        /// <summary>
+        /// API to collaborate with other users
+        /// </summary>
+        /// <param name="usersId">Id of user</param>
+        /// <param name="noteId">Id of note</param>
+        /// <returns>returns result</returns>
         [HttpPost("Collaborate")]
-        public async Task<IActionResult> Collaborate(List<int> usersIds, List<int> noteIds)
+        public async Task<IActionResult> Collaborate(int collaberateWith, int noteId)
         {
             int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
-            var result = await this.businessNotes.Collaborate(usersIds, noteIds, collaboratorId);
+            var result = await this.businessNotes.Collaborate(collaberateWith, noteId, collaboratorId);
+
             return this.Ok(new { result });
+
         }
     }
 }

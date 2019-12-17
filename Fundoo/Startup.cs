@@ -56,7 +56,10 @@ namespace Fundoo
         {
             services.AddDbContext<AuthenticationContext>(options =>
             options.UseSqlServer(this.Configuration.GetConnectionString("connectionDb")));
-            
+
+            services.AddTransient<IAdminBL, AdminBL>();
+            services.AddTransient<IAdminRL, AdminRL>();
+
             services.AddTransient<IAccountBL, AccountBL>();
             services.AddTransient<IAccountRL, AccountRL>();
 

@@ -40,14 +40,6 @@ namespace RepositoryLayer.Interfaces
 
         Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword);
 
-        Task<string> UploadProfilePicture(int id, IFormFile formFile);
-
-        Task<bool> AddAdmin(RegistrationRequest registrationRequest);
-
-        Task<string> LoginAdmin(LoginModel loginModel);
-
-        Task<IDictionary<string, int>> UserStatistics(int userId);
-
-        Task<IList<RegistrationModel>> UserList(int userId);
+        Task<string> UploadProfilePicture(int id, IFormFile formFile);        
     }
 }

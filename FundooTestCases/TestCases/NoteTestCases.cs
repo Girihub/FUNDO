@@ -29,6 +29,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NoteRequest()
             {
                 Title = "title",
@@ -54,10 +56,12 @@ namespace FundooTestCases.TestCases
         /// </summary>
         [Fact]
         public void UpdateNote()
-        {
+        {            
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NoteUpdate()
             {
                 Title = "title",
@@ -80,6 +84,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NotesModel()
             {
                 Id = 1,
@@ -102,6 +108,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             int id = 1;
 
             //// act          
@@ -120,21 +128,12 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
-            var model = new NoteRequest()
-            {
-                Title = "title",
-                Description = "description",
-                Image = "image",
-                Color = "color",
-                IsPin = true,
-                AddReminder = DateTime.Now,
-                IsNote = false,
-                IsArchive = false,
-                IsTrash = false
-            };
+
+            ////arrange
+            int userId = 1;
 
             //// act          
-            IList<NotesModel> data = business.GetNotes(1);
+            var data = business.GetNotes(userId);
 
             ////assert
             Assert.NotNull(data);
@@ -149,6 +148,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NotesModel()
             {
                 Id = 1,
@@ -172,6 +173,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NotesModel()
             {
                 Id = 1,
@@ -195,6 +198,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NotesModel()
             {
                 Id = 1,
@@ -218,6 +223,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NotesModel()
             {
                 Id = 1,
@@ -241,6 +248,8 @@ namespace FundooTestCases.TestCases
             ////creating a fake instance of registration interfcae.
             var repository = new Mock<INotesRL>();
             var business = new NotesBL(repository.Object);
+
+            ////arrange
             var model = new NotesModel()
             {
                 Id = 1,
@@ -250,6 +259,126 @@ namespace FundooTestCases.TestCases
 
             //// act
             var data = business.ChangeColor(model.Id, model.Color, model.UserId);
+
+            ////assert
+            Assert.NotNull(data);
+        }
+
+        /// <summary>
+        /// test case to Add Label into note
+        /// </summary>
+        [Fact]
+        public void AddLabel()
+        {
+            ////creating a fake instance of registration interfcae.
+            var repository = new Mock<INotesRL>();
+            var business = new NotesBL(repository.Object);
+
+            ////arrange
+            var note = new NotesModel()
+            {
+                Id = 1,
+                UserId = 1
+            };
+
+            int labelId = 1;
+
+            //// act
+            var data = business.AddLabel(note.Id, labelId, note.UserId);
+
+            ////assert
+            Assert.NotNull(data);
+        }
+
+        /// <summary>
+        /// test case to remove label into note
+        /// </summary>
+        [Fact]
+        public void RemoveLabel()
+        {
+            ////creating a fake instance of registration interfcae.
+            var repository = new Mock<INotesRL>();
+            var business = new NotesBL(repository.Object);
+
+            ////arrange
+            var note = new NotesModel()
+            {
+                Id = 1,
+                UserId = 1
+            };
+
+            int labelId = 1;
+
+            //// act
+            var data = business.RemoveLabel(note.Id, labelId, note.UserId);
+
+            ////assert
+            Assert.NotNull(data);
+        }
+
+        /// <summary>
+        /// test case to bulk trash the notes
+        /// </summary>
+        [Fact]
+        public void BulkTrash()
+        {
+            ////creating a fake instance of registration interfcae.
+            var repository = new Mock<INotesRL>();
+            var business = new NotesBL(repository.Object);
+
+            ////arrange
+            int userId = 1;
+            List<int> noteIds = new List<int>();
+
+            //// act
+            var data = business.BulkTrash(userId, noteIds);
+
+            ////assert
+            Assert.NotNull(data);
+        }
+
+        /// <summary>
+        /// test case to search the notes
+        /// </summary>
+        [Fact]
+        public void Search()
+        {
+            ////creating a fake instance of registration interfcae.
+            var repository = new Mock<INotesRL>();
+            var business = new NotesBL(repository.Object);
+
+            ////arrange
+            int userId = 1;
+            string word = "note to be searched";
+
+            //// act
+            var data = business.Search(word, userId);
+
+            ////assert
+            Assert.NotNull(data);
+        }
+
+        /// <summary>
+        /// test case to collaborate with other users
+        /// </summary>
+        [Fact]
+        public void Collaborate()
+        {
+            ////creating a fake instance of registration interfcae.
+            var repository = new Mock<INotesRL>();
+            var business = new NotesBL(repository.Object);
+
+            ////arrange
+            var note = new NotesModel()
+            {
+                Id = 1,
+                UserId = 1
+            };
+
+            int colaberateWith = 2;
+
+            //// act
+            var data = business.Collaborate(colaberateWith, note.Id, note.UserId);
 
             ////assert
             Assert.NotNull(data);

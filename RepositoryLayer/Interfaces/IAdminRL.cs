@@ -13,9 +13,9 @@ namespace RepositoryLayer.Interfaces
 {
     public interface IAdminRL
     {
-        Task<bool> AddAdmin(RegistrationRequest registrationRequest);
+        Task<RegistrationModel> AddAdmin(RegistrationRequest registrationRequest);
 
-        Task<string> LoginAdmin(LoginModel loginModel);
+        Task<RegistrationModel> LoginAdmin(LoginModel loginModel);
 
         Task<IDictionary<string, int>> UserStatistics(int userId);
 

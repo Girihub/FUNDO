@@ -7,21 +7,16 @@
 namespace RepositoryLayer.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
-    using System.Security.Claims;
-    using System.Text;
     using System.Threading.Tasks;
-    using CloudinaryDotNet;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
-    using Microsoft.IdentityModel.Tokens;
     using RepositoryLayer.Context;
     using RepositoryLayer.Interfaces;
-    using RepositoryLayer.MSMQ;
 
     /// <summary>
     /// class AccountRL implements interface IAccountRL
@@ -50,10 +45,11 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns string value and boolean value</returns>
-        public async Task<Tuple<bool, string>> AddUser(RegistrationRequest registrationRequest)
+        public async Task<RegistrationModel> AddUser(RegistrationRequest registrationRequest)
         {            
             try
             {
+                RegistrationModel emodel = new RegistrationModel();
                 if (registrationRequest.ServiceType.ToLower() != "Advance".ToLower())
                 {
                     registrationRequest.ServiceType = "Basic";
@@ -73,31 +69,22 @@ namespace RepositoryLayer.Services
                     ProfilePicture = registrationRequest.ProfilePicture,
                     ServiceType = registrationRequest.ServiceType,
                     UserType = "User"
-                };                 
-                var queryAllUsers = from table in this.appDbContext.Registration
-                                        select table;
-                foreach (var email in queryAllUsers)
+                };
+                var user = this.appDbContext.Registration.Where(c => c.Email == registrationRequest.Email).FirstOrDefault();
+
+                if(user == null)
                 {
-                    if (email.Email.Equals(model.Email))
-                    {
-                        return Tuple.Create(false, "Email already exist....");
-                    }
+                    this.appDbContext.Registration.Add(model);
+                    await this.appDbContext.SaveChangesAsync();
+                    return model;
                 }
 
-                this.appDbContext.Add(model);
-                var result = await this.appDbContext.SaveChangesAsync();
-                
-                if (result > 0)
-                {
-                    return Tuple.Create(true, "Registered Successfully....");
-                }
+                return emodel;
             }
             catch (Exception e)
             {
-                throw e;
+                throw new Exception(e.Message);
             }     
-            
-            return Tuple.Create(false, "Error Occures");
         }
 
         /// <summary>
@@ -135,45 +122,37 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>returns string value and boolean value</returns>
-        public async Task<Tuple<bool, string>> LoginUser(LoginModel loginModel)
+        public async Task<RegistrationModel> LoginUser(LoginModel loginModel)
         {
             try
             {
+                RegistrationModel model = new RegistrationModel();
+
                 var queryAllUsers = from table in this.appDbContext.Registration
                                         select table;
 
-                foreach (var email in queryAllUsers)
+                foreach (var user in queryAllUsers)
                 {
-                    if (email.Email.Equals(loginModel.Email) && email.UserType.Equals("User"))
+                    if (user.Email.Equals(loginModel.Email) && user.UserType.Equals("User"))
                     {
-                        if (this.Decrypt(email.Password).Equals(loginModel.Password))
+                        if (this.Decrypt(user.Password).Equals(loginModel.Password))
                         {
-                            var tokenHandler = new JwtSecurityTokenHandler();
-                            var tokenDescriptor = new SecurityTokenDescriptor
-                            {
-                                Subject = new ClaimsIdentity(new Claim[]
-                                {
-                                        //// Claims the identity
-                                        new Claim("Id", email.Id.ToString()),
-                                        new Claim("Email", email.Email.ToString())
-                                }),
-                                Expires = DateTime.Now.AddMinutes(120),
-                                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey")), SecurityAlgorithms.HmacSha256Signature)
-                            };
-                            var secureToken = tokenHandler.CreateToken(tokenDescriptor);
-                            var token = tokenHandler.WriteToken(secureToken);
-                            return Tuple.Create(true, "Logged in Successfully. Your token is " + token);
+                            return user;
                         }
-                        return Tuple.Create(false, "Password does not match with email");
+                        else
+                        {
+                            return model;
+                        }
+                        
                     }
                 }
 
                 var result = await this.appDbContext.SaveChangesAsync();
-               return Tuple.Create(false, "Email is wrong");
+                return model;
             }
             catch (Exception e)
             {
-                throw e;
+                throw new Exception(e.Message);
             }
         }
 
@@ -182,73 +161,52 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="forgotPassword">forgotPassword as a parameter</param>
         /// <returns>returns string value</returns>
-        public string ForgotPassword(ForgotPasswordModel forgotPassword)
+        public ForgotPasswordResponse ForgotPassword(ForgotPasswordModel forgotPassword)
         {
             try
             {
                 //// lambda expression to get the particular user from db
                 var user = this.appDbContext.Registration.Where(g => g.Email == forgotPassword.Email).FirstOrDefault();
-
-                if (user.Email.Equals(forgotPassword.Email))
+                ForgotPasswordResponse response = new ForgotPasswordResponse();
+                if (user != null)
                 {
-                    var tokenHandler = new JwtSecurityTokenHandler();
-                    var tokenDescriptor = new SecurityTokenDescriptor
-                    {
-                        Subject = new ClaimsIdentity(new Claim[]
-                        {
-                            //// Claims the identity
-                            new Claim("Email", user.Email.ToString())
-                        }),
-                        Expires = DateTime.UtcNow.AddDays(1)
-                    };
-                    var secureToken = tokenHandler.CreateToken(tokenDescriptor);
-                    var token = tokenHandler.WriteToken(secureToken);
-
-                    SendMessage.ForgotPasswordMessage(forgotPassword.Email, token);
-
-                    return "token has been sent on " + forgotPassword.Email;
+                    response.Id = user.Id;
+                    response.Email = user.Email; 
+                    return response;
                 }
 
-                return "Invalid email";
+                return response;
             }
             catch (Exception e)
             {
-                throw e;
+                throw new Exception(e.Message);
             }
         }
 
         /// <summary>
-        /// Method to reset password
+        /// Method to change password
         /// </summary>
-        /// <param name="resetPassword">resetPassword as a parameter</param>
-        /// <returns>returns string value</returns>
-        public string ResetPassword(ResetPasswordModel resetPassword)
+        /// <param name="changePassword">changePassword as a parameter</param>
+        /// <param name="id">id as a parameter</param>
+        /// <returns>returns output</returns>
+        public async Task<bool> ChangePassword(ChangePasswordModel changePassword, int id)
         {
             try
             {
-                var allUsers = from table in this.appDbContext.Registration
-                                    select table;
-                foreach (var user in allUsers.ToList())
+                var user = this.appDbContext.Registration.Where(c => c.Id == id).FirstOrDefault();
+                if(user != null)
                 {
-                    if (user.Email.Equals(resetPassword.Email))
+                    if(user.Password == this.Encrypt(changePassword.OldPassword))
                     {
-                        if (this.Decrypt(user.Password).Equals(resetPassword.OldPassword))
-                        {
-                            if (resetPassword.NewPassword.Equals(resetPassword.ConfirmPassword))
-                            {
-                                user.Password = this.Encrypt(resetPassword.ConfirmPassword);
-                                this.appDbContext.SaveChangesAsync();
-                                return "Password reset successfully";
-                            }
-
-                            return "NewPassword and ConfirmPassword does not match";
-                        }
-
-                        return "Incorrest old password";
+                        user.Password = this.Encrypt(changePassword.NewPassword);
+                        await this.appDbContext.SaveChangesAsync();
+                        return true;
                     }
+
+                    return false;
                 }
 
-                return "Invalid email";
+                return false;
             }
             catch (Exception e)
             {
@@ -282,13 +240,13 @@ namespace RepositoryLayer.Services
         /// <summary>
         /// Method to reset forgotten password
         /// </summary>
-        /// <param name="resetForgetPassword">resetForgetPassword as a parameter</param>
+        /// <param name="resetPassword">resetPassword as a parameter</param>
         /// <returns>returns result</returns>
-        public async Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
+        public async Task<bool> ResetPassword(ResetPasswordModel resetPassword)
         {
             try
             {
-                var stream = resetForgetPassword.Token;
+                var stream = resetPassword.Token;
                 var handler = new JwtSecurityTokenHandler();
                 var jsonToken = handler.ReadToken(stream);
                 var tokenS = handler.ReadToken(stream) as JwtSecurityToken;
@@ -297,19 +255,15 @@ namespace RepositoryLayer.Services
                 var user = this.appDbContext.Registration.Where(g => g.Email == email).FirstOrDefault();                
                 if (user != null)
                 {
-                    if(this.Encrypt(resetForgetPassword.NewPassword) == this.Encrypt(resetForgetPassword.ConfirmPassword))
+                    if (user.Password != this.Encrypt(resetPassword.NewPassword))
                     {
-                        if (user.Password != this.Encrypt(resetForgetPassword.NewPassword))
-                        {
-                            user.Password = this.Encrypt(resetForgetPassword.NewPassword);
-                            var result = await this.appDbContext.SaveChangesAsync();
-                            return "Password reset successfully";
-                        }
-                        return "NewPassword cant be same as Old Password";
+                        user.Password = this.Encrypt(resetPassword.NewPassword);
+                        var result = await this.appDbContext.SaveChangesAsync();
+                        return true;
                     }
-                    return "NewPassword and ConfirmPassword should be same";
-                }                
-                return "Invalid token for email";
+                }  
+                
+                return false;
             }
             catch (Exception e)
             {
@@ -327,31 +281,20 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                ImageCloudinary cloudiNary = new ImageCloudinary();
-
-                var cloudeName = configuration["Cloudinary:CloudName"];
-                var keyName = configuration["Cloudinary:ApiKey"];
-                var secretKey = configuration["Cloudinary:SecretKey"];
-
-                Account account = new Account()
-                {
-                    Cloud = cloudeName,
-                    ApiKey = keyName,
-                    ApiSecret = secretKey
-                };
-                
-                cloudiNary.cloudinary = new Cloudinary(account);
+                ImageCloudinary cloudiNary = new ImageCloudinary(configuration);
 
                 var user = this.appDbContext.Registration.Where(g => g.Id == id).FirstOrDefault();
+                string url = null;
                 if(user != null)
                 {
                     user.ProfilePicture = cloudiNary.UploadImage(formFile);
                     await this.appDbContext.SaveChangesAsync();
-                    return "Profile picture uploaded successfully";
+                    url = user.ProfilePicture;
+                    return url;
                 }
                 else
                 {
-                    return "Login and authenticate first to upload profile picture";
+                    return url;
                 }
             }
             catch (Exception e)

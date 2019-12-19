@@ -11,7 +11,6 @@ namespace CommonLayer.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using static CommonLayer.Model.NoteEnumType;
 
     public class NotesModel
     {

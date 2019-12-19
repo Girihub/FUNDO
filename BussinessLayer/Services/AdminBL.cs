@@ -36,18 +36,11 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="registrationModel">registration Model as a parameter</param>
         /// <returns>Returns result</returns>
-        public async Task<bool> AddAdmin(RegistrationRequest registrationRequest)
+        public async Task<RegistrationModel> AddAdmin(RegistrationRequest registrationRequest)
         {
             try
             {
-                if (registrationRequest != null)
-                {
-                    return await this.repository.AddAdmin(registrationRequest);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.nullModel);
-                }
+                return await this.repository.AddAdmin(registrationRequest);
             }
             catch (Exception e)
             {
@@ -60,7 +53,7 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>returns result</returns>
-        public async Task<string> LoginAdmin(LoginModel loginModel)
+        public async Task<RegistrationModel> LoginAdmin(LoginModel loginModel)
         {
             try
             {

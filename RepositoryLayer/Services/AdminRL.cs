@@ -47,10 +47,11 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns result</returns>
-        public async Task<bool> AddAdmin(RegistrationRequest registrationRequest)
+        public async Task<RegistrationModel> AddAdmin(RegistrationRequest registrationRequest)
         {
             try
             {
+                RegistrationModel emodel = new RegistrationModel();
                 string password = this.Encrypt(registrationRequest.Password);
                 if (registrationRequest.ServiceType.ToLower() != "Advance".ToLower())
                 {
@@ -78,10 +79,10 @@ namespace RepositoryLayer.Services
                 {
                     this.appDbContext.Registration.Add(model);
                     await this.appDbContext.SaveChangesAsync();
-                    return true;
+                    return model;
                 }
 
-                return false;
+                return emodel;
             }
             catch (Exception e)
             {
@@ -124,37 +125,26 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>returns result</returns>
-        public async Task<string> LoginAdmin(LoginModel loginModel)
+        public async Task<RegistrationModel> LoginAdmin(LoginModel loginModel)
         {
             try
             {
+                RegistrationModel model = new RegistrationModel();
+
                 var admin = this.appDbContext.Registration.Where(c => c.Email.Equals(loginModel.Email) && c.UserType.Equals("Admin")).FirstOrDefault();
 
                 if (admin != null)
                 {
                     if (admin.Password == this.Encrypt(loginModel.Password))
                     {
-                        var tokenHandler = new JwtSecurityTokenHandler();
-                        var tokenDescriptor = new SecurityTokenDescriptor
-                        {
-                            Subject = new ClaimsIdentity(new Claim[]
-                            {
-                                        //// Claims the identity
-                                        new Claim("Id", admin.Id.ToString()),
-                                        new Claim("Email", admin.Email.ToString())
-                            }),
-                            Expires = DateTime.Now.AddMinutes(120),
-                            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])), SecurityAlgorithms.HmacSha256Signature)
-                        };
-                        var secureToken = tokenHandler.CreateToken(tokenDescriptor);
-                        var token = tokenHandler.WriteToken(secureToken);
-                        return token;
+                        return admin;
                     }
 
-                    return "!pass";
+                    return model;
                 }
 
-                return null;
+                var result = await this.appDbContext.SaveChangesAsync();
+                return model;
             }
             catch (Exception e)
             {
@@ -194,7 +184,6 @@ namespace RepositoryLayer.Services
                 return dict;
             }
 
-            dict.Add("You are not authorized to see these details", 0);
             return dict;
         }
 

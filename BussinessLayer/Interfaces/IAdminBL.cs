@@ -18,14 +18,14 @@ namespace BussinessLayer.Interfaces
         /// </summary>
         /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns result in JSON format</returns>
-        Task<bool> AddAdmin(RegistrationRequest registrationRequest);
+        Task<RegistrationModel> AddAdmin(RegistrationRequest registrationRequest);
 
         /// <summary>
         /// Method declaration for login of admin
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
-        Task<string> LoginAdmin(LoginModel loginModel);
+        Task<RegistrationModel> LoginAdmin(LoginModel loginModel);
 
         /// <summary>
         /// Method declaration for User Statistics

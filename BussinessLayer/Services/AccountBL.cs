@@ -13,6 +13,7 @@ namespace BussinessLayer.Services
     using CommonLayer.Constants;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Http;
     using RepositoryLayer.Interfaces;
 
@@ -40,18 +41,11 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="registrationRequest">registrationRequest Model</param>
         /// <returns>boolean value and string</returns>
-        public async Task<Tuple<bool, string>> AddUser(RegistrationRequest registrationRequest)
+        public async Task<RegistrationModel> AddUser(RegistrationRequest registrationRequest)
         {
             try
             {
-                if (registrationRequest != null)
-                {
-                    return await this.repository.AddUser(registrationRequest);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.nullModel);
-                }
+                return await this.repository.AddUser(registrationRequest);
             }
             catch (Exception e)
             {
@@ -64,18 +58,11 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>boolean value and string</returns>
-        public async Task<Tuple<bool, string>> LoginUser(LoginModel loginModel)
+        public async Task<RegistrationModel> LoginUser(LoginModel loginModel)
         {
             try
             {
-                if (loginModel != null)
-                {
-                    return await this.repository.LoginUser(loginModel);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.nullModel);
-                }
+                return await this.repository.LoginUser(loginModel);
             }
             catch (Exception e)
             {
@@ -88,18 +75,11 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="forgotPassword">forgotPassword as a parameter</param>
         /// <returns>returns string output</returns>
-        public string ForgotPassword(ForgotPasswordModel forgotPassword)
+        public ForgotPasswordResponse ForgotPassword(ForgotPasswordModel forgotPassword)
         {
             try
             {
-                if(forgotPassword != null)
-                {
-                    return this.repository.ForgotPassword(forgotPassword);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.nullModel);
-                }
+                return this.repository.ForgotPassword(forgotPassword);
             }
             catch (Exception e)
             {
@@ -110,20 +90,13 @@ namespace BussinessLayer.Services
         /// <summary>
         /// Method to reset the password
         /// </summary>
-        /// <param name="resetPassword">resetPassword as a parameter</param>
+        /// <param name="changePassword">changePassword as a parameter</param>
         /// <returns>returns string output</returns>
-        public string ResetPassword(ResetPasswordModel resetPassword)
+        public async Task<bool> ChangePassword(ChangePasswordModel changePassword, int id)
         {
             try
             {
-                if(resetPassword != null)
-                {
-                    return this.repository.ResetPassword(resetPassword);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.nullModel);
-                }
+                return await this.repository.ChangePassword(changePassword, id);
             }
             catch (Exception e)
             {
@@ -140,14 +113,7 @@ namespace BussinessLayer.Services
         {
             try
             {
-                if(getPassword != null)
-                {
-                    return this.repository.GetPassword(getPassword);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.nullModel);
-                }
+                return this.repository.GetPassword(getPassword);
             }
             catch (Exception e)
             {
@@ -158,20 +124,13 @@ namespace BussinessLayer.Services
         /// <summary>
         /// Method to reset the forgotten password
         /// </summary>
-        /// <param name="resetForgetPassword">resetForgetPassword as a parameter</param>
+        /// <param name="resetPassword">resetPassword as a parameter</param>
         /// <returns>returns string output</returns>
-        public async Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword)
+        public async Task<bool> ResetPassword(ResetPasswordModel resetPassword)
         {
             try
             {
-                if(resetForgetPassword != null)
-                {
-                    return await this.repository.ResetForgetPassword(resetForgetPassword);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.nullModel);
-                }
+                return await this.repository.ResetPassword(resetPassword);
             }
             catch (Exception e)
             {

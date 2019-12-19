@@ -67,27 +67,7 @@ namespace Fundoo
             services.AddTransient<INotesRL, NotesRL>();
 
             services.AddTransient<ILableBL, LableBL>();
-            services.AddTransient<ILableRL, LableRL>();
-
-
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}).AddJwtBearer(g =>
-            //{
-            //    g.RequireHttpsMetadata = false;
-            //    g.SaveToken = false;
-            //    g.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false,
-            //        ValidateLifetime = true,
-            //        //ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-            //    };
-            //});
+            services.AddTransient<ILableRL, LableRL>();            
 
             var key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
             services.AddAuthentication(x =>

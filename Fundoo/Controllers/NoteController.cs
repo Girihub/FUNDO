@@ -314,13 +314,15 @@ namespace Fundoo.Controllers
             var result = await this.businessNotes.Search(word, userId);
             if(result.Count == 0)
             {
+                bool success = false;
                 var message = "No notes found by word " + word;
-                return this.Ok(new { message, result });
+                return this.Ok(new { success, message, result });
             }
             else
             {
+                bool success = true;
                 var message = "Following notes contain " + word;
-                return this.Ok(new { message, result });
+                return this.Ok(new { success, message, result });
             }
         }
 
@@ -335,7 +337,7 @@ namespace Fundoo.Controllers
         {
             int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
             var result = await this.businessNotes.Collaborate(collaberateWith, noteId, collaboratorId);
-
+            //bool success = true;
             return this.Ok(new { result });
 
         }

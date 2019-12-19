@@ -7,13 +7,19 @@
 namespace Fundoo.Controllers
 {
     using System;
+    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
+    using System.Security.Claims;
+    using System.Text;
     using System.Threading.Tasks;
     using BussinessLayer.Interfaces;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.IdentityModel.Tokens;
 
     /// <summary>
     /// AdminController class to implement API
@@ -28,12 +34,18 @@ namespace Fundoo.Controllers
         private readonly IAdminBL businessRegistration;
 
         /// <summary>
+        /// configuration field
+        /// </summary>
+        private readonly IConfiguration configuration;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AdminController"/> class.
         /// </summary>
         /// <param name="businessRegistration">businessRegistration as a parameter</param>
-        public AdminController(IAdminBL businessRegistration)
+        public AdminController(IAdminBL businessRegistration, IConfiguration configuration)
         {
             this.businessRegistration = businessRegistration;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -43,18 +55,39 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("AdminRegistration")]
-        public async Task<IActionResult> AddAdmin(RegistrationRequest registrationRequest)
+        public async Task<IActionResult> AddAdmin([FromForm] RegistrationRequest registrationRequest)
         {
             var result = await this.businessRegistration.AddAdmin(registrationRequest);
-            if (result)
+            try
             {
-                var message = "Registered successfully....";
-                return this.Ok(new { result, message });
+                if (result.Email != null)
+                {
+                    ResponseToUser data = new ResponseToUser()
+                    {
+                        Id = result.Id,
+                        FirstName = result.FirstName,
+                        LastName = result.LastName,
+                        MobileNumber = result.MobileNumber,
+                        Email = result.Email,
+                        ProfilePicture = result.ProfilePicture,
+                        ServiceType = result.ServiceType,
+                        UserType = result.UserType
+                    };
+
+                    bool status = true;
+                    var message = "Registered successfully...";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Email is already registered...";
+                    return this.BadRequest(new { status, message });
+                }
             }
-            else
+            catch (Exception e)
             {
-                var message = "Email has already been registered. Use another email";
-                return this.Ok(new { result, message });
+                throw new Exception(e.Message);
             }
         }
 
@@ -65,25 +98,40 @@ namespace Fundoo.Controllers
         /// <returns>returns result</returns>
         [HttpPost]
         [Route("AdminLogin")]
-        public async Task<IActionResult> LoginAdmin(LoginModel loginModel)
+        public async Task<IActionResult> LoginAdmin([FromForm] LoginModel loginModel)
         {
-            var result = await this.businessRegistration.LoginAdmin(loginModel);
-            if (result == null)
+            try
             {
-                var flag = false;
-                var message = "Enter valid email";
-                return this.Ok(new { flag, message });
+                var result = await this.businessRegistration.LoginAdmin(loginModel);
+                if (result.Email != null)
+                {
+                    ResponseToUser data = new ResponseToUser()
+                    {
+                        Id = result.Id,
+                        FirstName = result.FirstName,
+                        LastName = result.LastName,
+                        MobileNumber = result.MobileNumber,
+                        Email = result.Email,
+                        ProfilePicture = result.ProfilePicture,
+                        ServiceType = result.ServiceType,
+                        UserType = result.UserType
+                    };
+
+                    bool status = true;
+                    var message = "Logged in successfully";
+                    var token = this.GetToken(result.Id.ToString(), result.Email);
+                    return this.Ok(new { status, message, data, token });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Invalid credentials";
+                    return this.BadRequest(new { status, message });
+                }
             }
-            else if (result.Equals("!pass"))
+            catch (Exception e)
             {
-                var flag = false;
-                var message = "Enter valid password";
-                return this.Ok(new { flag, message });
-            }
-            else
-            {
-                var message = "Logged in successfully...";
-                return this.Ok(new { message, result, });
+                throw new Exception(e.Message);
             }
         }
 
@@ -97,8 +145,18 @@ namespace Fundoo.Controllers
         {
             var userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
             var result = await this.businessRegistration.UserStatistics(userId);
-
-            return this.Ok(new { result });
+            if(result.Count == 0)
+            {
+                bool status = false;
+                var meassage = "You are not authorized to see these details";
+                return this.BadRequest(new { status, meassage });
+            }
+            else
+            {
+                bool status = true;
+                var meassage = "Following are user's statistics";
+                return this.Ok(new { status, meassage, result });
+            }
         }
 
         /// <summary>
@@ -110,15 +168,45 @@ namespace Fundoo.Controllers
         public async Task<IActionResult> UserList()
         {
             var userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
-            var result = await this.businessRegistration.UserList(userId);
+            var data = await this.businessRegistration.UserList(userId);
 
-            if (result.Count != 0)
+            if (data.Count != 0)
             {
-                return this.Ok(new { result });
+                bool status = true;
+                var message = "Following are the users";
+                return this.Ok(new { status, message, data });
             }
+            {
+                bool status = false;
+                var message = "No users found";
+                return this.BadRequest(new { status, message });
+            }            
+        }
 
-            var message = "No users found";
-            return this.Ok(new { result, message });
+        /// <summary>
+        /// API to generate token
+        /// </summary>
+        /// <param name="id">id as a parameter</param>
+        /// <param name="email">email as a parameter</param>
+        /// <returns>returns token</returns>
+        [HttpGet]
+        public string GetToken(string id, string email)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                                        //// Claims the identity
+                                        new Claim("Id", id.ToString()),
+                                        new Claim("Email", email.ToString())
+                }),
+                Expires = DateTime.Now.AddMinutes(120),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var secureToken = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.WriteToken(secureToken);
+            return token;
         }
     }
 }

@@ -11,6 +11,7 @@ namespace BussinessLayer.Interfaces
     using System.Threading.Tasks;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Http;
 
     /// <summary>
@@ -23,28 +24,28 @@ namespace BussinessLayer.Interfaces
         /// </summary>
         /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns boolean value and string</returns>
-        Task<Tuple<bool, string>> AddUser(RegistrationRequest registrationRequest);
+        Task<RegistrationModel> AddUser(RegistrationRequest registrationRequest);
 
         /// <summary>
         /// Method declaration for login of user
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>returns boolean value and string</returns>
-        Task<Tuple<bool, string>> LoginUser(LoginModel loginModel);
+        Task<RegistrationModel> LoginUser(LoginModel loginModel);
 
         /// <summary>
         /// Method declaration to recover the password
         /// </summary>
         /// <param name="forgotPassword">forgotPassword as a parameter</param>
         /// <returns>returns string output</returns>
-        string ForgotPassword(ForgotPasswordModel forgotPassword);
+        ForgotPasswordResponse ForgotPassword(ForgotPasswordModel forgotPassword);
 
         /// <summary>
         /// Method declaration to reset the password
         /// </summary>
-        /// <param name="resetPassword">resetPassword as a parameter</param>
-        /// <returns>returns string output</returns>
-        string ResetPassword(ResetPasswordModel resetPassword);
+        /// <param name="changePassword">changePassword as a parameter</param>
+        /// <returns>returns output</returns>
+        Task<bool> ChangePassword(ChangePasswordModel changePassword, int id);
 
         /// <summary>
         /// Method declaration to get the password
@@ -56,9 +57,9 @@ namespace BussinessLayer.Interfaces
         /// <summary>
         /// Method declaration to reset the forgotten password
         /// </summary>
-        /// <param name="resetForgetPassword">resetForgetPassword as a parameter</param>
-        /// <returns>returns string output</returns>
-        Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword);
+        /// <param name="resetPassword">resetPassword as a parameter</param>
+        /// <returns>returns output</returns>
+        Task<bool> ResetPassword(ResetPasswordModel resetPassword);
 
         /// <summary>
         /// Method declaration to Upload Profile Picture

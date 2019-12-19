@@ -406,24 +406,12 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                ImageCloudinary cloudiNary = new ImageCloudinary();
-                var cloudeName = configuration["Cloudinary:CloudName"];
-                var keyName = configuration["Cloudinary:ApiKey"];
-                var secretKey = configuration["Cloudinary:SecretKey"];
+                ImageCloudinary cloudinary = new ImageCloudinary(configuration);
 
-                Account account = new Account()
-                {
-                    Cloud = cloudeName,
-                    ApiKey = keyName,
-                    ApiSecret = secretKey
-                };
-                
-                cloudiNary.cloudinary = new Cloudinary(account);
-
-                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
+                 var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
                 if (note != null)
                 {
-                    note.Image = cloudiNary.UploadImage(formFile);
+                    note.Image = cloudinary.UploadImage(formFile);
                     note.ModifiedDate = DateTime.Now;
                     await this.appDbContext.SaveChangesAsync();
                     return "Image uploaded successfully";

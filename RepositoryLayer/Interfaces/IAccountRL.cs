@@ -11,6 +11,7 @@ namespace RepositoryLayer.Interfaces
     using System.Threading.Tasks;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Http;
 
     /// <summary>
@@ -23,22 +24,22 @@ namespace RepositoryLayer.Interfaces
         /// </summary>
         /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns boolean value and string</returns>
-        Task<Tuple<bool, string>> AddUser(RegistrationRequest registrationRequest);
+        Task<RegistrationModel> AddUser(RegistrationRequest registrationRequest);
 
         /// <summary>
         /// Method declaration for login of user
         /// </summary>
         /// <param name="loginModel">loginModel as a parameter</param>
         /// <returns>returns boolean value and string</returns>
-        Task<Tuple<bool, string>> LoginUser(LoginModel loginModel);
+        Task<RegistrationModel> LoginUser(LoginModel loginModel);
 
-        string ForgotPassword(ForgotPasswordModel forgotPassword);
+        ForgotPasswordResponse ForgotPassword(ForgotPasswordModel forgotPassword);
 
-        string ResetPassword(ResetPasswordModel resetPassword);
+        Task<bool> ChangePassword(ChangePasswordModel changePassword, int id);
 
         string GetPassword(GetPasswordModel getPassword);
 
-        Task<string> ResetForgetPassword(ResetForgetPasswordModel resetForgetPassword);
+        Task<bool> ResetPassword(ResetPasswordModel resetPassword);
 
         Task<string> UploadProfilePicture(int id, IFormFile formFile);        
     }

@@ -42,6 +42,7 @@ namespace Fundoo.Controllers
         /// Initializes a new instance of the <see cref="AdminController"/> class.
         /// </summary>
         /// <param name="businessRegistration">businessRegistration as a parameter</param>
+        /// <param name="configuration">configuration as a parameter</param>
         public AdminController(IAdminBL businessRegistration, IConfiguration configuration)
         {
             this.businessRegistration = businessRegistration;
@@ -51,7 +52,7 @@ namespace Fundoo.Controllers
         /// <summary>
         /// API for registration of admin
         /// </summary>
-        /// <param name="registrationModel">registrationModel as a parameter</param>
+        /// <param name="registrationRequest">registrationRequest as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("AdminRegistration")]

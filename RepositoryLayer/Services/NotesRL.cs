@@ -47,7 +47,7 @@ namespace RepositoryLayer.Services
         /// <param name="noteRequest">noteRequest parameter</param>
         /// <param name="userId">userId parameter</param>
         /// <returns>returns string value</returns>
-        public async Task<string> AddNote(NoteRequest noteRequest, int userId)
+        public async Task<NotesModel> AddNote(NoteRequest noteRequest, int userId)
         {
             try
             {            
@@ -68,7 +68,7 @@ namespace RepositoryLayer.Services
             };
                 this.appDbContext.Notes.Add(note);
                 await this.appDbContext.SaveChangesAsync();
-                return "Note added";
+                return note;
             }
             catch (Exception e)
             {
@@ -81,8 +81,8 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <param name="userId">userId as a parameter</param>
-        /// <returns>returns result in string</returns>
-        public async Task<string> DeleteNote(int id, int userId)
+        /// <returns>returns result</returns>
+        public async Task<bool> DeleteNote(int id, int userId)
         {
             try
             {
@@ -102,10 +102,10 @@ namespace RepositoryLayer.Services
 
                     this.appDbContext.Notes.Remove(notes);
                     var result = await this.appDbContext.SaveChangesAsync();
-                    return "Note deleted";
+                    return true;
                 }
 
-                return "Note not found";
+                return false;
             }
             catch (Exception e)
             {
@@ -118,14 +118,19 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns required note in list format</returns>
-        public IList<NotesModel> GetNote(int id)
+        public IList<NotesModel> GetNote(int id, int userId)
         {
             try
             {
                 List<NotesModel> notes = new List<NotesModel>();
-                var note = this.appDbContext.Notes.Where(g => g.Id == id).FirstOrDefault();
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
+                if(note != null)
+                {
                     notes.Add(note);
                     return notes;
+                }
+
+                return notes;
             }
             catch (Exception e)
             {
@@ -167,15 +172,15 @@ namespace RepositoryLayer.Services
         /// <param name="noteUpdate">noteUpdate as a parameter</param>
         /// <param name="userId">userId as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int userId)
+        public async Task<NotesModel> UpdateNote(int id, NoteUpdate noteUpdate, int userId)
         {
             try
             {
                 var notes = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
-                
+                NotesModel note = new NotesModel();
                 if (notes == null)
                 {
-                    return "Enter valid Id";
+                    return note;
                 } 
 
                 if (noteUpdate.Title != null)
@@ -191,7 +196,8 @@ namespace RepositoryLayer.Services
                 notes.ModifiedDate = DateTime.Now;
                 this.appDbContext.Entry(notes).State = EntityState.Modified;
                 await this.appDbContext.SaveChangesAsync();
-                return "Updated";                
+                
+                return notes;                
             }
             catch (Exception e)
             {
@@ -229,7 +235,7 @@ namespace RepositoryLayer.Services
                     }
                 }
 
-                return "Enter valid id";
+                return "!found";
             }
             catch (Exception e)
             {
@@ -295,7 +301,7 @@ namespace RepositoryLayer.Services
                     }
                 }
 
-                return "Enter valid id";
+                return "!found";
             }
             catch (Exception e)
             {
@@ -360,7 +366,7 @@ namespace RepositoryLayer.Services
                     }
                 }
 
-                return "Enter valid id";
+                return "!found";
             }
             catch (Exception e)
             {
@@ -408,16 +414,17 @@ namespace RepositoryLayer.Services
             {
                 ImageCloudinary cloudinary = new ImageCloudinary(configuration);
 
-                 var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
+                var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
+                string url = null;
                 if (note != null)
                 {
                     note.Image = cloudinary.UploadImage(formFile);
                     note.ModifiedDate = DateTime.Now;
                     await this.appDbContext.SaveChangesAsync();
-                    return "Image uploaded successfully";
+                    return note.Image;
                 }
 
-                return "Enter valid id";
+                return url;
             }
             catch (Exception e)
             {
@@ -443,10 +450,10 @@ namespace RepositoryLayer.Services
                     note.AddReminder = dateTime;
                     note.ModifiedDate = DateTime.Now;
                     await this.appDbContext.SaveChangesAsync();
-                    return "Reminder added";
+                    return note.AddReminder.ToString("dd MMMM yyyy hh:mm:ss tt");
                 }
 
-                return "Enter valid id";
+                return "id";
             }
             catch (Exception e)
             {
@@ -473,10 +480,10 @@ namespace RepositoryLayer.Services
                     note.ModifiedDate = DateTime.Now;
                     this.appDbContext.Entry(note).State = EntityState.Modified;
                     await this.appDbContext.SaveChangesAsync();
-                    return "Color changed";
+                    return note.Color;
                 }
 
-                return "Enter valid id";
+                return "id";
             }
             catch (Exception e)
             {

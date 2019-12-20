@@ -32,18 +32,11 @@ namespace BussinessLayer.Services
         /// <param name="noteRequest">noteRequest model as a parameter</param>
         /// <param name="UserId">Id of user as a parameter</param>
         /// <returns>returns result</returns>
-        public async Task<string> AddNote(NoteRequest noteRequest, int UserId)
+        public async Task<NotesModel> AddNote(NoteRequest noteRequest, int UserId)
         {
             try
             {
-                if(noteRequest != null)
-                {
-                    return await this.repository.AddNote(noteRequest, UserId);
-                }
-                else
-                {
-                    return ErrorMessages.nullModel;
-                }
+                return await this.repository.AddNote(noteRequest, UserId);
             }
             catch (Exception e)
             {
@@ -57,7 +50,7 @@ namespace BussinessLayer.Services
         /// <param name="id">id of note</param>
         /// <param name="Userid">id of user</param>
         /// <returns>returns result</returns>
-        public async Task<string> DeleteNote(int id, int Userid)
+        public async Task<bool> DeleteNote(int id, int Userid)
         {
             try
             {
@@ -67,7 +60,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    return ErrorMessages.invalidId;
+                    return false;
                 }
             }
             catch (Exception e)
@@ -81,13 +74,13 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="id">id of note to be displayed</param>
         /// <returns>returns result</returns>
-        public IList<NotesModel> GetNote(int id)
+        public IList<NotesModel> GetNote(int id, int userId)
         {
             try
             {
                 if (!id.Equals(null))
                 {
-                    return this.repository.GetNote(id);
+                    return this.repository.GetNote(id, userId);
                 }
                 else
                 {
@@ -125,18 +118,11 @@ namespace BussinessLayer.Services
         /// <param name="noteUpdate">noteUpdate model as a parameter</param>
         /// <param name="UserId">id of user</param>
         /// <returns>returns result</returns>
-        public async Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int UserId)
+        public async Task<NotesModel> UpdateNote(int id, NoteUpdate noteUpdate, int UserId)
         {
             try
             {
-                if(noteUpdate != null)
-                {
-                    return await this.repository.UpdateNote(id, noteUpdate, UserId);
-                }
-                else
-                {
-                    return ErrorMessages.nullModel;
-                }
+                return await this.repository.UpdateNote(id, noteUpdate, UserId);
             }
             catch (Exception e)
             {
@@ -160,7 +146,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    return "Enter valid Id";
+                    return "!found";
                 }
             }
             catch (Exception e)
@@ -202,7 +188,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    return "Enter valid Id";
+                    return "!found";
                 }
             }
             catch (Exception e)
@@ -244,7 +230,7 @@ namespace BussinessLayer.Services
                 }
                 else
                 {
-                    return "Enter valid Id";
+                    return "!found";
                 }
             }
             catch (Exception e)
@@ -310,26 +296,34 @@ namespace BussinessLayer.Services
                 if (Id > 0)
                 {
                     //// Reminder should be future time
-                    if(dateTime >= DateTime.Now)
+                    if(dateTime.Day >= DateTime.Now.Day)
                     {
-                        if(dateTime.Hour >= DateTime.Now.Hour)
+                        if (dateTime.Day == DateTime.Now.Day)
                         {
-                            if(dateTime.Minute > DateTime.Now.Minute)
+                            if(dateTime.Hour >= DateTime.Now.Hour)
                             {
+                                if(dateTime.Hour == DateTime.Now.Hour)
+                                {
+                                    if(dateTime.Minute > DateTime.Now.Minute)
+                                    {
+                                        return await this.repository.AddReminder(dateTime, Id, UserId);
+                                    }
+                                    return "time";
+                                }
                                 return await this.repository.AddReminder(dateTime, Id, UserId);
                             }
-                            return "Enter future time";
+                            return "time";
                         }
-                        return "Enter future time";
+                        return await this.repository.AddReminder(dateTime, Id, UserId);
                     }
                     else
-                    {                        
-                        return "Enter future date";
+                    {
+                        return "time";
                     }
                 }
                 else
                 {
-                    return "Enter valid Id";
+                    return "id";
                 }
             }
             catch (Exception e)
@@ -349,9 +343,9 @@ namespace BussinessLayer.Services
         {
             try
             {
-                if (!Regex.Match(color, "^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))$").Success)
+                if (string.IsNullOrEmpty(color) || !Regex.Match(color, "^(#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))$").Success)
                 {
-                    return "Enter valid color code. eg. #f02f24 or #fff";
+                    return "code";
                 }
                 else
                 {

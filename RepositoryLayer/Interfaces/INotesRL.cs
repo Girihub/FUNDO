@@ -4,44 +4,44 @@
 // </copyright>
 //----------------------------------------------------
 
-using CommonLayer.Model;
-using CommonLayer.Request;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
 namespace RepositoryLayer.Interfaces
 {
+    using CommonLayer.Model;
+    using CommonLayer.Request;
+    using Microsoft.AspNetCore.Http;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface INotesRL
     {
-        Task<string> AddNote(NoteRequest noteRequest, int UserId);
+        Task<NotesModel> AddNote(NoteRequest noteRequest, int userId);
 
-        Task<string> DeleteNote(int id, int Userid);
+        Task<bool> DeleteNote(int id, int userId);
 
-        IList<NotesModel> GetNotes(int UserId);
+        IList<NotesModel> GetNotes(int userId);
 
-        Task<string> UpdateNote(int id, NoteUpdate noteUpdate, int UserId);
+        Task<NotesModel> UpdateNote(int id, NoteUpdate noteUpdate, int userId);
 
-        IList<NotesModel> GetNote(int id);
+        IList<NotesModel> GetNote(int id, int userId);
 
-        Task<string> Archive(int Id, int UserId);
+        Task<string> Archive(int id, int userId);
 
-        IList<NotesModel> GetAllArchives(int UserId);
+        IList<NotesModel> GetAllArchives(int userId);
 
-        Task<string> Trash(int Id, int UserId);
+        Task<string> Trash(int id, int userId);
 
-        IList<NotesModel> GetAllTrashed(int UserId);
+        IList<NotesModel> GetAllTrashed(int userId);
 
-        Task<string> Pin(int Id, int UserId);
+        Task<string> Pin(int id, int userId);
 
-        IList<NotesModel> GetAllPinned(int UserId);
+        IList<NotesModel> GetAllPinned(int userId);
 
-        Task<string> AddImage(IFormFile formFile, int Id, int UserId);
+        Task<string> AddImage(IFormFile formFile, int id, int userId);
 
-        Task<string> AddReminder(DateTime dateTime, int Id, int UserId);
+        Task<string> AddReminder(DateTime dateTime, int id, int userId);
 
-        Task<string> ChangeColor(int Id, string color, int UserId);
+        Task<string> ChangeColor(int id, string color, int userId);
 
         Task<string> AddLabel(int noteId, int labelId, int userId);
 

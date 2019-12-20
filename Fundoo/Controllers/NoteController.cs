@@ -41,15 +41,24 @@ namespace Fundoo.Controllers
         /// <summary>
         /// API for add note
         /// </summary>
-        /// <param name="notesModel">notesModel as a parameter</param>
+        /// <param name="noteRequest">noteRequest as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> AddNote(NoteRequest noteRequest)
+        public async Task<IActionResult> AddNote([FromForm] NoteRequest noteRequest)
         {
-            ////getting the Id of note from token
-            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.AddNote(noteRequest, UserId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessNotes.AddNote(noteRequest, UserId);
+                bool status = true;
+                var message = "Note added successfully...";
+                return this.Ok(new { status, message, data });
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -60,11 +69,29 @@ namespace Fundoo.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(int id)
         {
-            ////getting the Id of note from token
-            var userid = User.FindFirst("Id")?.Value;
-            int userId = Convert.ToInt32(userid);
-            var result = await this.businessNotes.DeleteNote(id, userId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                var userid = User.FindFirst("Id")?.Value;
+                int userId = Convert.ToInt32(userid);
+                var result = await this.businessNotes.DeleteNote(id, userId);
+                if (result)
+                {
+                    bool status = true;
+                    var message = "Note deleted";
+                    return this.Ok(new { status, message });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Note not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -74,12 +101,30 @@ namespace Fundoo.Controllers
         [HttpGet]
         public IActionResult GetNotes()
         {
-            ////getting the Id of note from token
-            var userid = User.FindFirst("Id")?.Value;
-            int userId = Convert.ToInt32(userid);
-            var result = this.businessNotes.GetNotes(userId);
-            
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                var userid = User.FindFirst("Id")?.Value;
+                int userId = Convert.ToInt32(userid);
+
+                var data = this.businessNotes.GetNotes(userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following notes found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Notes not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -91,8 +136,30 @@ namespace Fundoo.Controllers
         [Route("{id}")]
         public IActionResult GetNote(int id)
         {
-            var result = this.businessNotes.GetNote(id);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                var userid = User.FindFirst("Id")?.Value;
+                int userId = Convert.ToInt32(userid);
+
+                var data = this.businessNotes.GetNote(id, userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following notes found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Notes not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -101,14 +168,31 @@ namespace Fundoo.Controllers
         /// <param name="id">id as a parameter</param>
         /// <param name="notesModel">notesModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
-        [HttpPut]
-        [Route("{id }")]
-        public async Task<IActionResult> UpdateNote(int id, NoteUpdate noteUpdate)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateNote(int id, [FromForm] NoteUpdate noteUpdate)
         {
-            ////getting the Id of note from token
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.UpdateNote(id, noteUpdate, userId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessNotes.UpdateNote(id, noteUpdate, userId);
+                if (data.Title != null)
+                {
+                    bool status = true;
+                    var message = "Following note updated";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Note not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -119,10 +203,27 @@ namespace Fundoo.Controllers
         [HttpPost("{id}/Archive")]
         public async Task<IActionResult> Archive(int id)
         {
-            ////getting the Id of note from token
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.Archive(id, userId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessNotes.Archive(id, userId);
+                if (data.Equals("!found"))
+                {
+                    bool status = false;
+                    data = "Enter valid note id";
+                    return this.BadRequest(new { status, data });
+                }
+                else
+                {
+                    bool status = true;
+                    return this.Ok(new { status, data });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -130,18 +231,31 @@ namespace Fundoo.Controllers
         /// </summary>
         /// <returns>returns all archived notes</returns>
         [HttpGet]
-        [Route("GetAllArchives")]
+        [Route("Archived")]
         public IActionResult GetAllArchives()
         {
-            ////getting the Id of note from token
-            var userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = this.businessNotes.GetAllArchives(userId);
-            if (result.Count != 0)
+            try
             {
-                return this.Ok(new { result });
+                ////getting the Id of note from token
+                var userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = this.businessNotes.GetAllArchives(userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following are archived notes";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "No archived notes found";
+                    return this.BadRequest(new { status, message });
+                }
             }
-            var message = "No archived notes";
-            return this.Ok(new { result, message });
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -152,28 +266,58 @@ namespace Fundoo.Controllers
         [HttpPost("{id}/Trash")]
         public async Task<IActionResult> Trash(int id)
         {
-            ////getting the Id of note from token
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.Trash(id, userId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessNotes.Trash(id, userId);
+                if (data.Equals("!found"))
+                {
+                    bool status = false;
+                    data = "Enter valid note id";
+                    return this.BadRequest(new { status, data });
+                }
+                else
+                {
+                    bool status = true;
+                    return this.Ok(new { status, data });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
         /// API to get all trashed notes
         /// </summary>
         /// <returns>returns all trashed notes if there is any in trash otherwise returns message</returns>
-        [HttpGet("GetAllTrashed")]
+        [HttpGet("Trashed")]
         public IActionResult GetAllTrashed()
         {
-            ////getting the Id of note from token
-            var userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = this.businessNotes.GetAllTrashed(userId);
-            if (result.Count != 0)
+            try
             {
-                return this.Ok(new { result });
+                ////getting the Id of note from token
+                var userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = this.businessNotes.GetAllTrashed(userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following are trashed notes";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "No trashed notes found";
+                    return this.BadRequest(new { status, message });
+                }
             }
-            var message = "No trashed notes";
-            return this.Ok(new { result, message });
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -184,28 +328,58 @@ namespace Fundoo.Controllers
         [HttpPost("{id}/Pin")]
         public async Task<IActionResult> Pin(int id)
         {
-            ////getting the Id of note from token
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.Pin(id, userId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessNotes.Pin(id, userId);
+                if (data.Equals("!found"))
+                {
+                    bool status = false;
+                    data = "Enter valid note id";
+                    return this.BadRequest(new { status, data });
+                }
+                else
+                {
+                    bool status = true;
+                    return this.Ok(new { status, data });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
         /// API to get all pinned notes
         /// </summary>
         /// <returns>returns all pinned notes</returns>
-        [HttpGet("GetAllPinned")]
+        [HttpGet("Pinned")]
         public IActionResult GetAllPinned()
         {
-            ////getting the Id of note from token
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = this.businessNotes.GetAllPinned(userId);
-            if (result.Count != 0)
+            try
             {
-                return this.Ok(new { result });
+                ////getting the Id of note from token
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = this.businessNotes.GetAllPinned(userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following are pinned notes";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "No pinned notes found";
+                    return this.BadRequest(new { status, message });
+                }
             }
-            var message = "No pinned notes";
-            return this.Ok(new { result, message });
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -214,13 +388,31 @@ namespace Fundoo.Controllers
         /// <param name="formFile">formFile interface to upload desired image</param>
         /// <param name="Id">Id of note to which image to be added</param>
         /// <returns>retuns message after performing the operation</returns>
-        [HttpPost("{id}/AddImage")]
+        [HttpPost("{id}/Image")]
         public async Task<IActionResult> AddImage(IFormFile formFile, int id)
         {
             ////getting the Id of note from token
             int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.AddImage(formFile, id, userId);
-            return this.Ok(new { result });
+            var data = await this.businessNotes.AddImage(formFile, id, userId);
+            try
+            {
+                if (data != null)
+                {
+                    var status = true;
+                    var message = "image added successfully";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    var status = false;
+                    var message = "Enter valid note id";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -229,13 +421,37 @@ namespace Fundoo.Controllers
         /// <param name="dateTime">date and time of reminder for note</param>
         /// <param name="Id">Id of note</param>
         /// <returns>returns the message</returns>
-        [HttpPost("{id}/AddReminder")]
+        [HttpPost("{id}/Reminder")]
         public async Task<IActionResult> AddReminder(DateTime dateTime, int id)
         {
-            ////getting the Id of note from token
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.AddReminder(dateTime, id, userId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessNotes.AddReminder(dateTime, id, userId);
+                if (data.Equals("id"))
+                {
+                    bool status = false;
+                    var message = "Enter valid note id";
+                    return this.BadRequest(new { status, message });
+                }
+                else if (data.Equals("time"))
+                {
+                    bool status = false;
+                    var message = "reminder should not be past or current time";
+                    return this.BadRequest(new { status, message });
+                }
+                else
+                {
+                    bool status = true;
+                    var message = "reminder added on " + data;
+                    return this.Ok(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -246,10 +462,34 @@ namespace Fundoo.Controllers
         [HttpPatch("{id}/ChangeColor")]
         public async Task<IActionResult> ChangeColor(int id, string color)
         {
-            ////getting the Id of note from token
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.ChangeColor(id, color, userId);
-            return this.Ok(new { result });
+            try
+            {
+                ////getting the Id of note from token
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessNotes.ChangeColor(id, color, userId);
+                if (data.Equals("id"))
+                {
+                    bool status = false;
+                    var message = "Enter valid note id";
+                    return this.BadRequest(new { status, message });
+                }
+                else if (data.Equals("code"))
+                {
+                    bool status = false;
+                    var message = "Enter valid color code";
+                    return this.BadRequest(new { status, message });
+                }
+                else
+                {
+                    bool status = true;
+                    var message = "Color changed to " + data;
+                    return this.Ok(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>

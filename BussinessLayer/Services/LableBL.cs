@@ -25,31 +25,11 @@ namespace BussinessLayer.Services
             this.repository = repository;
         }        
 
-        public async Task<string> AddLable(LabelRequest labelRequest, int UserId)
+        public async Task<LabelModel> AddLable(LabelRequest labelRequest, int UserId)
         {
             try
             {
-                if(labelRequest != null)
-                {
-                    using (var client = new RedisClient())
-                    {
-                        string key = UserId.ToString();
-                        if (client != null)
-                        {
-                            var getNotes = client.Get(key);
-                            return await this.repository.AddLable(labelRequest, UserId);
-                        }
-                        else
-                        {
-                            client.Set(key, labelRequest);
-                            return key;
-                        }
-                    }                        
-                }
-                else
-                {
-                    return ErrorMessages.nullModel;
-                }
+                return await this.repository.AddLable(labelRequest, UserId);
             }
             catch (Exception E)
             {
@@ -57,18 +37,11 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public async Task<string> DeleteLable(int id, int UserId)
+        public async Task<bool> DeleteLable(int id, int UserId)
         {
             try
             {
-                if(id.Equals(null))
-                {
-                    return ErrorMessages.invalidId;
-                }
-                else
-                {
-                    return await this.repository.DeleteLable(id, UserId);
-                }
+                return await this.repository.DeleteLable(id, UserId);
             }
             catch (Exception E)
             {
@@ -76,18 +49,11 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public async Task<IList<LabelModel>> GetLable(int id)
+        public async Task<IList<LabelModel>> GetLable(int id, int UserId)
         {
             try
             {
-                if (!id.Equals(null))
-                {
-                    return await this.repository.GetLable(id);
-                }
-                else
-                {
-                    throw new Exception(ErrorMessages.invalidId);
-                }
+                return await this.repository.GetLable(id, UserId);
             }
             catch (Exception E)
             {
@@ -107,18 +73,11 @@ namespace BussinessLayer.Services
             }            
         }
 
-        public async Task<string> UpdateLable(int id, LabelRequest labelRequest, int UserId)
+        public async Task<LabelModel> UpdateLable(int id, LabelRequest labelRequest, int UserId)
         {
             try
             {
-                if (labelRequest != null)
-                {
-                    return await this.repository.UpdateLable(id, labelRequest, UserId);
-                }
-                else
-                {
-                    return ErrorMessages.nullModel;
-                }
+                return await this.repository.UpdateLable(id, labelRequest, UserId);
             }
             catch (Exception E)
             {

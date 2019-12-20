@@ -40,7 +40,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="lableModel">lableModel as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> AddLable(LabelRequest labelRequest, int UserId)
+        public async Task<LabelModel> AddLable(LabelRequest labelRequest, int UserId)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace RepositoryLayer.Services
                 
                 this.appDbContext.Lables.Add(label);
                 await this.appDbContext.SaveChangesAsync();
-                return "Lable Added";
+                return label;
             }
             catch (Exception e)
             {
@@ -67,7 +67,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> DeleteLable(int id, int UserId)
+        public async Task<bool> DeleteLable(int id, int UserId)
         {
             try
             {
@@ -86,10 +86,10 @@ namespace RepositoryLayer.Services
                     
                     this.appDbContext.Lables.Remove(lable);                    
                     await this.appDbContext.SaveChangesAsync();
-                    return "Label removed";
+                    return true;
                 }
 
-                return "Enter valid id";
+                return false;
             }
             catch (Exception e)
             {
@@ -102,14 +102,19 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="id">id as a parameter</param>
         /// <returns>returns result in list format</returns>
-        public async Task<IList<LabelModel>> GetLable(int id)
+        public async Task<IList<LabelModel>> GetLable(int id, int UserId)
         {
             try
             {
                 List<LabelModel> labelModels = new List<LabelModel>();
-                var lable = this.appDbContext.Lables.Where(g => g.Id == id).FirstOrDefault();                
-                labelModels.Add(lable);
-                await this.appDbContext.SaveChangesAsync();
+                var lable = this.appDbContext.Lables.Where(g => g.Id == id && g.UserId == UserId).FirstOrDefault();
+                if(lable != null)
+                {
+                    labelModels.Add(lable);
+                    await this.appDbContext.SaveChangesAsync();
+                    return labelModels;
+                }
+
                 return labelModels;
             }
             catch (Exception e)
@@ -144,21 +149,22 @@ namespace RepositoryLayer.Services
         /// <param name="id">id as a parameter</param>
         /// <param name="labelModel">labelModel as a parameter</param>
         /// <returns>returns result in string format</returns>
-        public async Task<string> UpdateLable(int id, LabelRequest labelRequest, int UserId)
+        public async Task<LabelModel> UpdateLable(int id, LabelRequest labelRequest, int UserId)
         {
             try
             {
+                LabelModel newLabel = new LabelModel();
                 var lable = this.appDbContext.Lables.Where(g => g.Id == id && g.UserId == UserId).FirstOrDefault();
                 if(lable == null)
                 {
-                    return "Enter valid Id";
+                    return newLabel;
                 }
                 lable.Lable = labelRequest.Lable;
                 lable.ModifiedDate = DateTime.Now;
                 lable.UserId = UserId;
                 this.appDbContext.Entry(lable).State = EntityState.Modified;
                 await this.appDbContext.SaveChangesAsync();
-                return "Updated...";
+                return lable;
             }
             catch (Exception e)
             {

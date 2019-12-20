@@ -42,12 +42,21 @@ namespace Fundoo.Controllers
         /// <param name="lableModel">labelModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> AddLable(LabelRequest labelRequest)
+        public async Task<IActionResult> AddLable([FromForm] LabelRequest labelRequest)
         {
-            var UserId = User.FindFirst("Id")?.Value;
-            int Userid = Convert.ToInt32(UserId);
-            var result = await this.businessLable.AddLable(labelRequest, Userid);
-            return this.Ok(new { result });
+            try
+            {
+                var UserId = User.FindFirst("Id")?.Value;
+                int Userid = Convert.ToInt32(UserId);
+                var data = await this.businessLable.AddLable(labelRequest, Userid);
+                bool status = true;
+                var message = "Label added successfully";
+                return this.Ok(new { status, message, data });
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -58,9 +67,27 @@ namespace Fundoo.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLable(int id)
         {
-            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessLable.DeleteLable(id, UserId);
-            return this.Ok(new { result });
+            try
+            {
+                var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var result = await this.businessLable.DeleteLable(id, UserId);
+                if (result)
+                {
+                    bool status = true;
+                    var message = "Label deleted";
+                    return this.Ok(new { status, message });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Label not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -70,14 +97,27 @@ namespace Fundoo.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLables()
         {
-            var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessLable.GetLables(UserId);
-            if(result.Count != 0)
+            try
             {
-                return this.Ok(new { result });
+                var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessLable.GetLables(UserId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following are the labels";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Labels not present";
+                    return this.BadRequest(new { status, message });
+                }
+            }  
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
-            var message = "Labels not present";
-            return this.Ok(new { result, message });
         }
 
         /// <summary>
@@ -89,13 +129,27 @@ namespace Fundoo.Controllers
         //[Route("GetLableById")]
         public async Task<IActionResult> GetLable(int id)
         {
-            var result = await this.businessLable.GetLable(id);
-            var message = "Labels not present";
-            if (result[0] != null)
+            try
             {
-                return this.Ok(new { result });
-            }            
-            return this.Ok(new { result, message });
+                var UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessLable.GetLable(id, UserId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following label found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Label not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -106,11 +160,29 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateLable(int id, LabelRequest labelRequest)
+        public async Task<IActionResult> UpdateLable(int id, [FromForm] LabelRequest labelRequest)
         {
-            int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessLable.UpdateLable(id, labelRequest, UserId);
-            return this.Ok(new { result });
+            try
+            {
+                int UserId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = await this.businessLable.UpdateLable(id, labelRequest, UserId);
+                if (data.Lable != null)
+                {
+                    bool status = true;
+                    var message = "Following label updated";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "Label not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

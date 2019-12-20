@@ -365,7 +365,7 @@ namespace BussinessLayer.Services
         /// <param name="labelId">id of label to be added in a note</param>
         /// <param name="userId">id of user</param>
         /// <returns>returns message</returns>
-        public async Task<string> AddLabel(int noteId, int labelId, int userId)
+        public async Task<bool> AddLabel(int noteId, int labelId, int userId)
         {
             try
             {
@@ -384,7 +384,7 @@ namespace BussinessLayer.Services
         /// <param name="labelId">id of label to be removed from note</param>
         /// <param name="userId">id of user</param>
         /// <returns>returns message</returns>
-        public async Task<string> RemoveLabel(int noteId, int labelId, int userId)
+        public async Task<bool> RemoveLabel(int noteId, int labelId, int userId)
         {
             try
             {
@@ -447,7 +447,7 @@ namespace BussinessLayer.Services
         /// <param name="noteIds">Ids of notes</param>
         /// <param name="collaboratorId">Id of collaborator</param>
         /// <returns>returns result</returns>
-        public async Task<string> Collaborate(int usersId, int noteId, int collaboratorId)
+        public async Task<bool> Collaborate(int usersId, int noteId, int collaboratorId)
         {
             try
             {

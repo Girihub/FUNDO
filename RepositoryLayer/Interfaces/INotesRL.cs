@@ -43,14 +43,14 @@ namespace RepositoryLayer.Interfaces
 
         Task<string> ChangeColor(int id, string color, int userId);
 
-        Task<string> AddLabel(int noteId, int labelId, int userId);
+        Task<bool> AddLabel(int noteId, int labelId, int userId);
 
-        Task<string> RemoveLabel(int noteId, int labelId, int userId);
+        Task<bool> RemoveLabel(int noteId, int labelId, int userId);
 
         Task<bool> BulkTrash(int userId, List<int> noteIds);
 
         Task<IList<NotesModel>> Search(string word, int userId);
 
-        Task<string> Collaborate(int usersId, int noteId, int collaboratorId);
+        Task<bool> Collaborate(int usersId, int noteId, int collaboratorId);
     }
 }

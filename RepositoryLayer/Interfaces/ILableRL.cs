@@ -9,14 +9,14 @@ namespace RepositoryLayer.Interfaces
 {
     public interface ILableRL
     {
-        Task<string> AddLable(LabelRequest labelRequest, int UserId);
+        Task<LabelModel> AddLable(LabelRequest labelRequest, int UserId);
 
-        Task<string> DeleteLable(int id, int UserId);
+        Task<bool> DeleteLable(int id, int UserId);
 
-        Task<string> UpdateLable(int id, LabelRequest labelRequest, int UserId);
+        Task<LabelModel> UpdateLable(int id, LabelRequest labelRequest, int UserId);
 
         Task<IList<LabelModel>> GetLables(int UserId);
 
-        Task<IList<LabelModel>> GetLable(int id);
+        Task<IList<LabelModel>> GetLable(int id, int UserId);
     }
 }

@@ -111,9 +111,10 @@ namespace FundooTestCases.TestCases
 
             ////arrange
             int id = 1;
+            int userId = 1;
 
             //// act          
-            IList<NotesModel> data = business.GetNote(id);
+            IList<NotesModel> data = business.GetNote(id, userId);
 
             ////assert
             Assert.NotNull(data);

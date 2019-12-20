@@ -498,12 +498,28 @@ namespace Fundoo.Controllers
         /// <param name="noteId">id of note</param>
         /// <param name="labelId">id of label to be added in note</param>
         /// <returns>returns message</returns>
-        [HttpPost("{noteId}/Label/{labelId}")]
+        [HttpPost("Note/{noteId}/Label/{labelId}")]
         public async Task<IActionResult> AddLabel(int noteId, int labelId)
         {
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.AddLabel(noteId, labelId, userId);
-            return this.Ok(new { result });
+            try
+            {
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var status = await this.businessNotes.AddLabel(noteId, labelId, userId);
+                if (status)
+                {
+                    var message = "Label added to given note";
+                    return this.Ok(new { status, message });
+                }
+                else
+                {
+                    var message = "invalid noteid and labelid";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -512,12 +528,28 @@ namespace Fundoo.Controllers
         /// <param name="noteId">id of note</param>
         /// <param name="labelId">id of label to be removed from note</param>
         /// <returns>returns message</returns>
-        [HttpDelete("{noteId}/Label/{labelId}")]
+        [HttpDelete("Note/{noteId}/Label/{labelId}")]
         public async Task<IActionResult> RemoveLabel(int noteId, int labelId)
         {
-            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-            var result = await this.businessNotes.RemoveLabel(noteId, labelId, userId);
-            return this.Ok(new { result });
+            try
+            {
+                int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var status = await this.businessNotes.RemoveLabel(noteId, labelId, userId);
+                if (status)
+                {
+                    var message = "Label removed from note";
+                    return this.Ok(new { status, message });
+                }
+                else
+                {
+                    var message = "invalid noteid and labelid";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         /// <summary>
@@ -528,17 +560,24 @@ namespace Fundoo.Controllers
         [HttpPost("BulkTrash")]
         public async Task<IActionResult> BulkTrash(List<int> noteIds)
         {
-            int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
-            var result = await this.businessNotes.BulkTrash(userId, noteIds);
-            if (result)
+            try
             {
-                var message = "Notes trashed successfully";
-                return this.Ok(new { result, message });
+                int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var status = await this.businessNotes.BulkTrash(userId, noteIds);
+                if (status)
+                {
+                    var message = "Notes trashed successfully";
+                    return this.Ok(new { status, message });
+                }
+                else
+                {
+                    var message = "Enter valid note Ids";
+                    return this.BadRequest(new { status, message });
+                }
             }
-            else
+            catch (Exception e)
             {
-                var message = "Enter valid note Ids";
-                return this.Ok(new { result, message });
+                throw new Exception(e.Message);
             }
         }    
         
@@ -550,19 +589,26 @@ namespace Fundoo.Controllers
         [HttpGet("Search")]
         public async Task<IActionResult> Search(string word)
         {
-            int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
-            var result = await this.businessNotes.Search(word, userId);
-            if(result.Count == 0)
+            try
             {
-                bool success = false;
-                var message = "No notes found by word " + word;
-                return this.Ok(new { success, message, result });
+                int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var data = await this.businessNotes.Search(word, userId);
+                if (data.Count == 0)
+                {
+                    bool status = false;
+                    var message = "No notes found by word " + word;
+                    return this.BadRequest(new { status, message });
+                }
+                else
+                {
+                    bool status = true;
+                    var message = "Following notes contain " + word;
+                    return this.Ok(new { status, message, data });
+                }
             }
-            else
+            catch (Exception e)
             {
-                bool success = true;
-                var message = "Following notes contain " + word;
-                return this.Ok(new { success, message, result });
+                throw new Exception(e.Message);
             }
         }
 
@@ -575,11 +621,25 @@ namespace Fundoo.Controllers
         [HttpPost("Collaborate")]
         public async Task<IActionResult> Collaborate(int collaberateWith, int noteId)
         {
-            int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
-            var result = await this.businessNotes.Collaborate(collaberateWith, noteId, collaboratorId);
-            //bool success = true;
-            return this.Ok(new { result });
-
+            try
+            {
+                int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var status = await this.businessNotes.Collaborate(collaberateWith, noteId, collaboratorId);
+                if (status)
+                {
+                    var message = "Colaborate successfully";
+                    return this.Ok(new { status, message });
+                }
+                else
+                {
+                    var message = "Invalid ids";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

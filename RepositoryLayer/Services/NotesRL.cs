@@ -95,13 +95,25 @@ namespace RepositoryLayer.Services
                     while (noteLabel != null)
                     {
                         this.appDbContext.NoteLabel.Remove(noteLabel);
-                        await this.appDbContext.SaveChangesAsync();
+                        this.appDbContext.SaveChanges();
                         noteLabel = this.appDbContext.NoteLabel.Where(g => g.NoteId == id && g.UserId == userId).FirstOrDefault();
+                    }
+                    ////*******                    
+
+
+                    ////****** code to remove entries from Collaborate tabel
+                    var colab = this.appDbContext.Collaborate.Where(g => g.NoteId == id && g.CollaboratedBy == userId).FirstOrDefault();
+                    while (colab != null)
+                    {
+                        this.appDbContext.Collaborate.Remove(colab);
+                        this.appDbContext.SaveChanges();
+                        colab = this.appDbContext.Collaborate.Where(g => g.NoteId == id && g.CollaboratedBy == userId).FirstOrDefault();
                     }
                     ////*******
 
+
                     this.appDbContext.Notes.Remove(notes);
-                    var result = await this.appDbContext.SaveChangesAsync();
+                    await this.appDbContext.SaveChangesAsync();
                     return true;
                 }
 
@@ -498,7 +510,7 @@ namespace RepositoryLayer.Services
         /// <param name="labelId">id of label to be added in a note</param>
         /// <param name="userId">id of user</param>
         /// <returns>returns message</returns>
-        public async Task<string> AddLabel(int noteId, int labelId, int userId)
+        public async Task<bool> AddLabel(int noteId, int labelId, int userId)
         {
             try
             {
@@ -528,16 +540,16 @@ namespace RepositoryLayer.Services
                             await this.appDbContext.SaveChangesAsync();
                             ////****
 
-                            return "Label added to given note";
+                            return true;
                         }
 
-                        return "Label already added to this note";
+                        return true;
                     }
 
-                    return "Note or label does not belong to this user. Check their UserIds";
+                    return false;
                 }
 
-                return "Check if given note or label present in database";
+                return false;
             }
             catch (Exception e)
             {
@@ -552,7 +564,7 @@ namespace RepositoryLayer.Services
         /// <param name="labelId">id of label to be removed from note</param>
         /// <param name="userId">id of user</param>
         /// <returns>returns message</returns>
-        public async Task<string> RemoveLabel(int noteId, int labelId, int userId)
+        public async Task<bool> RemoveLabel(int noteId, int labelId, int userId)
         {
             try
             {
@@ -571,11 +583,13 @@ namespace RepositoryLayer.Services
                         await this.appDbContext.SaveChangesAsync();
                         ////****
 
-                        return "Label removed from note";
+                        return true;
                     }
+
+                    return false;
                 }
 
-                return "Label is not attached to this label";
+                return false;
             }
             catch (Exception e)
             {
@@ -657,7 +671,7 @@ namespace RepositoryLayer.Services
         /// <param name="noteIds">Ids of notes</param>
         /// <param name="collaboratorId">Id of collaborator</param>
         /// <returns>returns result</returns>
-        public async Task<string> Collaborate(int usersId, int noteId, int collaboratorId)
+        public async Task<bool> Collaborate(int usersId, int noteId, int collaboratorId)
         {
             try
             {
@@ -667,7 +681,7 @@ namespace RepositoryLayer.Services
                 {
                     if(usersId == collaboratorId)
                     {
-                        return "You already have access to note " + noteId;
+                        return true;
                     }
 
                     var user = this.appDbContext.Registration.Where(c => c.Id == usersId).FirstOrDefault();
@@ -676,27 +690,29 @@ namespace RepositoryLayer.Services
                         var colab = this.appDbContext.Collaborate.Where(c => c.CollaboratedBy == collaboratorId && c.CollaboratedWith == usersId && c.NoteId == noteId).FirstOrDefault();
                         if (colab != null)
                         {
-                            return "You already have access to note " + noteId;
+                            return true;
                         }
 
                         var model = new CollaborateModel()
                         {
                             CollaboratedBy = collaboratorId,
                             CollaboratedWith = usersId,
-                            NoteId = noteId
+                            NoteId = noteId,
+                            CreatedDate = DateTime.Now,
+                            ModifiedDate = DateTime.Now
                         };
 
                         this.appDbContext.Collaborate.Add(model);
                         await this.appDbContext.SaveChangesAsync();
-                        return "Collaborate successfully...";
+                        return true;
                     }
                     else
                     {
-                        return "Check user id you want to collaborate with";
+                        return false;
                     }
                 }
 
-                return "Check note id and user id";
+                return false;
             }
             catch (Exception e)
             {

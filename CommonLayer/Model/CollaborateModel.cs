@@ -6,6 +6,7 @@
 
 namespace CommonLayer.Model
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,6 +33,7 @@ namespace CommonLayer.Model
         /// Gets or sets User Id
         /// </summary>
         [Required]
+        [ForeignKey("RegistrationModel")]
         [RegularExpression("^([0-9])$", ErrorMessage = "Enter valid integer")]
         public int CollaboratedWith { get; set; }
 
@@ -42,5 +44,15 @@ namespace CommonLayer.Model
         [RegularExpression("^([0-9])$", ErrorMessage = "Enter valid integer")]
         [ForeignKey("NotesModel")]
         public int NoteId { get; set; }
+
+        /// <summary>
+        /// Gets or sets CreatedDate of user
+        /// </summary>
+        public DateTime CreatedDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets ModifiedDate of user
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
     }
 }

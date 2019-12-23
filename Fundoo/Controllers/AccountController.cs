@@ -17,6 +17,7 @@ namespace Fundoo.Controllers
     using CommonLayer.Request;
     using CommonLayer.Response;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
@@ -28,6 +29,7 @@ namespace Fundoo.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("CorsPolicy")]
     public class AccountController : ControllerBase
     {
         /// <summary>
@@ -102,7 +104,8 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("UserLogin")]
-        public async Task<IActionResult> LoginUser([FromForm] LoginModel loginModel)
+        [EnableCors("CorsPolicy")]
+        public async Task<IActionResult> LoginUser( LoginModel loginModel)
         {
             try
             {

@@ -45,7 +45,7 @@ namespace CommonLayer.Request
         /// </summary>
         /// Set the field compulsory to fill by annotation
         [Required(ErrorMessage = "Email is required")]
-        [RegularExpression("^([a-z0-9](.?[a-z0-9]){4,}@g(oogle)?mail.com)$", ErrorMessage = "Enter valid gmail. eg. giri.123@gmail.com")]
+        [RegularExpression("^([a-z0-9](.?[a-z0-9]){3,}@g(oogle)?mail.com)$", ErrorMessage = "Enter valid gmail. eg. giri.123@gmail.com")]
         public string Email { get; set; }
 
         /// <summary>

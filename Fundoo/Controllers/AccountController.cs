@@ -60,7 +60,7 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("UserRegistration")]
-        public async Task<IActionResult> AddUser([FromForm] RegistrationRequest registrationRequest)
+        public async Task<IActionResult> AddUser( RegistrationRequest registrationRequest)
         {
             try
             {
@@ -149,15 +149,17 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("ForgotPassword")]
-        public IActionResult ForgotPassword([FromForm] ForgotPasswordModel forgotPassword)
+        public IActionResult ForgotPassword(ForgotPasswordModel forgotPassword)
         {
             var result = this.businessRegistration.ForgotPassword(forgotPassword);
             if (!string.IsNullOrEmpty(result.Email))
             {
                 result.Token = this.GetToken(result.Id.ToString(), result.Email);
-                SendMessage.ForgotPasswordMessage(result.Email, result.Token);
+                var token = result.Token;
+                SendMessage.ForgotPasswordMessage(result.Email, token);
                 bool status = true;
                 var message = "token has been sent to your mail.";
+                SendMail.SendEmail(result.Email);
                 return this.Ok(new { status, message, result.Token });
             }
             else

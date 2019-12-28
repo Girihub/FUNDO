@@ -6,7 +6,7 @@ namespace RepositoryLayer.MSMQ
 {
     public class SendMail
     {
-        public static void SendEmail(string emailId)
+        public static void SendEmail(string emailId, string token)
         {
             try
             {
@@ -30,6 +30,7 @@ namespace RepositoryLayer.MSMQ
 
                     //// create instance of MailMessage
                     MailMessage mail = new MailMessage();
+                    mail.IsBodyHtml = true;
 
                     //// create instance of SmtpClient
                     SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
@@ -38,7 +39,7 @@ namespace RepositoryLayer.MSMQ
                     mail.From = new MailAddress("giridhardandikwar@gmail.com");
                     mail.To.Add(emailId);
                     mail.Subject = "Test MSMQ and SMTP";
-                    mail.Body = "<h4><a href=" + url + "/> Click here</a></h4> to reset the password " + lable + " <=Token";
+                    mail.Body = "<h4><a href=" + url + "/" + token + "/> Click here</a></h4> to reset the password " + lable + " <=Token";
 
                     //// assigning port and giving credentials
                     smtpServer.Port = 587;

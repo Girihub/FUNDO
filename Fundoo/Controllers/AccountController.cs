@@ -159,7 +159,7 @@ namespace Fundoo.Controllers
                 SendMessage.ForgotPasswordMessage(result.Email, token);
                 bool status = true;
                 var message = "token has been sent to your mail.";
-                SendMail.SendEmail(result.Email);
+                SendMail.SendEmail(result.Email,token);
                 return this.Ok(new { status, message, result.Token });
             }
             else
@@ -224,7 +224,7 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
         [Route("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordModel resetPassword)
+        public async Task<IActionResult> ResetPassword( ResetPasswordModel resetPassword)
         {
             try
             {

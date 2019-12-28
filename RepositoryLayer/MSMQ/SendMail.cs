@@ -39,7 +39,7 @@ namespace RepositoryLayer.MSMQ
                     mail.From = new MailAddress("giridhardandikwar@gmail.com");
                     mail.To.Add(emailId);
                     mail.Subject = "Test MSMQ and SMTP";
-                    mail.Body = "<h4><a href=" + url + "/" + token + "/> Click here</a></h4> to reset the password " + lable + " <=Token";
+                    mail.Body = "<h4><a href=" + url + "/" + token + "/> Click here</a></h4> to reset the password ";
 
                     //// assigning port and giving credentials
                     smtpServer.Port = 587;

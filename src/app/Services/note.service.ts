@@ -15,4 +15,8 @@ export class NoteService {
   getNotes(){
     return this.httpService.get('api/Note');
   }
+
+  getArchived(){
+    return this.httpService.get('api/Note/Archived');
+  }
 }

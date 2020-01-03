@@ -13,6 +13,6 @@ export class IconComponent implements OnInit {
   ngOnInit() {
   } 
   color(value){
-    console.log(value);
+    return value;
   }
 }

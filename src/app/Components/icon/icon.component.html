@@ -1,46 +1,36 @@
-<mat-card fxFlex="100%" fxFlex.xs="100%" class="icon" fxLayout="row" fxLayoutAlign="space-between center">
-    <button mat-icon-button matTooltip="Remind Me" class="mat-icon-button" >
-        <mat-icon>notifications</mat-icon>
-    </button>
-    <button mat-icon-button  matTooltip="Collaborator" class="mat-icon-button">
-        <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
-    </button>
-    <button mat-icon-button [matMenuTriggerFor]="aboveMenu" matTooltip="Change color" class="mat-icon-button">
-        <mat-icon fontSet="material-icons-outlined" >color_lens</mat-icon>
-        <mat-menu #aboveMenu="matMenu" yPosition="above">
-            <div class="colorMenu" >
-                <button mat-mini-fab style="background-color:#FFFFFF" id="my-fab" (click)="color('#FFFFFF')"></button>
-                <button mat-mini-fab style="background-color:#FBAD44" id="my-fab" (click)="color('#FBAD44')"></button>
-                <button mat-mini-fab style="background-color:#FCE97C" id="my-fab" (click)="color('#FCE97C')"></button>
-                <button mat-mini-fab style="background-color:#66ffe0" id="my-fab" (click)="color('#66ffe0')"></button>
-                <button mat-mini-fab style="background-color:#9BF9C1" id="my-fab" (click)="color('#9BF9C1')"></button>
-                <button mat-mini-fab style="background-color:#AEF9F8" id="my-fab" (click)="color('#AEF9F8')"></button>
-                <button mat-mini-fab style="background-color:#AEBEFB" id="my-fab" (click)="color('#AEBEFB')"></button>
-                <button mat-mini-fab style="background-color:#F9B1DB" id="my-fab" (click)="color('#F9B1DB')"></button>
-                <button mat-mini-fab style="background-color:#E9D1D0" id="my-fab" (click)="color('#E9D1D0')"></button>
-                <button mat-mini-fab style="background-color:#60B3F7" id="my-fab" (click)="color('#60B3F7')"></button>
-                <button mat-mini-fab style="background-color:#E8F958" id="my-fab" (click)="color('#E8F958')"></button>
-                <button mat-mini-fab style="background-color:#F97558" id="my-fab" (click)="color('#F97558')"></button>
-            </div>
-        </mat-menu>
-    </button>
-    <button mat-icon-button  matTooltip="Add image" class="mat-icon-button">
-        <mat-icon fontSet="material-icons-outlined">image</mat-icon>
-    </button>
+<button mat-icon-button matTooltip="Remind Me" class="mat-icon-button" >
+    <mat-icon>notifications</mat-icon>
+</button>
+<button mat-icon-button  matTooltip="Collaborator" class="mat-icon-button">
+    <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
+</button>
+<button mat-icon-button [matMenuTriggerFor]="aboveMenu" matTooltip="Change color" class="mat-icon-button">
+    <mat-icon fontSet="material-icons-outlined" >color_lens</mat-icon>
+    <mat-menu #aboveMenu="matMenu" yPosition="above">
+        <div class="colorMenu" >
+            <button mat-mini-fab style="background-color:#FFFFFF" id="my-fab" (click)="color('#FFFFFF')"></button>
+            <button mat-mini-fab style="background-color:#FBAD44" id="my-fab" (click)="color('#FBAD44')"></button>
+            <button mat-mini-fab style="background-color:#FCE97C" id="my-fab" (click)="color('#FCE97C')"></button>
+            <button mat-mini-fab style="background-color:#66ffe0" id="my-fab" (click)="color('#66ffe0')"></button>
+            <button mat-mini-fab style="background-color:#9BF9C1" id="my-fab" (click)="color('#9BF9C1')"></button>
+            <button mat-mini-fab style="background-color:#AEF9F8" id="my-fab" (click)="color('#AEF9F8')"></button>
+            <button mat-mini-fab style="background-color:#AEBEFB" id="my-fab" (click)="color('#AEBEFB')"></button>
+            <button mat-mini-fab style="background-color:#F9B1DB" id="my-fab" (click)="color('#F9B1DB')"></button>
+            <button mat-mini-fab style="background-color:#E9D1D0" id="my-fab" (click)="color('#E9D1D0')"></button>
+            <button mat-mini-fab style="background-color:#60B3F7" id="my-fab" (click)="color('#60B3F7')"></button>
+            <button mat-mini-fab style="background-color:#E8F958" id="my-fab" (click)="color('#E8F958')"></button>
+            <button mat-mini-fab style="background-color:#F97558" id="my-fab" (click)="color('#F97558')"></button>
+        </div>
+    </mat-menu>
+</button>
+<button mat-icon-button  matTooltip="Add image" class="mat-icon-button">
+    <mat-icon fontSet="material-icons-outlined">image</mat-icon>
+</button>
 
-    <button mat-icon-button matTooltip="Archive" class="mat-icon-button">
-        <mat-icon fontSet="material-icons-outlined">archive_outline</mat-icon>
-    </button>
+<button mat-icon-button matTooltip="Archive" class="mat-icon-button">
+    <mat-icon fontSet="material-icons-outlined">archive_outline</mat-icon>
+</button>
 
-    <button mat-icon-button matTooltip="More" class="mat-icon-button">
-        <mat-icon>more_vert</mat-icon>
-    </button>
-
-    <button mat-icon-button matTooltip="Undo" class="mat-icon-button">
-        <mat-icon>undo</mat-icon>
-    </button>
-
-    <button mat-icon-button matTooltip="Redo" class="mat-icon-button">
-        <mat-icon>redo</mat-icon>
-    </button>
-</mat-card>
+<button mat-icon-button matTooltip="More" class="mat-icon-button">
+    <mat-icon>more_vert</mat-icon>
+</button>

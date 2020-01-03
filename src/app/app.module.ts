@@ -20,6 +20,9 @@ import { NotesComponent } from './Components/notes/notes.component';
 import { DisplayNoteComponent } from './Components/display-note/display-note.component';
 import { MakeNoteComponent } from './Components/make-note/make-note.component';
 import { IconComponent } from './Components/icon/icon.component';
+import { ArchiveComponent } from './Components/archive/archive.component';
+import { TrashComponent } from './Components/trash/trash.component';
+import { ReminderComponent } from './Components/reminder/reminder.component';
 
 
 
@@ -35,6 +38,9 @@ import { IconComponent } from './Components/icon/icon.component';
     DisplayNoteComponent,
     MakeNoteComponent,
     IconComponent,
+    ArchiveComponent,
+    TrashComponent,
+    ReminderComponent,
   ],
   imports: [
     CommonModule,

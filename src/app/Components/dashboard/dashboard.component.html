@@ -33,13 +33,13 @@
                 <button class="buttonAvtar" mat-icon-button [matMenuTriggerFor]="beforeMenu">
                     <mat-menu #beforeMenu="matMenu" xPosition="before" >
                         <div class="mat-menu-div">
-                        <img mat-card-avatar src="/assets/images/chiku1.jpg" class="avtar-in-menu">
-                        <h2>Item 1</h2>
-                        <h2>Item 1</h2>
+                        <img mat-card-avatar src="{{this.userProfilePic}}" class="avtar-in-menu">
+                        <h4>{{this.userName}}</h4>
+                        <h4>{{this.userEmail}}</h4>
                         <button mat-raised-button (click)=logout()>Logout</button>
                         </div>
                     </mat-menu>
-                    <img mat-card-avatar src="/assets/images/chiku1.jpg" class="imageAvtar">
+                    <img mat-card-avatar src="{{this.userProfilePic}}" class="imageAvtar">
                 </button>
             </div>
         </div>

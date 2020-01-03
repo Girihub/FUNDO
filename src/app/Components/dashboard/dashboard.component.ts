@@ -14,6 +14,9 @@ export class DashboardComponent implements OnInit {
   viewClass = "listView";
   step ="step1";
   name = "Fundoo";
+  userName = localStorage.getItem('fullName');
+  userEmail = localStorage.getItem('email');
+  userProfilePic = localStorage.getItem('profilePicture');
 
   mobileQuery: MediaQueryList;
 

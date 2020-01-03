@@ -1,6 +1,12 @@
-<div style="margin: 2% 0 0 5%">
-    <mat-card fxFlex="10">
-        {{notes[0]['title']}}
+<div style="margin: 2% 0 0 5%" fxLayout="row wrap" >
+    <mat-card style="margin: 15px 15px 15px 15px;" fxFlex="22" *ngFor="let note of getChildMessage"  >
+        <div style="padding-bottom: 10px;">
+            {{note['title']}}
+        </div>
+        <div style="padding-bottom: 10px;">
+            {{note['description']}}
+        </div>
+        <app-icon></app-icon>
     </mat-card>
 
 </div>

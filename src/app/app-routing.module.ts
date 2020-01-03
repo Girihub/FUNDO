@@ -6,6 +6,10 @@ import {ForgetComponent} from './Components/forget/forget.component';
 import {ResetComponent} from './Components/reset/reset.component';
 import {DashboardComponent} from './Components/dashboard/dashboard.component';
 import { NotesComponent } from './Components/notes/notes.component';
+import { TrashComponent } from './Components/trash/trash.component';
+import { ArchiveComponent } from './Components/archive/archive.component';
+import { ReminderComponent } from './Components/reminder/reminder.component';
+
 
 
 const routes: Routes = [
@@ -18,7 +22,10 @@ const routes: Routes = [
   {path:'dashboard', component: DashboardComponent,
   children:[
     {path:'', redirectTo:'notes', pathMatch:'full'},
-    {path:'notes', component: NotesComponent}
+    {path:'notes', component: NotesComponent},
+    {path:'archived', component: ArchiveComponent},
+    {path:'trashed', component: TrashComponent},
+    {path:'reminder', component: ReminderComponent}
   ]
 }
 ];

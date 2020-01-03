@@ -1,0 +1,97 @@
+<div class="container">
+    <mat-toolbar id="toolbar">
+        <div fxLayout="row" fxLayout.xs="column" display="flex" fxLayoutAlign="space-between center" fxFlex="100%">
+
+            <div  fxLayout="row" fxFlex=25 >
+                <button mat-icon-button="" matTooltip="Main Menu" class="mat-icon-button" style="margin-top: 5px" (click)="snav.toggle()">
+                    <mat-icon >menu</mat-icon>
+                </button>
+                <img class="bulb" src="/assets/images/FundoBulb.png">
+                <h1 class="app-name" style="margin-top: 10px">{{name}}</h1>
+            </div>
+
+            <div class="search" fxLayout="row" fxFlex=50 style="margin-top: 22px;" >
+              <mat-form-field [style.fontSize.px]="12" appearance="outline" class="searchInput">                
+                <mat-icon matPrefix onclick="">search</mat-icon>
+                <input matInput type="text" placeholder="search" >
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="25" fxLayout="row">
+                <button mat-icon-button style="margin-top:7px;margin-left: 10px; outline: none;">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <button mat-icon-button style="margin-top:10px;margin-left: 10px; outline: none;">
+                  <img src={{this.src}} class={{viewClass}} (click)=changeView() matTooltip={{this.viewToolTip}}>
+                </button>
+                <button mat-icon-button style="margin-top:7px;margin-left: 10px; outline: none;">
+                    <mat-icon>settings</mat-icon>
+                </button>
+                <button mat-icon-button style="margin-top:7px;margin-left: 80px; outline: none;">
+                    <mat-icon>apps</mat-icon>
+                </button>
+                <button class="buttonAvtar" mat-icon-button [matMenuTriggerFor]="beforeMenu">
+                    <mat-menu #beforeMenu="matMenu" xPosition="before" >
+                        <div class="mat-menu-div">
+                        <img mat-card-avatar src="/assets/images/chiku1.jpg" class="avtar-in-menu">
+                        <h2>Item 1</h2>
+                        <h2>Item 1</h2>
+                        <button mat-raised-button (click)=logout()>Logout</button>
+                        </div>
+                    </mat-menu>
+                    <img mat-card-avatar src="/assets/images/chiku1.jpg" class="imageAvtar">
+                </button>
+            </div>
+        </div>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+
+    <mat-sidenav-container  [style.marginTop.px]="mobileQuery.matches ? 56 : 0" style="height: 100%;">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                     [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" style="width: 18%; border: none; ">
+
+          <mat-nav-list>
+            <div style="padding: 0px 0px 8px 0px">
+              <a mat-list-item routerLink="." id="over" (click)='name="Fundoo"'>
+                <mat-icon fontSet="material-icons-outlined" id="iconPadding">note</mat-icon>
+                <div class="notes">Notes</div>
+              </a>
+                
+              <a mat-list-item routerLink="." id="over" (click)='name="Reminder"'>
+                <mat-icon id="iconPadding">notifications_none</mat-icon>
+                <div class="notes">Reminder</div>
+              </a>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <div style="padding: 20px 0px 8px 0px">
+              <mat-label style="padding: 10px 0px 15px 28px">Labels</mat-label>
+            
+            <a mat-list-item routerLink="." id="over">
+              <mat-icon fontSet="material-icons-outlined" id="iconPadding">create</mat-icon>
+              <div class="notes">Edit labels</div>
+            </a>
+           </div>
+
+            <mat-divider></mat-divider>
+
+            <div style="padding: 8px 0px 0px 0px">
+              <a mat-list-item routerLink="." id="over" (click)='name="Archive"'>
+                <mat-icon fontSet="material-icons-outlined" id="iconPadding">archive_outline</mat-icon>
+                <div class="notes">Archive</div>
+              </a>
+    
+              <a mat-list-item routerLink="." id="over" (click)='name="Trash"'>
+                <mat-icon id="iconPadding">delete_outline</mat-icon>
+                <div class="notes">Trash</div>
+              </a>
+            </div>
+          </mat-nav-list>
+        </mat-sidenav>        
+
+        <mat-sidenav-content style="background-color: white;">
+          <router-outlet></router-outlet>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+</div>

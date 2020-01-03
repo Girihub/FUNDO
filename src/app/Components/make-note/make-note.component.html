@@ -1,0 +1,44 @@
+<div fxLayoutAlign="center center" display="flex">
+    <mat-card fxFlex="600px" class="make-note" fxLayout="row">
+        <div *ngIf="isOpen" (click)="isOpen = !isOpen">
+            <div fxFlex="420px">
+                <p style="font-size: 14px;">Take a note...</p>            
+            </div>
+            <div style="align-items: center;" display="flex">
+                <button mat-icon-button><mat-icon fontSet="material-icons-outlined">check_box</mat-icon></button>
+                <button mat-icon-button><mat-icon fontSet="material-icons-outlined">brush</mat-icon></button>
+                <button mat-icon-button><mat-icon fontSet="material-icons-outlined">image</mat-icon></button>
+            </div>
+        </div>
+
+        <div *ngIf="!isOpen">
+            <div  fxLayout="column">
+                <div>
+                    <div fxFlex="500px">
+                        <input matInput type="text" [(ngModel)]=title placeholder="Title" style="font-size: 15px;"> 
+                    </div> 
+                    <div>
+                        <button mat-icon-button style="padding-bottom: 18px;">
+                            <img src="/assets/images/pin1.png" style="width: 15px;height: 20px;">
+                        </button>
+                    </div>                    
+                </div> 
+                <div>
+                    <input matInput type="text" [(ngModel)]=description placeholder="Take a note...." style="font-size: 15px;">
+                </div> 
+                <div fxLayout="row">
+                    <div fxFlex="80%">
+                        <app-icon></app-icon>
+                    </div>
+                    <div style="padding: 15px 0 0 75px;">
+                        <button mat-icon-button (click)=createNote()>
+                            Close
+                        </button>
+                    </div>
+                </div>       
+            </div>
+            
+        </div>
+        
+    </mat-card>
+</div>

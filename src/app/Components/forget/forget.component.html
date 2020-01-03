@@ -1,0 +1,46 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="forget" display="flex">
+    <mat-card fxFlex="50%" fxFlex.xs="90%" class="container">
+        <div fxLayout="column">
+            <mat-card-title fxLayoutAlign='center center'>
+                <span class="blue">F</span>
+                <span class="red">u</span>
+                <span class="orange">n</span>
+                <span class="blue">d</span>
+                <span class="green">o</span>
+                <span class="red">o</span>
+            </mat-card-title>               
+            <mat-card-content fxLayoutAlign='center center' style="font-size: 22px">Fundoo account recovery              
+            </mat-card-content>
+            <span layout="row"><hr flex/></span>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="logo">
+            <img class="logo" src="/assets/images/user.jpg">
+        </div>
+        <div>
+            <form [formGroup]="forgetForm" fxLayout="column" fxLayoutgap="2%">            
+
+                <div>
+                    <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=100>
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" class="form-control" placeholder="Email"
+                         [ngClass]="{ 'is-invalid': submitted && f.email.errors}" required/>                                
+                         <mat-icon matSuffix>email</mat-icon>
+                         <mat-error *ngIf="forgetForm.hasError('required', 'email')">
+                            Please enter your new password
+                        </mat-error> 
+                        <mat-error *ngIf="forgetForm.hasError('pattern', 'email')">
+                            Password length should be 4 to 8 characters containing atleast 1 upperCase and lowercase letter, integer and _
+                        </mat-error>                               
+                    </mat-form-field>
+                </div>
+
+
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="30%"
+                 ng-reflect-fx-layout.xs="column" display="box">
+                 <button mat-flat-button (click)="gotoLogin()">Back to sign in</button>
+                 <button mat-button  mat-raised-button [color]="'success'"  [disabled]="!forgetForm.valid" (click)="forget(this.forgetForm)">Reset Password</button>
+                </div>
+            </form>
+        </div>
+    </mat-card>
+</div>

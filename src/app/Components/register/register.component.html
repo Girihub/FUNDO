@@ -1,0 +1,144 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="register" display="flex">
+    <mat-card fxFlex="50%" fxFlex.xs="90%" class="container">
+        <div fxLayout="column">
+            <mat-card-title fxLayoutAlign="start start">
+                <span class="blue">F</span>
+                <span class="red">u</span>
+                <span class="orange">n</span>
+                <span class="blue">d</span>
+                <span class="green">o</span>
+                <span class="red">o</span>
+            </mat-card-title>               
+            <mat-card-content fxLayoutAlign="start start" style="font-size: 22px">Create your Fundoo account               
+            </mat-card-content>
+        </div>
+
+        <div>
+            <form [formGroup]="registerForm" fxLayout="column" fxLayoutgap="2%">
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="2%" ng-reflect-fx-layout="row"
+                 ng-reflect-fx-layout.xs="column" display="box">
+                    <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=50>
+                        <mat-label>First Name</mat-label>
+                        <input matInput formControlName="firstName" class="form-control" placeholder="First Name"
+                         [ngClass]="{ 'is-invalid': submitted && f.firstName.errors}" required/>                                
+                         <mat-error *ngIf="registerForm.hasError('required', 'firstName')">
+                            First name is required
+                        </mat-error> 
+                        <mat-error *ngIf="registerForm.hasError('pattern', 'firstName')">
+                            First name should be only of letters with atleast 2 characters
+                        </mat-error>                                 
+                    </mat-form-field>
+    
+                    <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=50>
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastName" class="form-control" placeholder="Last Name"
+                         [ngClass]="{ 'is-invalid': submitted && f.lastName.errors}" required/>                                
+                         <mat-error *ngIf="registerForm.hasError('required', 'lastName')">
+                            Last name is required
+                        </mat-error> 
+                        <mat-error *ngIf="registerForm.hasError('pattern', 'lastName')">
+                            Last name should be only of letters with atleast 2 characters
+                        </mat-error>                                 
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=100>
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" class="form-control" placeholder="Email"
+                         [ngClass]="{ 'is-invalid': submitted && f.email.errors}" required/>                                
+                         <mat-icon matSuffix>email</mat-icon>
+                         <mat-error *ngIf="registerForm.hasError('required', 'email')">
+                            Email is required
+                        </mat-error> 
+                        <mat-error *ngIf="registerForm.hasError('pattern', 'email')">
+                            Enter valid email. e.g. abc3@gmail.com
+                        </mat-error>                                
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=100>
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput formControlName="mobileNumber" class="form-control" placeholder="Mobile Number"
+                         [ngClass]="{ 'is-invalid': submitted && f.mobileNumber.errors}" required/>                                
+                         <mat-icon matSuffix>phone</mat-icon>
+                         <mat-error *ngIf="registerForm.hasError('required', 'mobileNumber')">
+                            Mobile number is required
+                        </mat-error> 
+                        <mat-error *ngIf="registerForm.hasError('pattern', 'mobileNumber')">
+                            Enter valid 10 digit mobile number starting with 7 or 8 or 9
+                        </mat-error>                                
+                    </mat-form-field>
+                </div> 
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="2%" ng-reflect-fx-layout="row"
+                 ng-reflect-fx-layout.xs="column" display="box"> 
+
+                 <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=47>
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" class="form-control" placeholder="New Password" [type]="hide ? 'password' : 'text'"
+                     [ngClass]="{ 'is-invalid': submitted && f.password.errors}" required/>
+
+                     <mat-error *ngIf="registerForm.hasError('required', 'password')">
+                        Please enter your new password
+                    </mat-error> 
+                    <mat-error *ngIf="registerForm.hasError('pattern', 'password')">
+                        Password length should be 4 to 8 characters containing atleast 1 upperCase and lowercase letter, integer and _
+                    </mat-error>                                                     
+                </mat-form-field>
+
+                <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=47>
+                    <mat-label>Confirm Password</mat-label>
+                    <input matInput formControlName="confirmPassword" class="form-control" placeholder="Confirm New Password" [type]="hide ? 'password' : 'text'"
+                     [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors}" required/>     
+                    <mat-error *ngIf="registerForm.hasError('required', 'confirmPassword')">
+                        Please confirm your new password
+                    </mat-error>                     
+
+                    <div *ngIf="f.confirmPassword.touched || f.confirmPassword.dirty" >
+                        <mat-error *ngIf="registerForm.hasError('notSame')">
+                            Password does not match
+                        </mat-error>
+                    </div>
+                </mat-form-field>
+
+                <div style="padding-top: 16px;">
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </div>
+                </div>
+                
+                
+
+
+
+                <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="2%" ng-reflect-fx-layout="row"
+                 ng-reflect-fx-layout.xs="column" display="box"> 
+                <div class="service" fxFlex=23>Enter Service Type:</div>
+               
+                <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=75>
+                    <mat-label>Service Type</mat-label>
+                    <input matInput formControlName="serviceType" class="form-control" placeholder="A: Advance  B: Basic"
+                     [ngClass]="{ 'is-invalid': submitted && f.serviceType.errors}" required/>     
+                    <mat-error *ngIf="registerForm.hasError('required', 'serviceType')">
+                        Please Enter Service Type
+                    </mat-error>
+                    <mat-error *ngIf="registerForm.hasError('pattern', 'serviceType')">
+                        Type "Advance" or "Basic"
+                    </mat-error>
+                </mat-form-field>
+
+                </div>
+
+
+
+
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="30%">
+                 <button mat-flat-button (click)="gotoLogin()">Sign in instead</button>
+                 <button mat-button  mat-raised-button [color]="'success'"  [disabled]="!registerForm.valid" (click)="register(this.registerForm)">Register</button>
+                </div>
+            </form>
+        </div>
+
+    </mat-card>
+</div>

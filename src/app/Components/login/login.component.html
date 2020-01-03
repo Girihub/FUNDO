@@ -1,0 +1,73 @@
+<div fxLayout="row" fxLayoutAlign="center center" class="login" >
+    <mat-card fxFlex="30%" fxFlex.xs="100%" class="container">
+
+        <div >
+            <div>
+                <mat-card-title fxLayoutAlign='center center'>
+                    <span class="blue">F</span>
+                    <span class="red">u</span>
+                    <span class="orange">n</span>
+                    <span class="blue">d</span>
+                    <span class="green">o</span>
+                    <span class="red">o</span>
+                </mat-card-title>
+                <!-- <mat-card-subtitle fxLayoutAlign='center center' style="font-size: 22px">Sign in</mat-card-subtitle> -->
+                <mat-card-content fxLayoutAlign='center center' style="font-size: 22px">Sign in</mat-card-content>
+                <mat-card-content fxLayoutAlign='center center' style="font-size: 18px">with your Fundoo Account
+                </mat-card-content>
+            </div>
+    
+            <div>
+                <form [formGroup]="loginForm">
+                    <mat-card-content fxLayout="column">
+                        <div class="form-group" fxLayoutAlign='center center'>
+                            <mat-form-field style="font-size: 12px" appearance="outline" fxFlex=90>
+                                <mat-label>Email</mat-label>
+                                <input matInput formControlName="email" class="form-control" placeholder="Email"
+                                 [ngClass]="{ 'is-invalid': submitted && f.email.errors}" required/>
+                                <mat-icon matSuffix>email</mat-icon>
+                                <mat-error *ngIf="loginForm.hasError('required', 'email')">
+                                    Email is required
+                                </mat-error> 
+                                <mat-error *ngIf="loginForm.hasError('pattern', 'email')">
+                                    Enter valid email. e.g. abc3@gmail.com
+                                </mat-error>
+                                
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group" fxLayoutAlign='center center'>
+                            <mat-form-field style="font-size: 12px" appearance="outline" fxFlex=90>
+                                <mat-label>Password</mat-label>
+                                <input matInput formControlName="password" placeholder="Enter your password" [type]="hide ? 'password' : 'text'"
+                                 class="form-control" placeholder="password" [ngClass]="{ 'is-invalid': submitted && f.username.errors}" required>                                
+                                 <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                 <mat-error *ngIf="loginForm.hasError('required', 'password')">
+                                    Password is required
+                                </mat-error> 
+                                <mat-error *ngIf="loginForm.hasError('pattern', 'password')">
+                                    Enter valid password
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group" fxLayout='row' fxLayoutAlign="space-around center" fxFlex="20">
+                            
+                            <a [routerLink]="['/register']">
+                                create account
+                            </a>
+                            <a [routerLink]="['/forget']">
+                                forgot password
+                            </a>
+                        </div>
+                    </mat-card-content>
+        
+                    <div fxLayout='row' fxLayoutAlign="space-evenly center" >        
+                        <!-- <button class="loginButton" mat-button (click)="login()">Login</button> -->
+
+                        <button mat-button  mat-flat-button [color]="'success'"  [disabled]="!loginForm.valid" (click)="login(this.loginForm)">Login</button>
+                          
+                    </div>
+                </form>
+            </div>
+        </div>
+    </mat-card>
+</div>

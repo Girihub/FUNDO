@@ -1,4 +1,4 @@
-<app-make-note></app-make-note>
+<app-make-note (addNoteEvent)="addNoteEvent($event)" ></app-make-note>
 <app-display-note [getChildMessage]="notes"></app-display-note>
 
 

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" >
     <mat-toolbar id="toolbar">
         <div fxLayout="row" fxLayout.xs="column" display="flex" fxLayoutAlign="space-between center" fxFlex="100%">
 
@@ -12,8 +12,8 @@
 
             <div class="search" fxLayout="row" fxFlex=50 style="margin-top: 22px;" >
               <mat-form-field [style.fontSize.px]="12" appearance="outline" class="searchInput">                
-                <mat-icon matPrefix onclick="">search</mat-icon>
-                <input matInput type="text" placeholder="search" >
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput type="text" #val placeholder="search" (keyup.enter) = searchNotes($event)>
               </mat-form-field>
             </div>
 
@@ -74,15 +74,24 @@
             </a>
            </div>
 
+
+           <div *ngFor="let label of getLabels">
+            <a mat-list-item routerLink="." id="over">
+              <mat-icon fontSet="material-icons-outlined" id="iconPadding">label</mat-icon>
+              <div class="notes">{{label['lable']}}</div>
+            </a>
+           </div>
+
+
             <mat-divider></mat-divider>
 
             <div style="padding: 8px 0px 0px 0px">
-              <a mat-list-item routerLink="." id="over" (click)='name="Archive"'>
+              <a mat-list-item routerLink="archived" id="over" (click)='name="Archive"'>
                 <mat-icon fontSet="material-icons-outlined" id="iconPadding">archive_outline</mat-icon>
                 <div class="notes">Archive</div>
               </a>
     
-              <a mat-list-item routerLink="." id="over" (click)='name="Trash"'>
+              <a mat-list-item routerLink="trashed" id="over" (click)='name="Trash"'>
                 <mat-icon id="iconPadding">delete_outline</mat-icon>
                 <div class="notes">Trash</div>
               </a>
@@ -91,7 +100,7 @@
         </mat-sidenav>        
 
         <mat-sidenav-content style="background-color: white;">
-          <router-outlet></router-outlet>
+          <router-outlet ></router-outlet>
         </mat-sidenav-content>
       </mat-sidenav-container>
 </div>

@@ -1,7 +1,11 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { NoteService } from 'src/app/Services/note.service';
+import{DataServiceService} from '../../Services/DataService/data-service.service';
+import {LabelService} from '../../Services/labelService/label.service'
+
 
 @Component({
   selector: 'app-dashboard',
@@ -23,14 +27,15 @@ export class DashboardComponent implements OnInit {
 
   private _mobileQueryListener: () => void;
   
-constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, 
-  private snackbar: MatSnackBar, private router: Router) {
+constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataservice:DataServiceService, 
+  private snackbar: MatSnackBar, private router: Router, private note: NoteService, private labelService: LabelService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
   ngOnInit() {
+    this.getAllLabels();
   }
 
   logout(){
@@ -38,6 +43,7 @@ constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
     this.snackbar.open("Logged out successfully",'',{duration:2000});
     this.router.navigate(['/login']);
   }
+
 
   changeView(){
     if(this.src == "/assets/images/list1.png"){
@@ -50,6 +56,29 @@ constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
       this.viewClass = "listView"
     }
   }
+
+  getLabels=[];
+
+  getAllLabels(){
+    this.labelService.getLabels().subscribe(response => {
+      this.getLabels=response['data'];
+      console.log(response);
+    }, error =>{
+      console.log('error', error);
+    })
+  }
+
+  searchNotes(event:any){
+    this.router.navigate(['/dashboard/search']);
+     console.log('event',event);
+     let searchNote=event.target.value;
+     console.log('message',searchNote);
+    this.dataservice.changeMessage({
+      data:searchNote,
+      type:'search'
+   })
+  }
+
 }
 
 

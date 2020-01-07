@@ -1,12 +1,26 @@
-<div style="margin: 2% 0 0 5%" fxLayout="row wrap" >
-    <mat-card style="margin: 15px 15px 15px 15px;" fxFlex="22" *ngFor="let note of getChildMessage"  >
-        <div style="padding-bottom: 10px;">
-            {{note['title']}}
+<div style="margin: 2% 0 0 5%" fxLayout="row wrap" (mouseover)="showIcon=true" (mouseout)="showIcon=false" >
+<mat-card class="card" *ngFor="let note of getChildMessage" [style.background-color]='note["color"]' >
+        <div *ngIf="note['image'] != ''">
+            <img src="/assets/images/{{note['image']}}" style="height: 150px; width: 100%;">
+        </div>
+        <div style="padding-bottom: 10px;"fxLayout="row wrap">
+            <div fxFlex="90">
+                {{note['title']}}
+            </div>
+
+            <div fxFlex="10" *ngIf="!note['isTrash']">
+                <button mat-icon-button >
+                    <img src="/assets/images/pin.svg" >
+                </button>
+            </div>
         </div>
         <div style="padding-bottom: 10px;">
             {{note['description']}}
         </div>
-        <app-icon></app-icon>
-    </mat-card>
+        <!-- <div [style.display]="showIcon==true?'block':'none'">
+            <app-icon [noteIds] = 'note' ></app-icon>
+        </div> -->
 
+        <app-icon [noteIds] = 'note' [isTrash]=isTrashed ></app-icon>        
+    </mat-card>
 </div>

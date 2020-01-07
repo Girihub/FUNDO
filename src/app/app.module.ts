@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,7 +23,9 @@ import { IconComponent } from './Components/icon/icon.component';
 import { ArchiveComponent } from './Components/archive/archive.component';
 import { TrashComponent } from './Components/trash/trash.component';
 import { ReminderComponent } from './Components/reminder/reminder.component';
-
+import { SearchComponent } from './Components/search/search.component';
+import {DataServiceService} from './Services/DataService/data-service.service';
+import { GetLabelComponent } from './Components/get-label/get-label.component';
 
 
 @NgModule({
@@ -41,6 +43,8 @@ import { ReminderComponent } from './Components/reminder/reminder.component';
     ArchiveComponent,
     TrashComponent,
     ReminderComponent,
+    SearchComponent,
+    GetLabelComponent
   ],
   imports: [
     CommonModule,

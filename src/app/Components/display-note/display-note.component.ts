@@ -7,12 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./display-note.component.scss']
 })
 export class DisplayNoteComponent implements OnInit {
-
+  showIcon:boolean;
   @Input() getChildMessage: any;
+  @Input() isTrashed:boolean;
   
-  constructor(
-    
-  ) { }
+  constructor(    
+  ) { 
+    this.showIcon=false;
+  }
 
   ngOnInit() { 
 

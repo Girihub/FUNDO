@@ -19,4 +19,28 @@ export class NoteService {
   getArchived(){
     return this.httpService.get('api/Note/Archived');
   }
+
+  getTrashed(){
+    return this.httpService.get('api/Note/Trashed');
+  }
+
+  changeColor(data){   
+    return this.httpService.patch('api/Note/'+data.id+'/ChangeColor',data);
+  }
+
+  archive(id){
+    return this.httpService.post('api/Note/'+id+'/Archive',id);
+  }
+
+  trash(id){
+    return this.httpService.post('api/Note/'+id+'/Trash',id)
+  }
+
+  deleteNote(id){
+    return this.httpService.delete('api/Note/'+id)
+  }
+  
+  searchNotes(word){
+    return this.httpService.get('api/Note/Search?word='+word)
+  }
 }

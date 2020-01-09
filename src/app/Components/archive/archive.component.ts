@@ -1,6 +1,6 @@
 import { Component, OnInit, } from '@angular/core';
 import { NoteService } from './../../Services/note.service';
-import {DataServiceService} from './../../Services/DataService/data-service.service'
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 
 @Component({
   selector: 'app-archive',
@@ -11,14 +11,14 @@ export class ArchiveComponent implements OnInit {
 
   constructor(
     private noteService: NoteService,
-    private dataService: DataServiceService
+    private dataOneService: DataOneService
   ) { }
 
   archived=[];
   ngOnInit() {
-    this.dataService.currentMessage.subscribe(response =>{
+    this.dataOneService.currentMessage.subscribe(response =>{
       if(response.type=='unarchive'){
-        this.getAllArchived();
+        //this.getAllArchived();
       }
     }) ;
     this.getAllArchived();

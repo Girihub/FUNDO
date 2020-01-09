@@ -34,7 +34,7 @@ export class MakeNoteComponent implements OnInit {
         Description: this.description,
         Image:"",
         Color:"#FFFFFF",
-        Reminder:null,
+        Reminder:Date.UTC,
         IsPin:false,
         IsNote:true,
         IsArchive:false,
@@ -51,8 +51,7 @@ export class MakeNoteComponent implements OnInit {
           console.log('error msg', error);   
       })
     }         
-  }
-
+  } 
 
   
 }

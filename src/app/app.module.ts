@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser/';
 import { NgModule, Injectable } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -24,9 +24,9 @@ import { ArchiveComponent } from './Components/archive/archive.component';
 import { TrashComponent } from './Components/trash/trash.component';
 import { ReminderComponent } from './Components/reminder/reminder.component';
 import { SearchComponent } from './Components/search/search.component';
-import {DataServiceService} from './Services/DataService/data-service.service';
 import { GetLabelComponent } from './Components/get-label/get-label.component';
-
+import { CreateLabelComponent } from './Components/create-label/create-label.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,8 @@ import { GetLabelComponent } from './Components/get-label/get-label.component';
     TrashComponent,
     ReminderComponent,
     SearchComponent,
-    GetLabelComponent
+    GetLabelComponent,
+    CreateLabelComponent,
   ],
   imports: [
     CommonModule,
@@ -57,7 +58,9 @@ import { GetLabelComponent } from './Components/get-label/get-label.component';
     MatInputModule,
     [FlexLayoutModule],
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    OwlDateTimeModule, 
+    OwlNativeDateTimeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

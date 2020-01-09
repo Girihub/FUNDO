@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import{NoteService} from '../../Services/note.service';
-import{DataServiceService} from '../../Services/DataService/data-service.service';
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 
 @Component({
   selector: 'app-search',
@@ -9,11 +9,11 @@ import{DataServiceService} from '../../Services/DataService/data-service.service
 })
 export class SearchComponent implements OnInit {
 
-  constructor(private noteService: NoteService, private dataServive : DataServiceService) { }
+  constructor(private noteService: NoteService, private dataOneService: DataOneService) { }
 
   
   ngOnInit() {
-    this.dataServive.currentMessage.subscribe(response =>{
+    this.dataOneService.currentMessage.subscribe(response =>{
       if(response.type='search'){
         var result = response.data;
         this.searchNotes(result);

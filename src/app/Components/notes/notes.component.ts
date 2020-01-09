@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NoteService } from '../../Services/note.service';
-import{DataServiceService} from '../../Services/DataService/data-service.service';
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 
 @Component({
   selector: 'app-notes',
@@ -12,20 +12,19 @@ export class NotesComponent implements OnInit {
 
   constructor(
     private noteService : NoteService,
-    private router : Router,
-    private dataService : DataServiceService
+    private dataOneService: DataOneService
   ) { }
 
   message:string;
 
   ngOnInit() {
-
-    this.dataService.currentMessage.subscribe(response =>{
+    this.getNotes();
+    this.dataOneService.currentMessage.subscribe(response =>{
       if(response.type=='archive' || response.type=='trash'){
-        this.getNotes();
+        //this.getNotes();
       }
     }) ;
-    this.getNotes();
+    
   }
 
   notes=[];

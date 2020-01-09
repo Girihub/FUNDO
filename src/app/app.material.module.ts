@@ -11,6 +11,8 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { MatSnackBarModule } from "@angular/material";
+import {MatDialogModule, } from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import { MatSnackBarModule } from "@angular/material";
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatDialogModule
 
     ],
 
@@ -42,7 +45,8 @@ import { MatSnackBarModule } from "@angular/material";
         MatMenuModule,
         MatSidenavModule,
         MatListModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatDialogModule
 
     ],
 

@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
             console.log('response after loginnnnnn', response);
             this.snackbar.open(response['message'],'',{duration:2000});             
             localStorage.setItem('id', response['data']['id']);
+            localStorage.setItem('firstName', response['data']['firstName']);
             localStorage.setItem('fullName', response['data']['firstName'] +" "+ response['data']['lastName']);
             localStorage.setItem('mobileNumber', response['data']['mobileNumber']);
             localStorage.setItem('email', response['data']['email']);

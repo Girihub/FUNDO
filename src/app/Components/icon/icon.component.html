@@ -1,26 +1,27 @@
 <div *ngIf="!isTrash">
-    <button mat-icon-button matTooltip="Remind Me" class="mat-icon-button" >
-        <mat-icon>notifications</mat-icon>
-    </button>
+    <button mat-button [matMenuTriggerFor]="belowMenu" matTooltip="Remind Me" class="mat-icon-button" >
+        <mat-icon>notifications</mat-icon></button>
+        <mat-menu #belowMenu="matMenu" yPosition="below">
+            <span style="padding: 20px 0 20px 20px;">Reminder</span>
+            <button mat-menu-item [matMenuTriggerFor]="datetime">Pick Date and Time</button>
+            <button mat-menu-item>Later Today&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:00 PM</button>
+            <button mat-menu-item>Tomorrow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:00 AM</button>
+        </mat-menu>
+        <mat-menu #datetime="matMenu">
+            <button mat-menu-item>Fishes</button>
+            <button mat-menu-item>Amphibians</button>
+        </mat-menu>
+          
+    
     <button mat-icon-button  matTooltip="Collaborator" class="mat-icon-button">
         <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
     </button>
+
     <button mat-icon-button [matMenuTriggerFor]="aboveMenu" matTooltip="Change color" class="mat-icon-button">
         <mat-icon fontSet="material-icons-outlined" >color_lens</mat-icon>
         <mat-menu #aboveMenu="matMenu" yPosition="above">
             <div class="colorMenu" >
-                <button mat-mini-fab style="background-color:#FFFFFF" id="my-fab" (click)="color('#FFFFFF')"></button>
-                <button mat-mini-fab style="background-color:#FBAD44" id="my-fab" (click)="color('#FBAD44')"></button>
-                <button mat-mini-fab style="background-color:#FCE97C" id="my-fab" (click)="color('#FCE97C')"></button>
-                <button mat-mini-fab style="background-color:#66ffe0" id="my-fab" (click)="color('#66ffe0')"></button>
-                <button mat-mini-fab style="background-color:#9BF9C1" id="my-fab" (click)="color('#9BF9C1')"></button>
-                <button mat-mini-fab style="background-color:#AEF9F8" id="my-fab" (click)="color('#AEF9F8')"></button>
-                <button mat-mini-fab style="background-color:#AEBEFB" id="my-fab" (click)="color('#AEBEFB')"></button>
-                <button mat-mini-fab style="background-color:#F9B1DB" id="my-fab" (click)="color('#F9B1DB')"></button>
-                <button mat-mini-fab style="background-color:#E9D1D0" id="my-fab" (click)="color('#E9D1D0')"></button>
-                <button mat-mini-fab style="background-color:#60B3F7" id="my-fab" (click)="color('#60B3F7')"></button>
-                <button mat-mini-fab style="background-color:#E8F958" id="my-fab" (click)="color('#E8F958')"></button>
-                <button mat-mini-fab style="background-color:#F97558" id="my-fab" (click)="color('#F97558')"></button>
+            <button mat-mini-fab *ngFor="let item of colors" [style.backgroundColor]="item" id="my-fab" (click)="color(item)"></button>                
             </div>
         </mat-menu>
     </button>
@@ -51,10 +52,11 @@
         <mat-icon>more_vert</mat-icon>
         <mat-menu #moreMenu="matMenu" xPosition="after">
             <button mat-menu-item (click)="trash()">Delete note</button>
-            <button mat-menu-item>Add label</button>
+            <button mat-menu-item >Add label</button>
         </mat-menu>
     </button>
 </div>
+
 <div *ngIf="isTrash">
     <button mat-icon-button matTooltip="Delete forever" class="mat-icon-button" (click) = "deleteNote()">
         <mat-icon fontSet="material-icons-outlined">delete_forever</mat-icon>

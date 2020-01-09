@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NoteService } from '../../Services/note.service';
-import{DataServiceService} from '../../Services/DataService/data-service.service';
-import { Router } from '@angular/router';
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 
 @Component({
   selector: 'app-icon',
@@ -12,8 +11,7 @@ export class IconComponent implements OnInit {
   
   constructor(
     private noteService : NoteService,
-    private router : Router,
-    private dataService: DataServiceService
+    private dataOneService: DataOneService
   ) { }
 
   @Input() isTrash:boolean;
@@ -23,7 +21,8 @@ export class IconComponent implements OnInit {
   }
  
 
-
+  colors=['#FFFFFF','#FBAD44','#FCE97C','#66ffe0','#9BF9C1','#AEF9F8','#AEBEFB',
+            '#F9B1DB','#E9D1D0','#60B3F7','#E8F958','#F97558'];
   @Input() noteIds
   @Output() addArchiveEvent = new EventEmitter<any>();   
 
@@ -56,11 +55,11 @@ export class IconComponent implements OnInit {
     this.noteService.archive(this.noteIds.id).subscribe(response =>{
       console.log('response', response);
       if(!this.noteIds.isArchive){        
-        this.dataService.changeMessage({
+        this.dataOneService.changeMessage({
           type:'archive'      
        })
       }else{
-        this.dataService.changeMessage({
+        this.dataOneService.changeMessage({
           type:'unarchive'      
        })
       }
@@ -74,11 +73,11 @@ export class IconComponent implements OnInit {
     this.noteService.trash(this.noteIds.id).subscribe(response =>{
       console.log('response', response);
       if(!this.noteIds.isTrash){        
-        this.dataService.changeMessage({
+        this.dataOneService.changeMessage({
           type:'trash'      
        })
       }else{
-        this.dataService.changeMessage({
+        this.dataOneService.changeMessage({
           type:'restore'      
        })
       }
@@ -96,7 +95,7 @@ export class IconComponent implements OnInit {
   deleteNote(){
     this.noteService.deleteNote(this.noteIds.id).subscribe(response =>{
       console.log('response', response);
-      this.dataService.changeMessage({
+      this.dataOneService.changeMessage({
         type:'delete'      
      })
     },

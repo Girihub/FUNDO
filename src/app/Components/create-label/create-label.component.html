@@ -1,0 +1,18 @@
+<div style="text-align: center; align-items: center; align-content: center;">
+    <h1 mat-dialog-title>Hi {{name}}</h1>
+    <p>Edit Label</p>
+    <mat-form-field>
+      <input matInput [(ngModel)]="label" placeholder="Create label">
+    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="space-around center" *ngFor="let item of allLabels"(mouseover)="delete=true"(mouseout)="delete=false">
+        <button mat-icon-button matTooltip="Delete label" class="mat-icon-button"(click)="deleteLabel(item['id'])">
+            <mat-icon fontSet="material-icons-outlined" *ngIf="delete">delete_forever</mat-icon>
+            <mat-icon fontSet="material-icons-outlined" *ngIf="!delete">label</mat-icon>
+        </button>
+        <!-- <mat-icon fontSet="material-icons-outlined">label</mat-icon> -->
+        <p>{{item['lable']}}</p>
+        <mat-icon fontSet="material-icons-outlined">create</mat-icon>
+    </div>
+    <hr flex/>
+    <button mat-button (click)="addLabel(this.label)" cdkFocusInitial>Ok</button>
+</div>

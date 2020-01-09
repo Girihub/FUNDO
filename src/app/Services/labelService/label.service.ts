@@ -11,6 +11,14 @@ export class LabelService {
   getLabels(){
     return this.httpService.get('api/Lable');
   }
+
+  addLabel(data){
+    return this.httpService.post('api/Lable',data);
+  }
+
+  deleteLabel(id){
+    return this.httpService.delete('api/Lable/'+id)
+  }
 }
 
 

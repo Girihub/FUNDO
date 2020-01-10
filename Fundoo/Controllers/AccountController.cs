@@ -303,7 +303,7 @@ namespace Fundoo.Controllers
                                         new Claim("Id", id.ToString()),
                                         new Claim("Email", email.ToString())
                 }),
-                Expires = DateTime.Now.AddMinutes(120),
+                Expires = DateTime.Now.AddMinutes(720),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])), SecurityAlgorithms.HmacSha256Signature)
             };
             var secureToken = tokenHandler.CreateToken(tokenDescriptor);

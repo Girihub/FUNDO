@@ -13,6 +13,7 @@ namespace Fundoo.Controllers
     using BussinessLayer.Interfaces;
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -22,6 +23,7 @@ namespace Fundoo.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [EnableCors("CorsPolicy")]
     public class NoteController : ControllerBase
     {
         /// <summary>
@@ -44,7 +46,7 @@ namespace Fundoo.Controllers
         /// <param name="noteRequest">noteRequest as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> AddNote([FromForm] NoteRequest noteRequest)
+        public async Task<IActionResult> AddNote(NoteRequest noteRequest)
         {
             try
             {
@@ -422,13 +424,13 @@ namespace Fundoo.Controllers
         /// <param name="Id">Id of note</param>
         /// <returns>returns the message</returns>
         [HttpPost("{id}/Reminder")]
-        public async Task<IActionResult> AddReminder(DateTime dateTime, int id)
+        public async Task<IActionResult> AddReminder(ReminderRequest reminderRequest, int id)
         {
             try
             {
                 ////getting the Id of note from token
                 int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
-                var data = await this.businessNotes.AddReminder(dateTime, id, userId);
+                var data = await this.businessNotes.AddReminder(reminderRequest, id, userId);
                 if (data.Equals("id"))
                 {
                     bool status = false;
@@ -440,6 +442,12 @@ namespace Fundoo.Controllers
                     bool status = false;
                     var message = "reminder should not be past or current time";
                     return this.BadRequest(new { status, message });
+                }
+                else if(reminderRequest.Reminder == null)
+                {
+                    bool status = true;
+                    var message = "reminder removed";
+                    return this.Ok(new { status, message });
                 }
                 else
                 {
@@ -455,16 +463,48 @@ namespace Fundoo.Controllers
         }
 
         /// <summary>
+        /// API to get all remindered notes
+        /// </summary>
+        /// <returns>returns all remindered notes if there is any in trash otherwise returns message</returns>
+        [HttpGet("Remindered")]
+        public IActionResult ReminderedNotes()
+        {
+            try
+            {
+                ////getting the Id of note from token
+                var userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+                var data = this.businessNotes.ReminderedNotes(userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following are remindered notes";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "No remindered notes found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
         /// API to add color to note
         /// </summary>
         /// <param name="color">color as a parameter</param>
         /// <returns>returns the message</returns>
         [HttpPatch("{id}/ChangeColor")]
-        public async Task<IActionResult> ChangeColor(int id, string color)
+        public async Task<IActionResult> ChangeColor(int id, ColorModel colorModel)
         {
             try
             {
                 ////getting the Id of note from token
+                var color = colorModel.Color;
                 int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
                 var data = await this.businessNotes.ChangeColor(id, color, userId);
                 if (data.Equals("id"))

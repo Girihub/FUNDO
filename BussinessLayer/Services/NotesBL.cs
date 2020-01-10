@@ -289,42 +289,56 @@ namespace BussinessLayer.Services
         /// <param name="Id">Id of note</param>
         /// <param name="UserId">Id of User</param>
         /// <returns>returns message after performing the operation</returns>
-        public async Task<string> AddReminder(DateTime dateTime, int Id, int UserId)
+        public async Task<string> AddReminder(ReminderRequest dateTime, int Id, int UserId)
         {
             try
             {
                 if (Id > 0)
                 {
+                    return await this.repository.AddReminder(dateTime, Id, UserId);
+
                     //// Reminder should be future time
-                    if(dateTime.Day >= DateTime.Now.Day)
-                    {
-                        if (dateTime.Day == DateTime.Now.Day)
-                        {
-                            if(dateTime.Hour >= DateTime.Now.Hour)
-                            {
-                                if(dateTime.Hour == DateTime.Now.Hour)
-                                {
-                                    if(dateTime.Minute > DateTime.Now.Minute)
-                                    {
-                                        return await this.repository.AddReminder(dateTime, Id, UserId);
-                                    }
-                                    return "time";
-                                }
-                                return await this.repository.AddReminder(dateTime, Id, UserId);
-                            }
-                            return "time";
-                        }
-                        return await this.repository.AddReminder(dateTime, Id, UserId);
-                    }
-                    else
-                    {
-                        return "time";
-                    }
+                    //if(dateTime.Day >= DateTime.Now.Day)
+                    //{
+                    //    if (dateTime.Day == DateTime.Now.Day)
+                    //    {
+                    //        if(dateTime.Hour >= DateTime.Now.Hour)
+                    //        {
+                    //            if(dateTime.Hour == DateTime.Now.Hour)
+                    //            {
+                    //                if(dateTime.Minute > DateTime.Now.Minute)
+                    //                {
+                    //                    return await this.repository.AddReminder(dateTime, Id, UserId);
+                    //                }
+                    //                return "time";
+                    //            }
+                    //            return await this.repository.AddReminder(dateTime, Id, UserId);
+                    //        }
+                    //        return "time";
+                    //    }
+                    //    return await this.repository.AddReminder(dateTime, Id, UserId);
+                    //}
+                    //else
+                    //{
+                    //    return "time";
+                    //}
                 }
                 else
                 {
                     return "id";
                 }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<NotesModel> ReminderedNotes(int userId)
+        {
+            try
+            {
+                return this.repository.ReminderedNotes(userId);
             }
             catch (Exception e)
             {

@@ -42,7 +42,7 @@ namespace Fundoo.Controllers
         /// <param name="lableModel">labelModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPost]
-        public async Task<IActionResult> AddLable([FromForm] LabelRequest labelRequest)
+        public async Task<IActionResult> AddLable(LabelRequest labelRequest)
         {
             try
             {

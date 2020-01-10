@@ -39,7 +39,9 @@ namespace RepositoryLayer.Interfaces
 
         Task<string> AddImage(IFormFile formFile, int id, int userId);
 
-        Task<string> AddReminder(DateTime dateTime, int id, int userId);
+        Task<string> AddReminder(ReminderRequest dateTime, int id, int userId);
+
+        IList<NotesModel> ReminderedNotes(int userId);
 
         Task<string> ChangeColor(int id, string color, int userId);
 

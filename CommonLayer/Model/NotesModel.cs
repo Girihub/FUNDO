@@ -64,7 +64,7 @@ namespace CommonLayer.Model
         /// <summary>
         /// Gets or sets Reminder of user
         /// </summary>
-        public DateTime AddReminder { get; set; }
+        public DateTime? AddReminder { get; set; }
         
         /// <summary>
         /// Gets or sets UserId of user

@@ -38,7 +38,6 @@ namespace FundooTestCases.TestCases
                 Image = "image",
                 Color = "color",
                 IsPin = true,
-                AddReminder = DateTime.Now,
                 IsNote = false,
                 IsArchive =false,
                 IsTrash = false

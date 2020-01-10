@@ -50,20 +50,23 @@ namespace RepositoryLayer.Services
         public async Task<NotesModel> AddNote(NoteRequest noteRequest, int userId)
         {
             try
-            {            
+            {
+                //DateTime reminder = DateTime.Now;
+                //reminder = reminder.AddHours(6);
+
                 var note = new NotesModel()
                 {
                     Title = noteRequest.Title,
                     Description = noteRequest.Description,
                     Image = noteRequest.Image,
                     Color = noteRequest.Color,
-                    IsPin = false,
+                    IsPin = noteRequest.IsPin,
                     CreatedDate = DateTime.Now,
                     ModifiedDate = DateTime.Now,
-                    AddReminder = noteRequest.AddReminder,
+                    AddReminder = noteRequest.Reminder,
                     UserId = userId,
                     IsNote = noteRequest.IsNote,
-                    IsArchive = false,
+                    IsArchive = noteRequest.IsArchive,
                     IsTrash = false                    
             };
                 this.appDbContext.Notes.Add(note);
@@ -451,7 +454,7 @@ namespace RepositoryLayer.Services
         /// <param name="id">Id of note</param>
         /// <param name="userId">Id of User</param>
         /// <returns>returns message after performing the operation</returns>
-        public async Task<string> AddReminder(DateTime dateTime, int id, int userId)
+        public async Task<string> AddReminder(ReminderRequest dateTime, int id, int userId)
         {
             try
             {
@@ -459,10 +462,11 @@ namespace RepositoryLayer.Services
 
                 if (note != null)
                 {
-                    note.AddReminder = dateTime;
+                    note.AddReminder = dateTime.Reminder;
                     note.ModifiedDate = DateTime.Now;
                     await this.appDbContext.SaveChangesAsync();
-                    return note.AddReminder.ToString("dd MMMM yyyy hh:mm:ss tt");
+                    //return note.AddReminder.ToString("dd MMMM yyyy hh:mm:ss tt");
+                    return note.AddReminder.ToString();
                 }
 
                 return "id";
@@ -719,5 +723,32 @@ namespace RepositoryLayer.Services
                 throw new Exception(e.Message);
             }
         }
-    }
+
+        /// <summary>
+        /// Method to get the notes having reminder
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public IList<NotesModel> ReminderedNotes(int userId)
+        {
+            try
+            {
+                List<NotesModel> notes = new List<NotesModel>();
+
+                foreach (var row in this.appDbContext.Notes)
+                {
+                    if (row.UserId == userId && row.AddReminder != null)
+                    {
+                        notes.Add(row);
+                    }
+                }
+
+                return notes;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }   
 }

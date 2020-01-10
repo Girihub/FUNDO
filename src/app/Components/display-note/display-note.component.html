@@ -17,10 +17,14 @@
             <div style="padding-bottom: 10px;">
                 {{note['description']}}
             </div>
+            <div *ngIf="note['addReminder'] != null">
+                <mat-chip-list >
+                    <mat-chip style="background-color:transparent">{{this.datepipe.transform(note['addReminder'], 'MMMM d, y, h:mm:ss a')}}
+                        <button mat-icon-button (click)="removeReminder(note['id'])" (click)="note['addReminder'] = null"><mat-icon>cancel</mat-icon></button></mat-chip>
+                </mat-chip-list>
+            </div>
             <div [style.visibility]="showIcon==true?'visible':'hidden'">
                 <app-icon [noteIds] = 'note' [isTrash]=isTrashed></app-icon>
             </div>
-    
-            <!-- <app-icon [noteIds] = 'note'  ></app-icon>         -->
         </mat-card>
     </div>

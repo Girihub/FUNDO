@@ -16,6 +16,7 @@ import {MatSnackBar} from '@angular/material/snack-bar'
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   hide = true;
+  serviceColor
   
   
   constructor(
@@ -38,9 +39,9 @@ export class RegisterComponent implements OnInit {
         email: ['', [Validators.required, Validators.pattern('([a-z0-9](.?[a-z0-9]){3,}@g(oogle)?mail.com)$')]],
         password: ['', [Validators.required, Validators.pattern('(?=.*[0-9])(?=.*[a-z])(?=.*_)(?=.*[A-Z]).{4,8}')]],
         confirmPassword: ['', Validators.required],
-        serviceType: ['', [Validators.required, Validators.pattern('^([a-zA-Z]{5,7})$')]]
+        serviceType: ['', Validators.required]
 
-    },{validator: this.checkPasswords});
+    },{validator: this.checkPasswords});    
 
 }
 
@@ -53,6 +54,7 @@ checkPasswords(group: FormGroup) {
 get f() { return this.registerForm.controls; }
 
 register(value){
+  console.log(this.registerForm.value.serviceType)
   
   let newUser:Register={
     FirstName:this.registerForm.value.firstName,

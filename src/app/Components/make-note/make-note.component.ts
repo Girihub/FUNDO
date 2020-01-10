@@ -34,7 +34,7 @@ export class MakeNoteComponent implements OnInit {
         Description: this.description,
         Image:"",
         Color:"#FFFFFF",
-        Reminder:Date.UTC,
+        Reminder:null,
         IsPin:false,
         IsNote:true,
         IsArchive:false,

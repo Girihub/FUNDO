@@ -4,6 +4,10 @@
     <mat-form-field>
       <input matInput [(ngModel)]="label" placeholder="Create label">
     </mat-form-field>
+    <button mat-icon-button matTooltip="Add label" class="mat-icon-button" (click)="addLabel(this.label)">
+        <mat-icon fontSet="material-icons-outlined">check</mat-icon>
+    </button>
+    
     <div fxLayout="row" fxLayoutAlign="space-around center" *ngFor="let item of allLabels"(mouseover)="delete=true"(mouseout)="delete=false">
         <button mat-icon-button matTooltip="Delete label" class="mat-icon-button"(click)="deleteLabel(item['id'])">
             <mat-icon fontSet="material-icons-outlined" *ngIf="delete">delete_forever</mat-icon>
@@ -14,5 +18,5 @@
         <mat-icon fontSet="material-icons-outlined">create</mat-icon>
     </div>
     <hr flex/>
-    <button mat-button (click)="addLabel(this.label)" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="addLabel('')" cdkFocusInitial>Ok</button>
 </div>

@@ -29,10 +29,10 @@ export class CreateLabelComponent implements OnInit {
   }
 
 
-  addLabel(){
-    if(this.label){
+  addLabel(value){
+    if(value){
       let Label={
-        Lable:this.label
+        Lable:value
       }
       console.log(Label.Lable)
       return this.labelService.addLabel(Label).subscribe(response =>{

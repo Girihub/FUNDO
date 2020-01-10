@@ -114,20 +114,13 @@
 
                 <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="2%" ng-reflect-fx-layout="row"
                  ng-reflect-fx-layout.xs="column" display="box"> 
-                <div class="service" fxFlex=23>Enter Service Type:</div>
+                <div class="service" fxFlex=23>Select Service Type:</div>
                
-                <mat-form-field style="font-size: 14px" appearance="outline" fxFlex=75>
-                    <mat-label>Service Type</mat-label>
-                    <input matInput formControlName="serviceType" class="form-control" placeholder="A: Advance  B: Basic"
-                     [ngClass]="{ 'is-invalid': submitted && f.serviceType.errors}" required/>     
-                    <mat-error *ngIf="registerForm.hasError('required', 'serviceType')">
-                        Please Enter Service Type
-                    </mat-error>
-                    <mat-error *ngIf="registerForm.hasError('pattern', 'serviceType')">
-                        Type "Advance" or "Basic"
-                    </mat-error>
-                </mat-form-field>
-
+                <mat-button-toggle-group #ServiceType="matButtonToggleGroup" formControlName="serviceType" aria-label="Font Style">
+                    <mat-button-toggle value="Advance" (click)="serviceColor=true"[style.backgroundColor]="serviceColor==true?'#A3A8AB':'white'">Advance</mat-button-toggle>
+                    <mat-button-toggle value="Basic" (click)="serviceColor=false"[style.backgroundColor]="serviceColor==false?'#A3A8AB':'white'">Basic</mat-button-toggle>
+                </mat-button-toggle-group>
+                  <div>{{ServiceType.value}}</div>
                 </div>
 
 

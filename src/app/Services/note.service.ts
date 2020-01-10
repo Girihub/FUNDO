@@ -43,4 +43,12 @@ export class NoteService {
   searchNotes(word){
     return this.httpService.get('api/Note/Search?word='+word)
   }
+
+  addReminder(data){
+    return this.httpService.post('api/Note/'+data.id+'/Reminder',data)
+  }
+
+  addImage(data){
+    return this.httpService.post('api/Note/'+data.id+'/Image',data)
+  }
 }

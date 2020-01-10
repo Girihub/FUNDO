@@ -20,7 +20,7 @@ export class NotesComponent implements OnInit {
   ngOnInit() {
     this.getNotes();
     this.dataOneService.currentMessage.subscribe(response =>{
-      if(response.type=='archive' || response.type=='trash'){
+      if(response.type=='archive' || response.type=='trash' || response.type=='addReminder'){
         //this.getNotes();
       }
     }) ;

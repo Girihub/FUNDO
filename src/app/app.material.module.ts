@@ -12,7 +12,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { MatSnackBarModule } from "@angular/material";
 import {MatDialogModule, } from '@angular/material/dialog';
-
+import {DatePipe} from '@angular/common';
+import {MatChipsModule} from '@angular/material/chips';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {MatDialogModule, } from '@angular/material/dialog';
         MatSidenavModule,
         MatListModule,
         MatSnackBarModule,
-        MatDialogModule
+        MatDialogModule,
+        MatChipsModule
 
     ],
 
@@ -46,10 +48,11 @@ import {MatDialogModule, } from '@angular/material/dialog';
         MatSidenavModule,
         MatListModule,
         MatSnackBarModule,
-        MatDialogModule
+        MatDialogModule,
+        MatChipsModule
 
     ],
 
-    providers:[]
+    providers:[DatePipe]
 })
 export class MaterialModule{}

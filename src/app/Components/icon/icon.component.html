@@ -4,12 +4,15 @@
         <mat-menu #belowMenu="matMenu" yPosition="below">
             <span style="padding: 20px 0 20px 20px;">Reminder</span>
             <button mat-menu-item [matMenuTriggerFor]="datetime">Pick Date and Time</button>
-            <button mat-menu-item>Later Today&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:00 PM</button>
-            <button mat-menu-item>Tomorrow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:00 AM</button>
+            <button mat-menu-item (click) = "addReminder('today')">Later Today&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:00 PM</button>
+            <button mat-menu-item (click) = "addReminder('tomorrow')">Tomorrow&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8:00 AM</button>
         </mat-menu>
         <mat-menu #datetime="matMenu">
-            <button mat-menu-item>Fishes</button>
-            <button mat-menu-item>Amphibians</button>
+
+            <input [(ngModel)]="reminderDate" placeholder="Click here to select date and time"
+            [owlDateTimeTrigger]="dtPicker1" [owlDateTime]="dtPicker1">
+            <owl-date-time #dtPicker1></owl-date-time>
+            <button mat-menu-item (click) = "addReminder(reminderDate)">Save</button>
         </mat-menu>
           
     

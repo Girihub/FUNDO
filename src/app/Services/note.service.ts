@@ -51,4 +51,8 @@ export class NoteService {
   addImage(data){
     return this.httpService.post('api/Note/'+data.id+'/Image',data)
   }
+
+  getRemindered(){
+    return this.httpService.get('api/Note/Remindered');
+  }
 }

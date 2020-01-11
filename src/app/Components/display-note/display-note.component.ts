@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common'
 import { NoteService } from '../../Services/note.service';
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 
 
 @Component({
@@ -13,7 +14,7 @@ export class DisplayNoteComponent implements OnInit {
   @Input() getChildMessage: any;
   @Input() isTrashed:boolean;  
   
-  constructor(public datepipe: DatePipe,private noteService:NoteService
+  constructor(public datepipe: DatePipe,private noteService:NoteService,private dataOneService: DataOneService
   ) { 
     this.showIcon=false;
   }
@@ -28,6 +29,9 @@ export class DisplayNoteComponent implements OnInit {
     }
     this.noteService.addReminder(data).subscribe(response=>{
       console.log(response);
+      this.dataOneService.changeMessage({
+        type:'removeReminder'
+      })
     },error=>{
       console.log(error)
     })

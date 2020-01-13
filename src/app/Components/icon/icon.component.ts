@@ -22,7 +22,8 @@ export class IconComponent implements OnInit {
   @Input() noteIds
   @Output() addArchiveEvent = new EventEmitter<any>();  
   @Output() onDatePicked: EventEmitter<any> = new EventEmitter<any>(); 
-  reminderDate
+  reminderDate;
+  isArchive=false;
 // isTrash=true;
 
 
@@ -56,7 +57,11 @@ export class IconComponent implements OnInit {
 
   archive(){
     if(this.noteIds==null || this.noteIds==undefined){
-      return
+      this.isArchive=!this.isArchive
+      this.dataOneService.changeMessage({
+        data:this.isArchive,
+        type:'archive',
+      })
     }
     else{
       this.noteService.archive(this.noteIds.id).subscribe(response =>{

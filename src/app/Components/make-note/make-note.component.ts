@@ -19,6 +19,7 @@ export class MakeNoteComponent implements OnInit {
   color="#FFFFFF";
   isPin=false;
   Reminder=null;
+  isArchive=false;
   @Output() addNoteEvent = new EventEmitter<any>();
   
   constructor(
@@ -35,6 +36,9 @@ export class MakeNoteComponent implements OnInit {
       }
       if(response.type=='makeReminder'){
         this.Reminder=response.data;
+      }
+      if(response.type=='archive'){
+        this.isArchive=!this.isArchive
       }
     })
   }
@@ -53,7 +57,7 @@ export class MakeNoteComponent implements OnInit {
         Reminder:this.Reminder,
         IsPin:this.isPin,
         IsNote:true,
-        IsArchive:false,
+        IsArchive:this.isArchive,
         IsTrash:false
       }
   
@@ -71,7 +75,8 @@ export class MakeNoteComponent implements OnInit {
     this.description='';
     this.color="#FFFFFF";
     this.isPin=false;   
-    this.Reminder=null;    
+    this.Reminder=null; 
+    this.isArchive=false;   
   } 
 
   

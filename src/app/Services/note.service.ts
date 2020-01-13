@@ -55,4 +55,8 @@ export class NoteService {
   getRemindered(){
     return this.httpService.get('api/Note/Remindered');
   }
+
+  pin(id){
+    return this.httpService.post('api/Note/'+id+'/Pin',id)
+  }
 }

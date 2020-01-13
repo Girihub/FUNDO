@@ -6,3 +6,11 @@
 #display {
     margin: 2% 0 0 5%;
 }
+
+.card:hover #id{
+    visibility: visible;
+}
+
+.card:not(:hover) #id{
+    visibility: hidden;
+}

@@ -1,5 +1,6 @@
-<div style="margin: 2% 0 0 5%" fxLayout="row wrap" >
+<div style="margin: 2% 0 0 5%" fxLayout="row wrap" >    
     <mat-card class="card" *ngFor="let note of getChildMessage" [style.background-color]='note["color"]' (mouseover)="showIcon=true" (mouseout)="showIcon=false"  >
+           
             <div *ngIf="note['image'] != ''">
                 <img src="/assets/images/{{note['image']}}" style="height: 150px; width: 100%;">
             </div>
@@ -8,11 +9,28 @@
                     {{note['title']}}
                 </div>
     
-                <div fxFlex="10" *ngIf="!note['isTrash']"[style.visibility]="showIcon==true?'visible':'hidden'">
-                    <button mat-icon-button >
+                <!-- <div fxFlex="10" id="id" *ngIf="!note['isTrash'] && !note['isPin']">
+                    <button mat-icon-button (click)="pin(note['id'])">
                         <img src="/assets/images/pin.svg" >
                     </button>
                 </div>
+                <div fxFlex="10" id="id" *ngIf="!note['isTrash'] && note['isPin']">
+                    <button mat-icon-button (click)="pin(note['id'])">
+                        <img src="/assets/images/pin2.png" >
+                    </button>
+                </div> -->
+
+                <div fxFlex="10" *ngIf="!note['isTrash'] && !note['isPin']">
+                    <button mat-icon-button (click)="pin(note['id'])">
+                        <img src="/assets/images/pin.svg" >
+                    </button>
+                </div>
+                <div fxFlex="10" *ngIf="!note['isTrash'] && note['isPin']">
+                    <button mat-icon-button (click)="pin(note['id'])">
+                        <img src="/assets/images/pin2.png" >
+                    </button>
+                </div>
+
             </div>
             <div style="padding-bottom: 10px;">
                 {{note['description']}}
@@ -23,7 +41,12 @@
                         <button mat-icon-button (click)="removeReminder(note['id'])" (click)="note['addReminder'] = null"><mat-icon>cancel</mat-icon></button></mat-chip>
                 </mat-chip-list>
             </div>
-            <div [style.visibility]="showIcon==true?'visible':'hidden'">
+
+            <!-- <div id="id">
+                <app-icon [noteIds] = 'note' [isTrash]=isTrashed></app-icon>
+            </div> -->
+
+            <div>
                 <app-icon [noteIds] = 'note' [isTrash]=isTrashed></app-icon>
             </div>
         </mat-card>

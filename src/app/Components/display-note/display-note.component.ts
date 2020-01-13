@@ -12,7 +12,7 @@ import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 export class DisplayNoteComponent implements OnInit {
   showIcon:boolean;
   @Input() getChildMessage: any;
-  @Input() isTrashed:boolean;  
+  @Input() isTrashed:boolean; 
   
   constructor(public datepipe: DatePipe,private noteService:NoteService,private dataOneService: DataOneService
   ) { 
@@ -36,6 +36,17 @@ export class DisplayNoteComponent implements OnInit {
       console.log(error)
     })
   }
-
+ 
+  pin(id){
+    this.noteService.pin(id).subscribe(response=> {
+      console.log('response',response);
+      this.dataOneService.changeMessage({
+        data:id,
+        type:'pinUnpin'
+      })
+    },error=>{
+      console.log('error',error)
+    })
+  }
 
 }

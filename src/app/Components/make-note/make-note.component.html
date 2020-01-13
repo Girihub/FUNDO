@@ -1,5 +1,5 @@
 <div fxLayoutAlign="center center" display="flex">
-    <mat-card fxFlex="600px" class="make-note" fxLayout="row">
+    <mat-card fxFlex="600px" class="make-note" fxLayout="row" [ngStyle]="{'background-color': color}">
         <div *ngIf="isOpen" (click)="isOpen = !isOpen">
             <div fxFlex="420px">
                 <p style="font-size: 14px;">Take a note...</p>            
@@ -18,14 +18,22 @@
                         <input matInput type="text" [(ngModel)]=title placeholder="Title" style="font-size: 15px;"> 
                     </div> 
                     <div>
-                        <button mat-icon-button style="padding-bottom: 18px;">
-                            <img src="/assets/images/pin1.png" style="width: 15px;height: 20px;">
+                        <button mat-icon-button style="padding-bottom: 18px;" (click)="isPin=!isPin">
+                            <img src="/assets/images/pin.svg" *ngIf="!isPin">
+                            <img src="/assets/images/pin2.png" *ngIf="isPin">
                         </button>
                     </div>                    
                 </div> 
                 <div>
                     <input matInput type="text" [(ngModel)]=description placeholder="Take a note...." style="font-size: 15px;">
                 </div> 
+                <div *ngIf="Reminder!=null">
+                    <mat-chip-list >
+                        <mat-chip style="background-color:transparent">{{this.datepipe.transform(Reminder, 'MMMM d, y, h:mm:ss a')}}
+                            <button mat-icon-button (click)="Reminder = null"><mat-icon>cancel</mat-icon></button>
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
                 <div fxLayout="row">
                     <div fxFlex="80%">
                         <app-icon></app-icon>

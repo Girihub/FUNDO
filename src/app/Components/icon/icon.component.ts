@@ -28,11 +28,14 @@ export class IconComponent implements OnInit {
 
   ngOnInit() {
     
-  } 
+  }   
 
   color(value){
     if(this.noteIds==null || this.noteIds==undefined){
-      return value;
+      this.dataOneService.changeMessage({
+        type:'color',
+        data:value
+      })
     }
     else{
       this.noteIds['color']=value;
@@ -52,43 +55,55 @@ export class IconComponent implements OnInit {
   } 
 
   archive(){
-    this.noteService.archive(this.noteIds.id).subscribe(response =>{
-      console.log('response', response);
-      if(!this.noteIds.isArchive){        
-        this.dataOneService.changeMessage({
-          type:'archive'      
-       })
-      }else{
-        this.dataOneService.changeMessage({
-          type:'unarchive'      
-       })
-      }
-    },
-    error=>{
-      console.log('error msg', error); 
-    })    
+    if(this.noteIds==null || this.noteIds==undefined){
+      return
+    }
+    else{
+      this.noteService.archive(this.noteIds.id).subscribe(response =>{
+        console.log('response', response);
+        if(!this.noteIds.isArchive){        
+          this.dataOneService.changeMessage({
+            type:'archive'      
+         })
+        }else{
+          this.dataOneService.changeMessage({
+            type:'unarchive'      
+         })
+        }
+      },
+      error=>{
+        console.log('error msg', error); 
+      })
+    }    
   }
 
   trash(){
-    this.noteService.trash(this.noteIds.id).subscribe(response =>{
-      console.log('response', response);
-      if(!this.noteIds.isTrash){        
-        this.dataOneService.changeMessage({
-          type:'trash'      
-       })
-      }else{
-        this.dataOneService.changeMessage({
-          type:'restore'      
-       })
-      }
-    },
-    error=>{
-      console.log('error msg', error); 
-    })
+    if(this.noteIds==null || this.noteIds==undefined){
+      return
+    }else{
+      this.noteService.trash(this.noteIds.id).subscribe(response =>{
+        console.log('response', response);
+        if(!this.noteIds.isTrash){        
+          this.dataOneService.changeMessage({
+            type:'trash'      
+         })
+        }else{
+          this.dataOneService.changeMessage({
+            type:'restore'      
+         })
+        }
+      },
+      error=>{
+        console.log('error msg', error); 
+      })
+    }
   }
 
   addImage(event){
-    console.log(event.target.files[0].name);    
+    if(this.noteIds==null || this.noteIds==undefined){
+      return
+    }else{
+      console.log(event.target.files[0].name);    
     let data={
       id:this.noteIds.id,
       formFile:event.target.files[0].name
@@ -99,40 +114,51 @@ export class IconComponent implements OnInit {
     },error=>{
       console.log('error',error);
     })
+    }
   }  
 
   deleteNote(){
-    this.noteService.deleteNote(this.noteIds.id).subscribe(response =>{
-      console.log('response', response);
-      this.dataOneService.changeMessage({
-        type:'delete'      
-     })
-    },
-    error=>{
-      console.log('error msg', error); 
-    })
+    if(this.noteIds==null || this.noteIds==undefined){
+      return
+    }else{
+      this.noteService.deleteNote(this.noteIds.id).subscribe(response =>{
+        console.log('response', response);
+        this.dataOneService.changeMessage({
+          type:'delete'      
+       })
+      },
+      error=>{
+        console.log('error msg', error); 
+      })
+    }
   }
   
   addReminder(value){ 
-    if(this.noteIds['id']!=undefined){
-      if(value=='today'){
-        this.reminderDate=new Date()
-        //set hour hour time of 8:00AM. wasn't working properly so did the adjustment
-        this.reminderDate.setHours(25,30,0)
-      }else if(value=='tomorrow'){
-        this.reminderDate=new Date()
-        var today = new Date()
-        this.reminderDate.setDate(today.getDate() + 1)
-        //set hour hour time of 8:00AM. wasn't working properly so did the adjustment
-        this.reminderDate.setHours(13,30,0)
-      }else if(value==null){
-        this.reminderDate=null
-      }
-      else{
-        this.reminderDate=new Date(value)
-        this.reminderDate.setHours(this.reminderDate.getHours()+5);
-        this.reminderDate.setMinutes(this.reminderDate.getMinutes()+30)
-      }    
+    if(value=='today'){
+      this.reminderDate=new Date()
+      //set hour hour time of 8:00AM. wasn't working properly so did the adjustment
+      this.reminderDate.setHours(25,30,0)
+    }else if(value=='tomorrow'){
+      this.reminderDate=new Date()
+      var today = new Date()
+      this.reminderDate.setDate(today.getDate() + 1)
+      //set hour hour time of 8:00AM. wasn't working properly so did the adjustment
+      this.reminderDate.setHours(13,30,0)
+    }else if(value==null){
+      this.reminderDate=null
+    }
+    else{
+      this.reminderDate=new Date(value)
+      this.reminderDate.setHours(this.reminderDate.getHours()+5);
+      this.reminderDate.setMinutes(this.reminderDate.getMinutes()+30)
+    }
+
+    if(this.noteIds==null || this.noteIds==undefined){
+      this.dataOneService.changeMessage({
+        type:'makeReminder',
+        data:this.reminderDate
+      })
+    }else{         
       
       let data={
         id:this.noteIds.id,

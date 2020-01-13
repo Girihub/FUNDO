@@ -1,29 +1,45 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { NoteService } from '../../Services/note.service';
 import { CreateNote } from '../../Model/createNote';
 import { Router } from '@angular/router';
-import { NotesComponent } from '../notes/notes.component';
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-make-note',
   templateUrl: './make-note.component.html',
   styleUrls: ['./make-note.component.scss']
 })
+
 export class MakeNoteComponent implements OnInit {
 
   title='';
   description='';
   isOpen=true;
+  color="#FFFFFF";
+  isPin=false;
+  Reminder=null;
   @Output() addNoteEvent = new EventEmitter<any>();
   
   constructor(
+    public datepipe: DatePipe,
+    private dataOneService : DataOneService,
     private noteService:NoteService,
     private router : Router
   ) { }
 
   ngOnInit() {
+    this.dataOneService.currentMessage.subscribe(response=>{
+      if(response.type=='color'){
+        this.color=response.data
+      }
+      if(response.type=='makeReminder'){
+        this.Reminder=response.data;
+      }
+    })
   }
-  
+ 
+
    async createNote(){
     this.isOpen=true;
 
@@ -33,9 +49,9 @@ export class MakeNoteComponent implements OnInit {
         Title:this.title,
         Description: this.description,
         Image:"",
-        Color:"#FFFFFF",
-        Reminder:null,
-        IsPin:false,
+        Color:this.color,
+        Reminder:this.Reminder,
+        IsPin:this.isPin,
         IsNote:true,
         IsArchive:false,
         IsTrash:false
@@ -50,7 +66,12 @@ export class MakeNoteComponent implements OnInit {
       {
           console.log('error msg', error);   
       })
-    }         
+    } 
+    this.title='';
+    this.description='';
+    this.color="#FFFFFF";
+    this.isPin=false;   
+    this.Reminder=null;    
   } 
 
   

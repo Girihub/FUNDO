@@ -18,22 +18,37 @@ export class NotesComponent implements OnInit {
   message:string;
 
   ngOnInit() {
-    this.getNotes();
+    this.getNotes() 
+    console.log('allnotes',this.notes)
     this.dataOneService.currentMessage.subscribe(response =>{
-      if(response.type=='archive' || response.type=='trash' || response.type=='addReminder'){
+      if(response.type=='archive' || response.type=='trash' || response.type=='addReminder' || response.type =='pinUnpin'){        
         //this.getNotes();
       }
-    }) ;
-    
+    });    
   }
 
+  pinnedNotes=[];
+  unpinnedNotes=[];
   notes=[];
+ 
+  separateNotes(){
+    this.pinnedNotes=[];
+    this.unpinnedNotes=[];
+    for (let i = 0; i < this.notes.length; i++) {
+      if(this.notes[i].isPin == true){
+        this.pinnedNotes.push(this.notes[i]);
+      }else{
+        this.unpinnedNotes.push(this.notes[i]);
+      }
+    }
+  }
 
   getNotes(){
 
     this.noteService.getNotes().subscribe(response =>{
-      console.log('Response', response);
+      console.log('Response', response);      
       this.notes=response['data'];
+      this.separateNotes();
     },error=>
     {
         console.log('error msg', error); 
@@ -46,8 +61,5 @@ export class NotesComponent implements OnInit {
       this.getNotes();
     }    
   }  
-
-
-
 
 }

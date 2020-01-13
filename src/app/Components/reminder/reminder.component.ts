@@ -14,7 +14,7 @@ export class ReminderComponent implements OnInit {
   ngOnInit() {
     this.dataOneService.currentMessage.subscribe(response =>{
       if(response.type=='removeReminder'){
-        this.getRemindered();
+        //this.getRemindered();
         return        
       }
     })

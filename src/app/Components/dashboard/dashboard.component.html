@@ -13,16 +13,19 @@
             <div class="search" fxLayout="row" fxFlex=50 style="margin-top: 22px;" >
               <mat-form-field [style.fontSize.px]="12" appearance="outline" class="searchInput">                
                 <mat-icon matPrefix>search</mat-icon>
-                <input matInput type="text" #val placeholder="search" (keyup.enter) = searchNotes($event)>
+                <input matInput type="text" #val placeholder="search" (keyup) = searchNotes($event)>
               </mat-form-field>
             </div>
 
             <div fxFlex="25" fxLayout="row">
+              <button mat-icon-button style="margin-top:7px;margin-left: 10px; outline: none;">
+                <mat-icon fontSet="material-icons-outlined">view_agenda</mat-icon>
+            </button>
                 <button mat-icon-button style="margin-top:7px;margin-left: 10px; outline: none;">
                     <mat-icon>refresh</mat-icon>
                 </button>
                 <button mat-icon-button style="margin-top:10px;margin-left: 10px; outline: none;">
-                  <img src={{this.src}} class={{viewClass}} (click)=changeView() matTooltip={{this.viewToolTip}}>
+                  <img src={{this.src}} class={{viewClass}} (click)=changeView(this.src) matTooltip={{this.viewToolTip}}>
                 </button>
                 <button mat-icon-button style="margin-top:7px;margin-left: 10px; outline: none;">
                     <mat-icon>settings</mat-icon>

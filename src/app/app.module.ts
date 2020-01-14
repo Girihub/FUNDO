@@ -27,6 +27,7 @@ import { SearchComponent } from './Components/search/search.component';
 import { GetLabelComponent } from './Components/get-label/get-label.component';
 import { CreateLabelComponent } from './Components/create-label/create-label.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { EditNoteComponent } from './Components/edit-note/edit-note.component';
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
     SearchComponent,
     GetLabelComponent,
     CreateLabelComponent,
+    EditNoteComponent,
   ],
   imports: [
     CommonModule,

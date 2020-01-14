@@ -1,0 +1,67 @@
+<!-- <mat-card class="card" [ngStyle]="{'background-color': data.color}" style="height: 100%; width: 100%;">
+         
+  <div *ngIf="data.image != ''" style="height: 150px; width: 100%;">
+      <img src="/assets/images/{{data.image}}" >
+  </div>
+  <div style="padding-bottom: 10px;"fxLayout="row wrap" >
+    <mat-form-field>
+      <input matInput [(ngModel)]=data.title placeholder="Edit title">
+    </mat-form-field>
+
+      <div fxFlex="10" *ngIf="data.isTrash && !data.isPin">
+          <button mat-icon-button (click)="pin(data.id)">
+              <img src="/assets/images/pin.svg" >
+          </button>
+      </div>
+      <div fxFlex="10" *ngIf="!data.isTrash && data.isPin">
+          <button mat-icon-button (click)="pin(data.id)">
+              <img src="/assets/images/pin2.png" >
+          </button>
+      </div>
+  </div>
+  <mat-form-field>
+    <input matInput [(ngModel)]=data.description placeholder="Edit description">
+  </mat-form-field>
+  <div *ngIf="data.addReminder != null">
+      <mat-chip-list >
+          <mat-chip style="background-color:transparent">{{this.datepipe.transform(data.addReminder, 'MMMM d, y, h:mm:ss a')}}
+              <button mat-icon-button (click)="removeReminder(data.id)" (click)="note['addReminder'] = null"><mat-icon>cancel</mat-icon></button></mat-chip>
+      </mat-chip-list>
+  </div>
+  <div>
+      <app-icon [noteIds] = data [isTrash]=data.isTrash></app-icon>
+  </div>
+  <hr flex/>
+    <button mat-button (click)=updateNote()  cdkFocusInitial>Ok</button>
+</mat-card> -->
+
+
+
+
+
+
+
+
+
+
+
+<div style="margin: 2% 0 0 5%" fxLayout="row wrap" >    
+  <mat-card class="card" >         
+          
+          <div style="padding-bottom: 10px;"fxLayout="row wrap" >
+            <mat-form-field>
+              <input matInput placeholder="Edit title">
+            </mat-form-field>              
+
+          </div>
+          <mat-form-field>
+            <input matInput placeholder="Edit description">
+          </mat-form-field>
+          
+          <div>
+              <app-icon></app-icon>
+          </div>
+          <hr flex/>
+        <button mat-button (click)=updateNote()  cdkFocusInitial>Ok</button>
+      </mat-card>
+  </div>

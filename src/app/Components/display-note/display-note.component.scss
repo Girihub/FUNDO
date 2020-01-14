@@ -14,3 +14,18 @@
 .card:not(:hover) #id{
     visibility: hidden;
 }
+
+.cardList{
+    width:550PX;
+    margin: 15px 15px 15px 15px;
+    align-self: center;
+}
+
+.cardList:hover #id{
+    visibility: visible;
+}
+
+.cardList:not(:hover) #id{
+    visibility: hidden;
+}
+

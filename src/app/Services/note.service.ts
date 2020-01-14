@@ -59,4 +59,8 @@ export class NoteService {
   pin(id){
     return this.httpService.post('api/Note/'+id+'/Pin',id)
   }
+
+  updateNote(data){
+    return this.httpService.put('api/Note/'+data.Id,data)
+  }
 }

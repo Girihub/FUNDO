@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NoteService } from '../../Services/note.service';
 import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 import { DatePipe } from '@angular/common';
+import {MatSnackBar} from '@angular/material/snack-bar';
 @Component({
   selector: 'app-icon',
   templateUrl: './icon.component.html',
@@ -10,6 +11,7 @@ import { DatePipe } from '@angular/common';
 export class IconComponent implements OnInit {
   
   constructor(
+    private snackbar: MatSnackBar,
     private noteService : NoteService,
     private dataOneService: DataOneService,
     private datePipe: DatePipe
@@ -47,10 +49,12 @@ export class IconComponent implements OnInit {
 
     this.noteService.changeColor(data).subscribe(response =>{
       console.log('response', response);
+      this.snackbar.open(response['message'],'',{duration:2000});
     },
     error=>
     {
-        console.log('error msg', error);   
+        console.log('error msg', error);  
+        this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000});  
     })
     }    
   } 
@@ -66,6 +70,7 @@ export class IconComponent implements OnInit {
     else{
       this.noteService.archive(this.noteIds.id).subscribe(response =>{
         console.log('response', response);
+        this.snackbar.open(response['data'],'',{duration:2000});
         if(!this.noteIds.isArchive){        
           this.dataOneService.changeMessage({
             type:'archive'      
@@ -78,6 +83,7 @@ export class IconComponent implements OnInit {
       },
       error=>{
         console.log('error msg', error); 
+        this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000}); 
       })
     }    
   }
@@ -88,6 +94,7 @@ export class IconComponent implements OnInit {
     }else{
       this.noteService.trash(this.noteIds.id).subscribe(response =>{
         console.log('response', response);
+        this.snackbar.open(response['data'],'',{duration:2000});
         if(!this.noteIds.isTrash){        
           this.dataOneService.changeMessage({
             type:'trash'      
@@ -100,6 +107,7 @@ export class IconComponent implements OnInit {
       },
       error=>{
         console.log('error msg', error); 
+        this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000}); 
       })
     }
   }
@@ -116,8 +124,10 @@ export class IconComponent implements OnInit {
     return this.noteService.addImage(data).subscribe(response=>{
       this.noteIds['image']=event.target.files[0].name;
       console.log(response);
+      this.snackbar.open(response['message'],'',{duration:2000});
     },error=>{
       console.log('error',error);
+      this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000}); 
     })
     }
   }  
@@ -128,12 +138,14 @@ export class IconComponent implements OnInit {
     }else{
       this.noteService.deleteNote(this.noteIds.id).subscribe(response =>{
         console.log('response', response);
+        this.snackbar.open(response['message'],'',{duration:2000});
         this.dataOneService.changeMessage({
           type:'delete'      
        })
       },
       error=>{
         console.log('error msg', error); 
+        this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000}); 
       })
     }
   }
@@ -172,11 +184,13 @@ export class IconComponent implements OnInit {
       
       this.noteService.addReminder(data).subscribe(response =>{
         console.log(response);
+        this.snackbar.open(response['message'],'',{duration:2000});
         this.dataOneService.changeMessage({
           type:'addReminder'
         })
       },error=>{
         console.log('error',error);
+        this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000});
       })
     }
   }

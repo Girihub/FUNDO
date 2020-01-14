@@ -11,6 +11,7 @@ import { ArchiveComponent } from './Components/archive/archive.component';
 import { ReminderComponent } from './Components/reminder/reminder.component';
 import { SearchComponent } from './Components/search/search.component';
 import{CreateLabelComponent} from './Components/create-label/create-label.component'
+import{EditNoteComponent} from './Components/edit-note/edit-note.component'
 
 
 
@@ -29,7 +30,8 @@ const routes: Routes = [
     {path:'trashed', component: TrashComponent},
     {path:'remindered', component: ReminderComponent},
     {path:'search', component:SearchComponent},
-    {path:'label', component:CreateLabelComponent}
+    {path:'label', component:CreateLabelComponent},
+    {path:'editNote', component:EditNoteComponent}
   ]
 }
 ];

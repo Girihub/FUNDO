@@ -55,16 +55,19 @@ constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private d
   }
 
 
-  changeView(){
-    if(this.src == "/assets/images/list1.png"){
+  changeView(src){
+    if(src == "/assets/images/list1.png"){
       this.src="/assets/images/grid3.png";
-      this.viewToolTip="Grid View";
-      this.viewClass = "gridView"
-    }else{
-      this.src="/assets/images/list1.png";
       this.viewToolTip="List View";
       this.viewClass = "listView"
+    }else{
+      this.src="/assets/images/list1.png";
+      this.viewToolTip="Grid View";
+      this.viewClass = "gridView"
     }
+    this.dataOneService.changeMessage({
+      type:this.viewClass
+    })
   }
 
   getLabels=[];

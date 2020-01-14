@@ -39,7 +39,7 @@
         <mat-icon (click)= "file.click()" fontSet="material-icons-outlined">image</mat-icon>    
     </button>
     
-    <button mat-icon-button class="mat-icon-button" (click)= "archive()" *ngIf="noteIds!=undefined">
+    <button mat-icon-button (click)= "archive()" *ngIf="noteIds!=undefined"class="mat-icon-button" >
         <mat-icon matTooltip="Archive" fontSet="material-icons-outlined" *ngIf="!noteIds.isArchive">archive_outline</mat-icon>
         <mat-icon matTooltip="Unarchive" fontSet="material-icons-outlined" *ngIf="noteIds.isArchive">unarchive_outline</mat-icon>
     </button>

@@ -26,7 +26,7 @@
                     <input matInput formControlName="password" class="form-control" placeholder="New Password" [type]="hide ? 'password' : 'text'"
                      [ngClass]="{ 'is-invalid': submitted && f.password.errors}" required/>
 
-                     <mat-error *ngIf="resetForm.hasError('required', 'password')"> 
+                    <mat-error *ngIf="resetForm.hasError('required', 'password')"> 
                         Please enter your new password
                     </mat-error> 
                     <mat-error *ngIf="resetForm.hasError('pattern', 'password')">

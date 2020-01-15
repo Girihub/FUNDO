@@ -1,4 +1,4 @@
-<div style="margin: 2% 0 0 5%" fxLayout={{mainDivlayOut}} >    
+<div style="margin: 0 0 0 65px" fxLayout={{mainDivlayOut}} >    
     <mat-card [ngClass]="listView?'cardList':'card'" *ngFor="let note of getChildMessage" [style.background-color]='note["color"]' (mouseover)="showIcon=true" (mouseout)="showIcon=false">
            
             <div *ngIf="note['image'] != ''"  (click)= UpdateNote(note) >
@@ -10,7 +10,7 @@
                 </div>
     
                 
-                <!-- <div fxFlex="10" id="id" *ngIf="!note['isTrash'] && !note['isPin']">
+                <div fxFlex="10" id="id" *ngIf="!note['isTrash'] && !note['isPin']">
                     <button mat-icon-button (click)="pin(note['id'])">
                         <img src="/assets/images/pin.svg" >
                     </button>
@@ -19,10 +19,10 @@
                     <button mat-icon-button (click)="pin(note['id'])">
                         <img src="/assets/images/pin2.png" >
                     </button>
-                </div> -->
+                </div>
                 
 
-                <div fxFlex="10" *ngIf="!note['isTrash'] && !note['isPin']">
+                <!-- <div fxFlex="10" *ngIf="!note['isTrash'] && !note['isPin']">
                     <button mat-icon-button (click)="pin(note['id'])">
                         <img src="/assets/images/pin.svg" >
                     </button>
@@ -31,7 +31,7 @@
                     <button mat-icon-button (click)="pin(note['id'])">
                         <img src="/assets/images/pin2.png" >
                     </button>
-                </div>
+                </div> -->
 
             </div>
             <div style="padding-bottom: 10px;"  (click)= UpdateNote(note) >
@@ -45,13 +45,13 @@
             </div>
 
             
-            <!-- <div id="id">
-                <app-icon [noteIds] = 'note' [isTrash]=isTrashed></app-icon>
-            </div> -->
-            
-
-            <div>
+            <div id="id">
                 <app-icon [noteIds] = 'note' [isTrash]=isTrashed></app-icon>
             </div>
+            
+
+            <!-- <div>
+                <app-icon [noteIds] = 'note' [isTrash]=isTrashed></app-icon>
+            </div> -->
         </mat-card>
     </div>    

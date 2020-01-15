@@ -22,7 +22,7 @@ export class NotesComponent implements OnInit {
     console.log('allnotes',this.notes)
     this.dataOneService.currentMessage.subscribe(response =>{
       if(response.type=='archive' || response.type=='trash' || response.type=='addReminder' || response.type =='pinUnpin'){        
-        //this.getNotes();
+        this.getNotes();
       }
     });    
   }

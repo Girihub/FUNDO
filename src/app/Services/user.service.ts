@@ -25,6 +25,10 @@ export class UserService {
 
   reset(data){
     return this.httpService.post('api/Account/ResetPassword',data);
+  }  
+
+  getUsers(){
+    return this.httpService.get('api/Admin/UserList');
   }
 }
 

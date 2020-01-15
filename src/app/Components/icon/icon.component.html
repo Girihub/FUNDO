@@ -16,7 +16,7 @@
         </mat-menu>
           
     
-    <button mat-icon-button  matTooltip="Collaborator" class="mat-icon-button">
+    <button mat-icon-button  matTooltip="Collaborator" class="mat-icon-button"(click)=collaborate()>
         <mat-icon fontSet="material-icons-outlined">person_add</mat-icon>
     </button>
 
@@ -57,7 +57,11 @@
         <mat-icon>more_vert</mat-icon>
         <mat-menu #moreMenu="matMenu" xPosition="after">
             <button mat-menu-item (click)="trash()" *ngIf="noteIds!=undefined">Delete note</button>
-            <button mat-menu-item >Add label</button>
+            <button mat-menu-item [matMenuTriggerFor]="addLabel">Add Label</button>
+        </mat-menu>
+        <mat-menu #addLabel="matMenu" >
+            <button mat-menu-item>Label One</button>
+            <button mat-menu-item>Label Two</button>
         </mat-menu>
     </button>
 </div>

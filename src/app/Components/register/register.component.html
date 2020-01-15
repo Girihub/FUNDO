@@ -94,14 +94,13 @@
                      [ngClass]="{ 'is-invalid': submitted && f.confirmPassword.errors}" required/>     
                     <mat-error *ngIf="registerForm.hasError('required', 'confirmPassword')">
                         Please confirm your new password
-                    </mat-error>                     
-
-                    <div *ngIf="f.confirmPassword.touched || f.confirmPassword.dirty" >
-                        <mat-error *ngIf="registerForm.hasError('notSame')">
-                            Password does not match
-                        </mat-error>
-                    </div>
+                    </mat-error> 
                 </mat-form-field>
+                <div *ngIf="f.confirmPassword.touched || f.confirmPassword.dirty" >
+                    <mat-error *ngIf="registerForm.hasError('notSame')">
+                        Password does not match
+                    </mat-error>
+                </div>
 
                 <div style="padding-top: 16px;">
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>

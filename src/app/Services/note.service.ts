@@ -63,4 +63,8 @@ export class NoteService {
   updateNote(data){
     return this.httpService.put('api/Note/'+data.Id,data)
   }
+
+  collaborate(data){
+    return this.httpService.post('api/Note/Collaborate',data)
+  }
 }

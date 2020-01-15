@@ -18,7 +18,7 @@ export class ArchiveComponent implements OnInit {
   ngOnInit() {
     this.dataOneService.currentMessage.subscribe(response =>{
       if(response.type=='unarchive'){
-        //this.getAllArchived();
+        this.getAllArchived();
       }
     }) ;
     this.getAllArchived();

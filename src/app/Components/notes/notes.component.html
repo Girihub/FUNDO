@@ -1,3 +1,9 @@
 <app-make-note (addNoteEvent)="addNoteEvent($event)" ></app-make-note>
+<div *ngIf="pinnedNotes.length>0"style="margin: 0 0 0 105px">
+    Pinned
+</div>
 <app-display-note [getChildMessage]="pinnedNotes"></app-display-note>
+<div *ngIf="unpinnedNotes.length>0 && pinnedNotes.length>0"style="margin: 10px 0 0 105px">
+    Others
+</div>
 <app-display-note [getChildMessage]="unpinnedNotes"></app-display-note>

@@ -1,7 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { NoteService } from '../../Services/note.service';
-import { DatePipe } from '@angular/common'
+import { DatePipe } from '@angular/common';
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service';
+import {MatSnackBar} from '@angular/material/snack-bar';;
 
 export interface DialogData {
   id: number;
@@ -9,7 +11,7 @@ export interface DialogData {
   description:string,
   image:string,
   color:string,
-  addReminder:Date,
+  addReminder:any,
   isPin:boolean,  
   isNote:boolean,
   isArchive:boolean,
@@ -24,10 +26,11 @@ export interface DialogData {
 export class EditNoteComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<EditNoteComponent>,private noteService : NoteService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,public datepipe:DatePipe) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,public datepipe:DatePipe, private dataOneService:DataOneService,
+    private snackbar:MatSnackBar) { }
 
   ngOnInit() {
-    this.dialogRef.updateSize('50%', 'auto');
+    this.dialogRef.updateSize('50%', 'auto');    
   }
 
 
@@ -37,6 +40,7 @@ export class EditNoteComponent implements OnInit {
       Id:this.data.id,
       Title:this.data.title,
       Description:this.data.description,
+      IsPin:this.data.isPin
     }
     this.noteService.updateNote(updateData).subscribe(response=>{
       console.log(response);
@@ -44,13 +48,22 @@ export class EditNoteComponent implements OnInit {
       console.log(error)
     })
     this.dialogRef.close();
-  }
+  } 
 
-  pin(id){
-
-  }
-
-  removeReminder(id){
-
+  removeReminder(value){
+    let data={
+      id:value,
+      Reminder:null
+    }
+    this.noteService.addReminder(data).subscribe(response=>{
+      console.log(response);
+      this.snackbar.open(response['message'],'',{duration:2000});
+      this.dataOneService.changeMessage({
+        type:'removeReminder'
+      })
+    },error=>{
+      console.log(error)
+      this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000}); 
+    })
   }
 }

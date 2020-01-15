@@ -17,7 +17,7 @@ export class TrashComponent implements OnInit {
   ngOnInit() {
     this.dataOneService.currentMessage.subscribe(response =>{
       if(response.type=='restore' || response.type=='delete'){
-        //this.getTrashed();
+        this.getTrashed();
         return
       }
     }) ;

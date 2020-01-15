@@ -3,6 +3,11 @@ import { NoteService } from '../../Services/note.service';
 import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 import { DatePipe } from '@angular/common';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material';
+import {CollaboratorComponent} from './../collaborator/collaborator.component';
+import{DataServiceService} from '../../Services/DataService/data-service.service';
+
+
 @Component({
   selector: 'app-icon',
   templateUrl: './icon.component.html',
@@ -11,10 +16,12 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class IconComponent implements OnInit {
   
   constructor(
+    public dialog : MatDialog,
     private snackbar: MatSnackBar,
     private noteService : NoteService,
     private dataOneService: DataOneService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private dataService: DataServiceService
   ) { }
 
   @Input() isTrash:boolean;
@@ -27,10 +34,16 @@ export class IconComponent implements OnInit {
   reminderDate;
   isArchive=false;
 // isTrash=true;
-
+  allLabels=[];
 
   ngOnInit() {
-    
+    this.dataService.currentLabel.subscribe(response =>{
+      if(response.type=[]){
+        var result: any[][] = response.data;
+        this.allLabels=result;
+        console.log(this.allLabels)
+      }
+    })          
   }   
 
   color(value){
@@ -193,6 +206,19 @@ export class IconComponent implements OnInit {
         this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000});
       })
     }
+  }
+
+  collaborate(){
+    if(this.noteIds==undefined){
+      this.dialog.open(CollaboratorComponent,{      
+        data:0,
+      });
+    }else{
+      this.dialog.open(CollaboratorComponent,{      
+        data:this.noteIds.id,        
+      });
+    }
+    
   }
   
 }

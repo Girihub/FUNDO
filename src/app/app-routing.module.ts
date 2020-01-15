@@ -12,6 +12,7 @@ import { ReminderComponent } from './Components/reminder/reminder.component';
 import { SearchComponent } from './Components/search/search.component';
 import{CreateLabelComponent} from './Components/create-label/create-label.component'
 import{EditNoteComponent} from './Components/edit-note/edit-note.component'
+import {CollaboratorComponent} from './Components/collaborator/collaborator.component';
 
 
 
@@ -31,7 +32,9 @@ const routes: Routes = [
     {path:'remindered', component: ReminderComponent},
     {path:'search', component:SearchComponent},
     {path:'label', component:CreateLabelComponent},
-    {path:'editNote', component:EditNoteComponent}
+    {path:'editNote', component:EditNoteComponent},
+    {path:'collaborator', component:CollaboratorComponent},
+
   ]
 }
 ];

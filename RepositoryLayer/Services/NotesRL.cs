@@ -196,17 +196,11 @@ namespace RepositoryLayer.Services
                 if (notes == null)
                 {
                     return note;
-                } 
-
-                if (noteUpdate.Title != null)
-                {
-                    notes.Title = noteUpdate.Title;
                 }
 
-                if (noteUpdate.Description != null)
-                {
-                    notes.Description = noteUpdate.Description;
-                }
+                notes.Title = noteUpdate.Title;
+                notes.Description = noteUpdate.Description;
+                notes.IsPin = noteUpdate.IsPin;
 
                 notes.ModifiedDate = DateTime.Now;
                 this.appDbContext.Entry(notes).State = EntityState.Modified;
@@ -724,6 +718,66 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public async Task<bool> DeleteCollaborator(int usersId, int noteId, int collaboratorId)
+        {
+            try
+            {
+                var row = this.appDbContext.Collaborate.Where(c => c.NoteId == noteId && c.CollaboratedBy == collaboratorId && c.CollaboratedWith == usersId).FirstOrDefault();
+                if(row != null)
+                {
+                    this.appDbContext.Collaborate.Remove(row);
+                    await this.appDbContext.SaveChangesAsync();
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<CollaborateModel> GetCollaborate(int collaboratorId)
+        {
+            try
+            {
+                List<CollaborateModel> colabs = new List<CollaborateModel>();
+                foreach(var row in this.appDbContext.Collaborate)
+                {
+                    if(row.CollaboratedBy == collaboratorId)
+                    {
+                        colabs.Add(row);
+                    }
+                }
+                return colabs;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<CollaborateModel> GetCollaborateById(int collaboratorId, int noteId)
+        {
+            try
+            {
+                List<CollaborateModel> colabs = new List<CollaborateModel>();
+                foreach (var row in this.appDbContext.Collaborate)
+                {
+                    if (row.CollaboratedBy == collaboratorId && row.NoteId == noteId)
+                    {
+                        colabs.Add(row);
+                    }
+                }
+                return colabs;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         /// <summary>
         /// Method to get the notes having reminder
         /// </summary>
@@ -740,6 +794,51 @@ namespace RepositoryLayer.Services
                     if (row.UserId == userId && row.AddReminder != null)
                     {
                         notes.Add(row);
+                    }
+                }
+
+                return notes;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<NoteLabelModel> GetNotesLabel(int userId)
+        {
+            try
+            {
+                List<NoteLabelModel> notes = new List<NoteLabelModel>();
+
+                foreach (var line in this.appDbContext.NoteLabel)
+                {
+                    if (userId == line.UserId)
+                    {
+                        notes.Add(line);
+                    }
+                }
+
+                return notes;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+        public IList<NoteLabelModel> GetNotesLabelById(int userId, int noteId)
+        {
+            try
+            {
+                List<NoteLabelModel> notes = new List<NoteLabelModel>();
+
+                foreach (var line in this.appDbContext.NoteLabel)
+                {
+                    if (userId == line.UserId && line.NoteId == noteId)
+                    {
+                        notes.Add(line);
                     }
                 }
 

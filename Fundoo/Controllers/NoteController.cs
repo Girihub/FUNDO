@@ -171,7 +171,7 @@ namespace Fundoo.Controllers
         /// <param name="notesModel">notesModel as a parameter</param>
         /// <returns>returns result in JSON format</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateNote(int id, [FromForm] NoteUpdate noteUpdate)
+        public async Task<IActionResult> UpdateNote(int id, NoteUpdate noteUpdate)
         {
             try
             {
@@ -443,7 +443,7 @@ namespace Fundoo.Controllers
                     var message = "reminder should not be past or current time";
                     return this.BadRequest(new { status, message });
                 }
-                else if(reminderRequest.Reminder == null)
+                else if (reminderRequest.Reminder == null)
                 {
                     bool status = true;
                     var message = "reminder removed";
@@ -619,8 +619,8 @@ namespace Fundoo.Controllers
             {
                 throw new Exception(e.Message);
             }
-        }    
-        
+        }
+
         /// <summary>
         /// API to search the notes
         /// </summary>
@@ -659,10 +659,12 @@ namespace Fundoo.Controllers
         /// <param name="noteId">Id of note</param>
         /// <returns>returns result</returns>
         [HttpPost("Collaborate")]
-        public async Task<IActionResult> Collaborate(int collaberateWith, int noteId)
+        public async Task<IActionResult> Collaborate(CollaborateRequest collaborateRequest)
         {
             try
             {
+                int collaberateWith = collaborateRequest.CollaboratedWith;
+                int noteId = collaborateRequest.NoteId;
                 int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
                 var status = await this.businessNotes.Collaborate(collaberateWith, noteId, collaboratorId);
                 if (status)
@@ -681,5 +683,140 @@ namespace Fundoo.Controllers
                 throw new Exception(e.Message);
             }
         }
+
+
+        [HttpDelete("Collaborate/{CollaboratedWith}")]
+        public async Task<IActionResult> DeleteCollaborator(CollaborateRequest collaborateRequest)
+        {
+            try
+            {
+                int collaberateWith = collaborateRequest.CollaboratedWith;
+                int noteId = collaborateRequest.NoteId;
+                int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var status = await this.businessNotes.DeleteCollaborator(collaberateWith, noteId, collaboratorId);
+                if (status)
+                {
+                    var message = "Colaborator deleted successfully";
+                    return this.Ok(new { status, message });
+                }
+                else
+                {
+                    var message = "Invalid ids";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("GetCollaborate")]
+        public IActionResult GetCollaborate()
+        {
+            try
+            {
+                int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var data = this.businessNotes.GetCollaborate(collaboratorId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following collaborators found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "collaborators not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("GetCollaborateById/{noteId}")]
+        public IActionResult GetCollaborate(int noteId)
+        {
+            try
+            {
+                int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var data = this.businessNotes.GetCollaborateById(collaboratorId, noteId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following collaborators found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "collaborators not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("GetNotesLabel")]
+        public IActionResult GetNotesLabel()
+        {
+            try
+            {
+                int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var data = this.businessNotes.GetNotesLabel(userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following notesLabels found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "notesLabels not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+        [HttpGet("GetNotesLabelById/{noteId}")]
+        public IActionResult GetNotesLabelById(int noteId)
+        {
+            try
+            {
+                int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var data = this.businessNotes.GetNotesLabelById(userId, noteId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following notesLabels found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "notesLabels not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
+
+
+   

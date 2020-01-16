@@ -196,8 +196,9 @@ namespace RepositoryLayer.Services
         {
             List<RegistrationModel> users = new List<RegistrationModel>();
 
-            var admin = this.appDbContext.Registration.Where(c => c.Id == userId && c.UserType.Equals("Admin")).FirstOrDefault();
+            //var admin = this.appDbContext.Registration.Where(c => c.Id == userId && c.UserType.Equals("Admin")).FirstOrDefault();
 
+            var admin = this.appDbContext.Registration.Where(c => c.Id == userId).FirstOrDefault();
             if (admin != null)
             {
                 foreach (var row in this.appDbContext.Registration)

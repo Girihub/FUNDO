@@ -160,7 +160,7 @@ namespace Fundoo.Controllers
         /// <returns>returns result in JSON format</returns>
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateLable(int id, [FromForm] LabelRequest labelRequest)
+        public async Task<IActionResult> UpdateLable(int id, LabelRequest labelRequest)
         {
             try
             {

@@ -54,5 +54,15 @@ namespace RepositoryLayer.Interfaces
         Task<IList<NotesModel>> Search(string word, int userId);
 
         Task<bool> Collaborate(int usersId, int noteId, int collaboratorId);
+
+        Task<bool> DeleteCollaborator(int usersId, int noteId, int collaboratorId);
+
+        IList<CollaborateModel> GetCollaborate(int collaboratorId);
+
+        IList<CollaborateModel> GetCollaborateById(int collaboratorId, int noteId);
+
+        IList<NoteLabelModel> GetNotesLabel(int userId);
+
+        IList<NoteLabelModel> GetNotesLabelById(int userId, int noteId);
     }
 }

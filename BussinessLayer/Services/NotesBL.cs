@@ -472,5 +472,53 @@ namespace BussinessLayer.Services
                 throw new Exception(e.Message);
             }
         }
+
+        public async Task<bool> DeleteCollaborator(int usersId, int noteId, int collaboratorId)
+        {
+            try
+            {
+                return await this.repository.DeleteCollaborator(usersId, noteId, collaboratorId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<CollaborateModel> GetCollaborateById(int collaboratorId, int noteId)
+        {
+            try
+            {
+                return this.repository.GetCollaborateById(collaboratorId, noteId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<NoteLabelModel> GetNotesLabel(int userId)
+        {
+            try
+            {
+                return this.repository.GetNotesLabel(userId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<NoteLabelModel> GetNotesLabelById(int userId, int noteId)
+        {
+            try
+            {
+                return this.repository.GetNotesLabelById(userId, noteId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

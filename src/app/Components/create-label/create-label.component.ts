@@ -17,17 +17,21 @@ export class CreateLabelComponent implements OnInit {
   name=localStorage.getItem('firstName');
   label:any;
   allLabels=[];
-  delete=false;
+  
   
   ngOnInit() {
     this.dataServive.currentLabel.subscribe(response =>{
-      if(response.type=[]){
+      if(response.type='dialog'){
         var result: any[][] = response.data;
         this.allLabels=result;
+        console.log(response)
       }
     })    
   }
 
+  close(){
+    this.dialogRef.close();
+  }
 
   addLabel(value){
     if(value){
@@ -36,33 +40,44 @@ export class CreateLabelComponent implements OnInit {
       }
       console.log(Label.Lable)
       return this.labelService.addLabel(Label).subscribe(response =>{
-        console.log(response);
-        this.dialogRef.close();
+        console.log(response); 
+        this.label=''       
         this.dataServive.changeLabel({
-          type:['refreshLabel']
+          type:'refreshLabel'
        })
       },
       error=>{
         console.log('error', error);
-        this.dialogRef.close();
       })      
-    }
-    else
-    {
-      this.dialogRef.close();
-    }    
+    }   
   }
 
   deleteLabel(id){
     return this.labelService.deleteLabel(id).subscribe(response =>{
       console.log(response)
       this.dataServive.changeLabel({
-        type:['refreshLabel']
+        type:'refreshLabel'
      })
-      this.dialogRef.close();
     },error=>{
       console.log('error',error)
     })
+  }
+
+  editLabel(id,data){
+    if(data){
+      let Data={
+        id:id,
+        Lable:data
+      }
+      this.labelService.editLabel(Data).subscribe(response=>{
+        console.log('response',response)
+        this.dataServive.changeLabel({
+          type:'refreshLabel'
+       })
+      },error=>{
+        console.log('error',error)
+      })
+    }
   }
 
 }

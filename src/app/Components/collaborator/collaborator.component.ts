@@ -4,11 +4,8 @@ import { NoteService } from 'src/app/Services/note.service';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {UserService} from '../../Services/user.service'
-
-export interface DialogData {
-  noteId: number
-}
+import {UserService} from '../../Services/user.service';
+import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 
 @Component({
   selector: 'app-collaborator',
@@ -19,7 +16,8 @@ export interface DialogData {
 export class CollaboratorComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<CollaboratorComponent>,private noteService : NoteService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,private snackbar:MatSnackBar, private userService: UserService) { }
+    @Inject(MAT_DIALOG_DATA) public data: any,private snackbar:MatSnackBar, private userService: UserService,
+    private dataOneService : DataOneService) { }
 
     myControl = new FormControl();
     allUsers=[];
@@ -28,13 +26,19 @@ export class CollaboratorComponent implements OnInit {
   ownerId = localStorage.getItem('id');
   ownerName = localStorage.getItem('fullName');
   ownerEmail = localStorage.getItem('email');
+  ownerImage = localStorage.getItem('profilePicture');
   userId
+  collaborated=this.data.dataKey.collaborateResponses;
+
 
   
 
   ngOnInit() {   
+    this.dialogRef.updateSize('40%', '50%');
+    console.log('whole data',this.collaborated)
     this.getUsers()
   }
+
 
   usersList(){
     this.filteredUsers = this.myControl.valueChanges
@@ -62,22 +66,36 @@ export class CollaboratorComponent implements OnInit {
   }
 
   collaborate(){
-    console.log(this.userId)
-    console.log(this.data)
+    console.log('in colab',this.data.NoteId)
     let Data = {
       CollaboratedWith:this.userId,
-      NoteId:this.data
+      NoteId:this.data.dataKey.id
     }
-
     return this.noteService.collaborate(Data).subscribe(response=>{
-      console.log('response',response);
-      this.dialogRef.close();
+      console.log('response in add colaborator',response);
+      this.collaborated.Add(Data)
+      this.dataOneService.changeMessage({
+        type:'colaboratorAdded'
+      })
     },error=>{
-      console.log('error',error)
-      this.dialogRef.close();
+      console.log('error in add colaborator',error)
     })    
   }
   
-  
+  deleteColab(userid){
+    let data={
+      CollaboratedWith:userid,
+      NoteId:this.data.dataKey.id
+    }
+    console.log('wrgrwgwrg',data)
+    return this.noteService.deleteCollaborate(data).subscribe(response=>{
+      console.log('response in delete colaborator', response);
+      this.dataOneService.changeMessage({
+        type:'colaboratorDeleted'
+      })
+    },error=>{
+      console.log('error in delete colaborator',error)
+    })
+  }
 
 }

@@ -30,6 +30,10 @@ export class UserService {
   getUsers(){
     return this.httpService.get('api/Admin/UserList');
   }
+
+  uploadProfilePicture(data){
+    return this.httpService.postImage('api/Account/UploadProfilePicture',data)
+  }
 }
 
 

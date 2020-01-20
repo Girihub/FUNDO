@@ -1,8 +1,29 @@
-<div style="width: 250px;height: 150px;">
-   <div>
-    By: {{ownerName}}<br>
-    {{ownerEmail}}
+<div style="width: 250px;height: 150px;align-items: center;">
+   <div fxLayout="row">
+    <div *ngIf="ownerImage != null">
+      <img mat-card-avatar src="{{ownerImage}}" class="imageAvtar">      
+    </div>
+    <div *ngIf="ownerImage == null">
+      <mat-icon fontSet="material-icons-outlined">person</mat-icon>
+    </div>
+    <div fxLayout="column" style="padding-left: 10px;">
+      <span style="font-size: 14px;font-weight: bold;">{{ownerName}}(Owner)</span>
+      <span style="font-size: 14px;">{{ownerEmail}}</span>
+    </div>
    </div>
+
+   <div *ngFor="let colabs of collaborated" fxLayout="row">
+    <img mat-card-avatar src="{{colabs['collaboratedWithImage']}}" class="imageAvtar">
+    <div fxLayout="row" style="padding-left: 10px;padding-top: 10px;">
+      <span style="font-size: 14px;font-weight: bold;">{{colabs['collaboratedWithEmail']}}</span>      
+    </div>
+    <div>
+      <button mat-icon-button (click)="deleteColab(colabs['collaboratedWithId'])">
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
+   </div>
+
     <div>
         <mat-form-field>
             <input (click)=usersList() placeholder="Collaborate with?" matInput [formControl]="myControl" [matAutocomplete]="auto">
@@ -12,8 +33,8 @@
                 </mat-option>
               </mat-autocomplete>
         </mat-form-field>
+        <button mat-button (click)=collaborate()><mat-icon>done</mat-icon></button>
         <hr>
-        <button mat-button (click)=cancel()>Cancel</button>
-        <button mat-button (click)=collaborate()>Ok</button>
+        <button mat-button (click)=cancel()>Ok</button>
     </div>
 </div>

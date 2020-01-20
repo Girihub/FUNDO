@@ -1,0 +1,16 @@
+.label:hover #hide{
+    display: none;
+}
+
+.label:not(:hover) #hide{
+    display: block;
+}
+
+.label:hover #show{
+    display: block;
+}
+
+.label:not(:hover) #show{
+    display: none;
+}
+

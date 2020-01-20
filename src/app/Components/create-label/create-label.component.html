@@ -8,15 +8,18 @@
         <mat-icon fontSet="material-icons-outlined">check</mat-icon>
     </button>
     
-    <div fxLayout="row" fxLayoutAlign="space-around center" *ngFor="let item of allLabels"(mouseover)="delete=true"(mouseout)="delete=false">
+    <div fxLayout="row" class="label" fxLayoutAlign="space-around center" *ngFor="let item of allLabels">
         <button mat-icon-button matTooltip="Delete label" class="mat-icon-button"(click)="deleteLabel(item['id'])">
-            <mat-icon fontSet="material-icons-outlined" *ngIf="delete">delete_forever</mat-icon>
-            <mat-icon fontSet="material-icons-outlined" *ngIf="!delete">label</mat-icon>
+            <mat-icon id ="show" fontSet="material-icons-outlined" >delete_forever</mat-icon>
+            <mat-icon id ="hide" fontSet="material-icons-outlined" >label</mat-icon>
         </button>
-        <!-- <mat-icon fontSet="material-icons-outlined">label</mat-icon> -->
-        <p>{{item['lable']}}</p>
-        <mat-icon fontSet="material-icons-outlined">create</mat-icon>
+        <mat-form-field [style.fontSize.px]="12" appearance="none">
+            <input type="text" matInput #labelEdit value="{{item['lable']}}">
+        </mat-form-field >
+        <button mat-icon-button>
+            <mat-icon matTooltip="Edit label" fontSet="material-icons-outlined" (click)="editLabel(item['id'],labelEdit.value)">create</mat-icon>
+        </button>        
     </div>
     <hr flex/>
-    <button mat-button (click)="addLabel('')" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="close()" cdkFocusInitial>Ok</button>
 </div>

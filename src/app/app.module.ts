@@ -31,6 +31,7 @@ import { EditNoteComponent } from './Components/edit-note/edit-note.component';
 import { CollaboratorComponent } from './Components/collaborator/collaborator.component';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

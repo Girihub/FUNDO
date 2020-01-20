@@ -17,6 +17,7 @@ export class MakeNoteComponent implements OnInit {
   description='';
   isOpen=true;
   color="#FFFFFF";
+  Image='';
   isPin=false;
   Reminder=null;
   isArchive=false;
@@ -40,6 +41,9 @@ export class MakeNoteComponent implements OnInit {
       if(response.type=='archive'){
         this.isArchive=!this.isArchive
       }
+      if(response.type=='addImage'){
+        this.Image=response.data
+      }
     })
   }
  
@@ -52,7 +56,7 @@ export class MakeNoteComponent implements OnInit {
       let note : CreateNote = {
         Title:this.title,
         Description: this.description,
-        Image:"",
+        Image:this.Image,
         Color:this.color,
         Reminder:this.Reminder,
         IsPin:this.isPin,
@@ -76,7 +80,8 @@ export class MakeNoteComponent implements OnInit {
     this.color="#FFFFFF";
     this.isPin=false;   
     this.Reminder=null; 
-    this.isArchive=false;   
+    this.isArchive=false; 
+    this.Image=''
   } 
 
   

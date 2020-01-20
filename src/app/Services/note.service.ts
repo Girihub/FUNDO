@@ -13,7 +13,7 @@ export class NoteService {
   }
 
   getNotes(){
-    return this.httpService.get('api/Note');
+    return this.httpService.get('api/Note/GetNotesResponse');
   }
 
   getArchived(){
@@ -48,8 +48,12 @@ export class NoteService {
     return this.httpService.post('api/Note/'+data.id+'/Reminder',data)
   }
 
-  addImage(data){
-    return this.httpService.post('api/Note/'+data.id+'/Image',data)
+  addImage(id,data){
+    return this.httpService.postImage('api/Note/'+id+'/Image',data)
+  }
+
+  addImageForCreateNote(data){
+    return this.httpService.postImage('api/Note/Image',data)
   }
 
   getRemindered(){
@@ -67,4 +71,13 @@ export class NoteService {
   collaborate(data){
     return this.httpService.post('api/Note/Collaborate',data)
   }
+
+  removeNoteLabel(labelId,noteId){
+    return this.httpService.delete('api/Note/Note/'+noteId+'/Label/'+labelId);
+  }
+
+  deleteCollaborate(data){
+    return this.httpService.delete('api/Note/Collaborate/'+data.CollaboratedWith+'/'+data.NoteId)
+  }
+
 }

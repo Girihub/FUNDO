@@ -1,5 +1,5 @@
 <div class="container" >
-    <mat-toolbar id="toolbar">
+    <mat-toolbar id="toolbar" >
         <div fxLayout="row" fxLayout.xs="column" display="flex" fxLayoutAlign="space-between center" fxFlex="100%">
 
             <div  fxLayout="row" fxFlex=25 >
@@ -30,10 +30,11 @@
                 <button mat-icon-button style="margin-top:7px;margin-left: 80px; outline: none;">
                     <mat-icon>apps</mat-icon>
                 </button>
-                <button class="buttonAvtar" mat-icon-button [matMenuTriggerFor]="beforeMenu">
-                    <mat-menu #beforeMenu="matMenu" xPosition="before" >
+                <button class="buttonAvtar" mat-icon-button [matMenuTriggerFor]="beforeMenu" >
+                    <mat-menu #beforeMenu="matMenu" xPosition="before">
                         <div class="mat-menu-div">
-                        <img mat-card-avatar src="{{this.userProfilePic}}" class="avtar-in-menu">
+                        <img mat-card-avatar src="{{this.userProfilePic}}" class="avtar-in-menu" (click)="file.click(file)" matTooltip="Change Profile Picture">
+                        <input type="file" #file style="display:none;" (change)="changeProfilePicture(file.files)">                        
                         <h4>{{this.userName}}</h4>
                         <h4>{{this.userEmail}}</h4>
                         <button mat-raised-button (click)=logout()>Logout</button>
@@ -99,7 +100,7 @@
           </mat-nav-list>
         </mat-sidenav>        
 
-        <mat-sidenav-content style="background-color: white;">
+        <mat-sidenav-content style="background-color: white;" >
           <router-outlet ></router-outlet>
         </mat-sidenav-content>
       </mat-sidenav-container>

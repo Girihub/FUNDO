@@ -13,7 +13,10 @@
 
         <div *ngIf="!isOpen">
             <div  fxLayout="column">
-                <div>
+                <div *ngIf="Image!=''">
+                    <img src={{Image}} style="height: 150px;width: 100%;"> 
+                </div>
+                <div>                     
                     <div fxFlex="500px">
                         <input matInput type="text" [(ngModel)]=title placeholder="Title" style="font-size: 15px;"> 
                     </div> 

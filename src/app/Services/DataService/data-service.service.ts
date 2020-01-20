@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DataServiceService { 
 
-  private labelSource = new BehaviorSubject({data:[], type:[]});
+  private labelSource = new BehaviorSubject({data:[], type:''});
   currentLabel = this.labelSource.asObservable();
 
   constructor() { }

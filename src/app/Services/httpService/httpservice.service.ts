@@ -23,6 +23,16 @@ export class HttpserviceService {
     return this.httpClient.post(this.baseUrl+url, data, options);
   }
 
+  postImage(url, data) {
+    let options = {
+      headers: new HttpHeaders({
+       'Authorization': 'Bearer ' + localStorage.getItem('token'),
+       'Content-Type': 'multipart/form-data'
+      })
+    }
+    return this.httpClient.post(this.baseUrl+url, data, options);
+  }
+
   put(url, data) {
     let options = {
       headers: new HttpHeaders({

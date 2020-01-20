@@ -5,6 +5,7 @@ import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material';
 import {EditNoteComponent} from './../edit-note/edit-note.component';
+import {CollaboratorComponent} from './../collaborator/collaborator.component'
 
 
 @Component({
@@ -18,6 +19,7 @@ export class DisplayNoteComponent implements OnInit {
   @Input() isTrashed:boolean; 
   mainDivlayOut="row wrap";
   listView=false
+  imagesrc
   
   constructor(
     public dialog : MatDialog,
@@ -29,7 +31,7 @@ export class DisplayNoteComponent implements OnInit {
     this.showIcon=false;
   }
   ngOnInit() { 
-    this.dataOneService.currentMessage.subscribe(response=>{
+    this.dataOneService.currentMessage.subscribe(response=>{      
       if(response.type=='listView'){
         this.listView=true;
         this.mainDivlayOut="column wrap";
@@ -38,7 +40,7 @@ export class DisplayNoteComponent implements OnInit {
         this.mainDivlayOut="row wrap";
       }
     })
-  }
+  } 
 
   removeReminder(value){
     let data={
@@ -74,6 +76,27 @@ export class DisplayNoteComponent implements OnInit {
   UpdateNote(note){
     this.dialog.open(EditNoteComponent,{      
       data:note,
+    });
+  }
+
+  removeNoteLabel(labelId,noteId){
+    return this.noteService.removeNoteLabel(labelId,noteId).subscribe(response=>{
+      console.log('response from removeNoteLabel',response);
+      this.dataOneService.changeMessage({
+        type:'removeNoteLabel'
+      })
+      this.snackbar.open(response['message'],'',{duration:2000});
+    },error=>{
+      console.log('error in removeNoteLabel',error);
+      this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000});
+    })
+  }
+
+  colabDialog(note){
+    this.dialog.open(CollaboratorComponent,{      
+      data: {
+        dataKey: note
+      }        
     });
   }
 

@@ -11,7 +11,7 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import { MatSnackBarModule } from "@angular/material";
-import {MatDialogModule, } from '@angular/material/dialog';
+import {MatDialogModule,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {DatePipe} from '@angular/common';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
@@ -56,6 +56,9 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
     ],
 
-    providers:[DatePipe]
+    providers:[DatePipe,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: [] }
+    ]
 })
 export class MaterialModule{}

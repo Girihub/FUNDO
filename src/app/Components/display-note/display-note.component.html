@@ -1,8 +1,8 @@
-<div style="margin: 0 0 0 65px" fxLayout={{mainDivlayOut}} >    
+<div style="margin: 0 0 0 65px;" fxLayout={{mainDivlayOut}} >    
     <mat-card [ngClass]="listView?'cardList':'card'" *ngFor="let note of getChildMessage" [style.background-color]='note["color"]' (mouseover)="showIcon=true" (mouseout)="showIcon=false">
            
             <div *ngIf="note['image'] != ''"  (click)= UpdateNote(note) >
-                <img src="/assets/images/{{note['image']}}" style="height: 150px; width: 100%;">
+                <img src="{{note['image']}}" style="height: 150px; width: 100%;">
             </div>
             <div style="padding-bottom: 10px;"fxLayout="row wrap" >
                 <div fxFlex="90"  (click)= UpdateNote(note)>
@@ -37,11 +37,29 @@
             <div style="padding-bottom: 10px;"  (click)= UpdateNote(note) >
                 {{note['description']}}
             </div>
-            <div *ngIf="note['addReminder'] != null">
-                <mat-chip-list >
-                    <mat-chip style="background-color:transparent">{{this.datepipe.transform(note['addReminder'], 'MMMM d, y, h:mm:ss a')}}
-                        <button mat-icon-button (click)="removeReminder(note['id'])" (click)="note['addReminder'] = null"><mat-icon>cancel</mat-icon></button></mat-chip>
+            <div>
+                <mat-chip-list >   
+                    <mat-chip *ngIf="note['addReminder'] != null" style="opacity: 0.6;">{{this.datepipe.transform(note['addReminder'], 'MMM d, h:mm a')}}
+                        <button mat-icon-button (click)="removeReminder(note['id'])" (click)="note['addReminder'] = null">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>                 
+                    <mat-chip style="opacity: 0.6;" *ngFor="let label of note['labelModels']">{{label['lable']}}
+                        <button mat-icon-button (click)="removeNoteLabel(label['id'],note['id'])">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip>
+                    <!-- <button mat-icon-button *ngFor="let colab of note['collaborates']">
+                        <span >{{colab['collaboratedWith']}}</span>
+                    </button> -->
+
+                    <span *ngFor="let colab of note['collaborateResponses']">
+                        <button mat-icon-button (click)="colabDialog(note)" matTooltip="{{colab['collaboratedWithEmail']}}">
+                            <img mat-card-avatar src="{{colab['collaboratedWithImage']}}" class="imageAvtar">
+                        </button>
+                    </span>
                 </mat-chip-list>
+                
             </div>
 
             

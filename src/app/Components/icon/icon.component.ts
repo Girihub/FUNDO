@@ -36,15 +36,18 @@ export class IconComponent implements OnInit {
 // isTrash=true;
   allLabels=[];
 
-  ngOnInit() {
+  ngOnInit() {   
+  }   
+
+  getLabels(){
     this.dataService.currentLabel.subscribe(response =>{
-      if(response.type=[]){
+      if(response.type='icon'){
         var result: any[][] = response.data;
         this.allLabels=result;
-        console.log(this.allLabels)
+        console.log(response)
       }
-    })          
-  }   
+    })  
+  }
 
   color(value){
     if(this.noteIds==null || this.noteIds==undefined){
@@ -123,27 +126,37 @@ export class IconComponent implements OnInit {
         this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000}); 
       })
     }
-  }
+  } 
 
-  addImage(event){
+  addImage(files:File){
+    let fileToUpload = <File>files[0];
+      const formData: FormData = new FormData();
+      formData.append('formFile', fileToUpload); 
     if(this.noteIds==null || this.noteIds==undefined){
-      return
-    }else{
-      console.log(event.target.files[0].name);    
-    let data={
-      id:this.noteIds.id,
-      formFile:event.target.files[0].name
-    }
-    return this.noteService.addImage(data).subscribe(response=>{
-      this.noteIds['image']=event.target.files[0].name;
+      return this.noteService.addImageForCreateNote(formData).subscribe(response=>{
+        var imageUrl = response['data']
+        console.log('response in addimage',response)
+        this.dataOneService.changeMessage({
+          data:imageUrl,
+          type:'addImage'
+        })
+      },error=>{
+        console.log('error',error)
+      })      
+    }else{              
+    return this.noteService.addImage(this.noteIds.id,formData).subscribe(response=>{
       console.log(response);
+      var imageUrl = response['data']
+      this.dataOneService.changeMessage({
+        type:'addImage'
+      })
       this.snackbar.open(response['message'],'',{duration:2000});
     },error=>{
       console.log('error',error);
       this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000}); 
     })
     }
-  }  
+  }
 
   deleteNote(){
     if(this.noteIds==null || this.noteIds==undefined){
@@ -208,17 +221,17 @@ export class IconComponent implements OnInit {
     }
   }
 
-  collaborate(){
-    if(this.noteIds==undefined){
-      this.dialog.open(CollaboratorComponent,{      
-        data:0,
-      });
+  collaborate(note){
+    console.log("in icon",note);    
+    if(note==undefined){
+      this.snackbar.open('create note first...from icon components','',{duration:2000});
     }else{
       this.dialog.open(CollaboratorComponent,{      
-        data:this.noteIds.id,        
+        data: {
+          dataKey: note
+        }        
       });
-    }
-    
+    }    
   }
   
 }

@@ -8,6 +8,7 @@ import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 import {LabelService} from '../../Services/labelService/label.service'
 import {CreateLabelComponent} from './../create-label/create-label.component'
 import {MatDialog} from '@angular/material';
+import { UserService} from '../../Services/user.service'
 
 
 @Component({
@@ -30,8 +31,8 @@ export class DashboardComponent implements OnInit {
 
   private _mobileQueryListener: () => void;
   
-constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataservice:DataServiceService, 
-  private snackbar: MatSnackBar, private router: Router, private note: NoteService, private labelService: LabelService,
+constructor(changeDetectorRef: ChangeDetectorRef,private userService : UserService, media: MediaMatcher, private dataservice:DataServiceService, 
+  private snackbar: MatSnackBar, private router: Router, private noteService: NoteService, private labelService: LabelService,
   public dialog : MatDialog, private dataOneService: DataOneService) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -39,13 +40,26 @@ constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private d
   }
 
   ngOnInit() {
-    this.getAllLabels();
-    
+    this.getAllLabels(); 
     this.dataservice.currentLabel.subscribe(response=>{
-      if(response.type=['refreshLabel']){
-        //this.getAllLabels();
+      if(response.type=='refreshLabel'){
+        console.log('in current');        
+        this.getAllLabels();
       }     
     })
+  }
+
+  changeProfilePicture(files:File){
+    let fileToUpload = <File>files[0];
+      const formData: FormData = new FormData();
+      formData.append('formFile', fileToUpload);
+      return this.userService.uploadProfilePicture(formData).subscribe(response=>{
+        localStorage.setItem('profilePicture',response['data'])
+        this.userProfilePic=response['data'];
+        console.log('response',response);
+      },error=>{
+        console.log('error',error);
+      })
   }
 
   logout(){
@@ -75,12 +89,13 @@ constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private d
   getAllLabels(){
     this.labelService.getLabels().subscribe(response => {
       this.getLabels=response['data'];
-      console.log(response);
+      this.toIcon();
+      console.log('call in dash',response);
     }, error =>{
       console.log('error', error);
     })
   }
-
+  
   searchNotes(event:any){
     this.router.navigate(['/dashboard/search']);
      console.log('event',event);
@@ -95,12 +110,19 @@ constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private d
   label(){
     this.dataservice.changeLabel({
       data:this.getLabels,
-      type:[]
+      type:'dialog'
    })
     this.dialog.open(CreateLabelComponent,{
       height: '400px',
       width: '300px',
     });
+  }
+
+  toIcon(){
+    this.dataservice.changeLabel({
+      data:this.getLabels,
+      type:'icon'
+   })
   }
 }
 

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommonLayer.Model;
 using CommonLayer.Request;
+using CommonLayer.Response;
 
 namespace RepositoryLayer.Interfaces
 {
@@ -19,6 +20,6 @@ namespace RepositoryLayer.Interfaces
 
         Task<IDictionary<string, int>> UserStatistics(int userId);
 
-        Task<IList<RegistrationModel>> UserList(int userId);
+        List<ResponseToUser> UserList(int userId);
     }
 }

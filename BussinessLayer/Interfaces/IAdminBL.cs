@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommonLayer.Model;
 using CommonLayer.Request;
+using CommonLayer.Response;
 
 namespace BussinessLayer.Interfaces
 {
@@ -39,6 +40,6 @@ namespace BussinessLayer.Interfaces
         /// </summary>
         /// <param name="userId">Id of user as a parameter</param>
         /// <returns>returns result</returns>
-        Task<IList<RegistrationModel>> UserList(int userId);
+        List<ResponseToUser> UserList(int userId);
     }
 }

@@ -15,6 +15,7 @@ namespace RepositoryLayer.Services
     using System.Threading.Tasks;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
     using RepositoryLayer.Context;
@@ -192,9 +193,9 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="userId">id of admin user</param>
         /// <returns>returns result</returns>
-        public async Task<IList<RegistrationModel>> UserList(int userId)
+        public List<ResponseToUser> UserList(int userId)
         {
-            List<RegistrationModel> users = new List<RegistrationModel>();
+            List<ResponseToUser> users = new List<ResponseToUser>();
 
             //var admin = this.appDbContext.Registration.Where(c => c.Id == userId && c.UserType.Equals("Admin")).FirstOrDefault();
 
@@ -203,7 +204,18 @@ namespace RepositoryLayer.Services
             {
                 foreach (var row in this.appDbContext.Registration)
                 {
-                    users.Add(row);
+                    var user = new ResponseToUser()
+                    {
+                        Id=row.Id,
+                        FirstName=row.FirstName,
+                        LastName=row.LastName,
+                        MobileNumber=row.MobileNumber,
+                        Email=row.Email,
+                        ProfilePicture=row.ProfilePicture,
+                        ServiceType=row.ServiceType,
+                        UserType=row.UserType
+                    };
+                    users.Add(user);
                 }
             }
 

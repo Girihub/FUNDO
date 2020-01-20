@@ -145,7 +145,7 @@ namespace Fundoo.Controllers
                 int userId = Convert.ToInt32(userid);
 
                 var data = this.businessNotes.GetNote(id, userId);
-                if (data.Count != 0)
+                if (data != null)
                 {
                     bool status = true;
                     var message = "Following notes found";
@@ -391,11 +391,47 @@ namespace Fundoo.Controllers
         /// <param name="Id">Id of note to which image to be added</param>
         /// <returns>retuns message after performing the operation</returns>
         [HttpPost("{id}/Image")]
-        public async Task<IActionResult> AddImage(IFormFile formFile, int id)
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> AddImage([FromForm] ImageModel imageModel, int id)
         {
             ////getting the Id of note from token
             int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            IFormFile formFile = imageModel.formFile;
             var data = await this.businessNotes.AddImage(formFile, id, userId);
+            try
+            {
+                if (data != null)
+                {
+                    var status = true;
+                    var message = "image added successfully";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    var status = false;
+                    var message = "Enter valid note id";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// API to add image for create note
+        /// </summary>
+        /// <param name="formFile">formFile interface to upload desired image</param>
+        /// <returns>retuns message after performing the operation</returns>
+        [HttpPost("Image")]
+        [DisableRequestSizeLimit]
+        public async Task<IActionResult> AddImageToCreateNote([FromForm] ImageModel imageModel)
+        {
+            ////getting the Id of note from token
+            int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
+            IFormFile formFile = imageModel.formFile;
+            var data = await this.businessNotes.AddImageToCreateNote(formFile, userId);
             try
             {
                 if (data != null)
@@ -685,13 +721,13 @@ namespace Fundoo.Controllers
         }
 
 
-        [HttpDelete("Collaborate/{CollaboratedWith}")]
-        public async Task<IActionResult> DeleteCollaborator(CollaborateRequest collaborateRequest)
+        [HttpDelete("Collaborate/{CollaboratedWith}/{NoteId}")]
+        public async Task<IActionResult> DeleteCollaborator(int CollaboratedWith, int NoteId)
         {
             try
             {
-                int collaberateWith = collaborateRequest.CollaboratedWith;
-                int noteId = collaborateRequest.NoteId;
+                int collaberateWith = CollaboratedWith;
+                int noteId = NoteId;
                 int collaboratorId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
                 var status = await this.businessNotes.DeleteCollaborator(collaberateWith, noteId, collaboratorId);
                 if (status)
@@ -738,7 +774,7 @@ namespace Fundoo.Controllers
         }
 
         [HttpGet("GetCollaborateById/{noteId}")]
-        public IActionResult GetCollaborate(int noteId)
+        public IActionResult GetCollaborateById(int noteId)
         {
             try
             {
@@ -811,6 +847,32 @@ namespace Fundoo.Controllers
                 }
             }
             catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("GetNotesResponse")]
+        public IActionResult NoteResponse()
+        {
+            try
+            {
+                int userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+                var data = this.businessNotes.NoteResponse(userId);
+                if (data.Count != 0)
+                {
+                    bool status = true;
+                    var message = "Following notes found";
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    bool status = false;
+                    var message = "notes not found";
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

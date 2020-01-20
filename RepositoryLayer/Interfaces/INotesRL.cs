@@ -8,6 +8,7 @@ namespace RepositoryLayer.Interfaces
 {
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace RepositoryLayer.Interfaces
 
         Task<NotesModel> UpdateNote(int id, NoteUpdate noteUpdate, int userId);
 
-        IList<NotesModel> GetNote(int id, int userId);
+        NotesModel GetNote(int id, int userId);
 
         Task<string> Archive(int id, int userId);
 
@@ -38,6 +39,8 @@ namespace RepositoryLayer.Interfaces
         IList<NotesModel> GetAllPinned(int userId);
 
         Task<string> AddImage(IFormFile formFile, int id, int userId);
+
+        Task<string> AddImageToCreateNote(IFormFile formFile, int userId);
 
         Task<string> AddReminder(ReminderRequest dateTime, int id, int userId);
 
@@ -63,6 +66,10 @@ namespace RepositoryLayer.Interfaces
 
         IList<NoteLabelModel> GetNotesLabel(int userId);
 
-        IList<NoteLabelModel> GetNotesLabelById(int userId, int noteId);
+        IList<NoteLabelModel> GetNotesLabelById(int userId, int noteId);        
+
+        NoteResponse NoteResponse(int userId, int noteId);
+
+        IList<NoteResponse> NoteResponse(int userId);
     }
 }

@@ -14,6 +14,7 @@ namespace BussinessLayer.Services
     using CommonLayer.Constants;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Http;
     using RepositoryLayer.Interfaces;    
 
@@ -74,7 +75,7 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="id">id of note to be displayed</param>
         /// <returns>returns result</returns>
-        public IList<NotesModel> GetNote(int id, int userId)
+        public NotesModel GetNote(int id, int userId)
         {
             try
             {
@@ -275,6 +276,25 @@ namespace BussinessLayer.Services
                 {
                     return "Enter valid Id";
                 }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
+        /// <summary>
+        /// Method to add image to create note
+        /// </summary>
+        /// <param name="formFile">formFile interface to upload desired image</param>
+        /// <param name="UserId">id of user</param>
+        /// <returns>returns result</returns>
+        public async Task<string> AddImageToCreateNote(IFormFile formFile, int UserId)
+        {
+            try
+            {
+                return await this.repository.AddImageToCreateNote(formFile, UserId);
             }
             catch (Exception e)
             {
@@ -485,6 +505,18 @@ namespace BussinessLayer.Services
             }
         }
 
+        public IList<CollaborateModel> GetCollaborate(int collaboratorId)
+        {
+            try
+            {
+                return this.repository.GetCollaborate(collaboratorId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public IList<CollaborateModel> GetCollaborateById(int collaboratorId, int noteId)
         {
             try
@@ -516,6 +548,30 @@ namespace BussinessLayer.Services
                 return this.repository.GetNotesLabelById(userId, noteId);
             }
             catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<NoteResponse> NoteResponse(int userId)
+        {
+            try
+            {
+                return this.repository.NoteResponse(userId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public NoteResponse NoteResponse(int userId, int noteId)
+        {
+            try
+            {
+                return this.repository.NoteResponse(userId, noteId);
+            }
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

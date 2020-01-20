@@ -11,6 +11,7 @@ using BussinessLayer.Interfaces;
 using CommonLayer.Constants;
 using CommonLayer.Model;
 using CommonLayer.Request;
+using CommonLayer.Response;
 using RepositoryLayer.Interfaces;
 
 namespace BussinessLayer.Services
@@ -87,11 +88,11 @@ namespace BussinessLayer.Services
         /// </summary>
         /// <param name="userId">id of user</param>
         /// <returns>returns result</returns>
-        public async Task<IList<RegistrationModel>> UserList(int userId)
+        public List<ResponseToUser> UserList(int userId)
         {
             try
             {
-                return await this.repository.UserList(userId);
+                return this.repository.UserList(userId);
             }
             catch (Exception e)
             {

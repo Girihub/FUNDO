@@ -166,10 +166,10 @@ namespace Fundoo.Controllers
         /// <returns>returns result</returns>
         [HttpGet("UserList")]
         [Authorize]
-        public async Task<IActionResult> UserList()
+        public ActionResult UserList()
         {
             var userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
-            var data = await this.businessRegistration.UserList(userId);
+            var data = this.businessRegistration.UserList(userId);
 
             if (data.Count != 0)
             {

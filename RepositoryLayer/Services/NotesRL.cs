@@ -13,6 +13,7 @@ namespace RepositoryLayer.Services
     using CloudinaryDotNet;
     using CommonLayer.Model;
     using CommonLayer.Request;
+    using CommonLayer.Response;
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -132,20 +133,18 @@ namespace RepositoryLayer.Services
         /// Method to get note from table by passing id as a parameter
         /// </summary>
         /// <param name="id">id as a parameter</param>
-        /// <returns>returns required note in list format</returns>
-        public IList<NotesModel> GetNote(int id, int userId)
+        /// <returns>returns required note</returns>
+        public NotesModel GetNote(int id, int userId)
         {
             try
             {
-                List<NotesModel> notes = new List<NotesModel>();
                 var note = this.appDbContext.Notes.Where(g => g.Id == id && g.UserId == userId).FirstOrDefault();
                 if(note != null)
                 {
-                    notes.Add(note);
-                    return notes;
+                    return note;
                 }
 
-                return notes;
+                return null;
             }
             catch (Exception e)
             {
@@ -431,6 +430,34 @@ namespace RepositoryLayer.Services
                     note.ModifiedDate = DateTime.Now;
                     await this.appDbContext.SaveChangesAsync();
                     return note.Image;
+                }
+
+                return url;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+        }
+
+        /// <summary>
+        /// Method to add the image for create note
+        /// </summary>
+        /// <param name="formFile">formFile interface to upload desired image</param>
+        /// <param name="userId">Id of logged in User</param>
+        /// <returns>returns message after performing the operation</returns>
+        public async Task<string> AddImageToCreateNote(IFormFile formFile, int userId)
+        {
+            try
+            {
+                ImageCloudinary cloudinary = new ImageCloudinary(configuration);
+
+                var user = this.appDbContext.Registration.Where(g => g.Id == userId).FirstOrDefault();
+                string url = null;
+                if (user != null)
+                {
+                    url = cloudinary.UploadImage(formFile);
+                    return url;
                 }
 
                 return url;
@@ -845,6 +872,156 @@ namespace RepositoryLayer.Services
                 return notes;
             }
             catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public GetNotesResponse GetNoteResponse(int userId, int noteId)
+        {
+            try
+            {
+                var note = this.appDbContext.Notes.Where(g => g.UserId == userId && g.Id == noteId).FirstOrDefault();
+                List<LabelModel> labels = new List<LabelModel>();
+                List<CollaborateModel> collaborates = new List<CollaborateModel>();
+                var lables = this.appDbContext.Lables.Where(g => g.UserId == userId);
+                var noteLables = this.appDbContext.NoteLabel.Where(g => g.UserId == userId && g.NoteId == noteId);
+                var collabs = this.appDbContext.Collaborate.Where(g => g.CollaboratedBy == userId && g.NoteId == noteId);
+
+                foreach(var colab in collabs)
+                {
+                    if (colab.NoteId == noteId && colab.CollaboratedBy == userId)
+                    {
+                        collaborates.Add(colab);
+                    }
+                }
+
+                foreach(var noteLabel in noteLables)
+                {
+                    if(noteId==noteLabel.NoteId && userId == noteLabel.UserId)
+                    {
+                        foreach (var label in lables)
+                        {
+                            if(label.Id== noteLabel.LabelId && label.UserId == userId)
+                            {
+                                labels.Add(label);
+                            }
+                        }
+                    }
+                }
+
+                var noteResponse = new GetNotesResponse()
+                {
+                    Id = note.Id,
+                    Title=note.Title,
+                    Description=note.Description,
+                    Image=note.Image,
+                    Color=note.Color,
+                    IsPin=note.IsPin,
+                    AddReminder=note.AddReminder,
+                    UserId=note.UserId,
+                    IsNote=note.IsNote,
+                    IsArchive=note.IsArchive,
+                    IsTrash=note.IsTrash,
+                    labelRequests = labels,
+                    collaborates=collaborates
+                };
+
+                return noteResponse;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<NoteResponse> NoteResponse(int userId)
+        {
+            try
+            {
+                List<NoteResponse> getNotesResponses = new List<NoteResponse>();
+                var notes = this.appDbContext.Notes.Where(g => g.UserId == userId);
+                foreach(var note in notes)
+                {
+                    if (userId == note.UserId)
+                    {
+                        getNotesResponses.Add(this.NoteResponse(userId, note.Id));
+                    }
+                }
+
+                return getNotesResponses;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public NoteResponse NoteResponse(int userId, int noteId)
+        {
+            try
+            {
+                var note = this.appDbContext.Notes.Where(g => g.UserId == userId && g.Id == noteId).FirstOrDefault();
+                List<LabelModel> labels = new List<LabelModel>();
+                List<CollaborateResponse> collaborates = new List<CollaborateResponse>();
+                var lables = this.appDbContext.Lables.Where(g => g.UserId == userId);
+                var noteLables = this.appDbContext.NoteLabel.Where(g => g.UserId == userId && g.NoteId == noteId);
+                var collabs = this.appDbContext.Collaborate.Where(g => g.CollaboratedBy == userId && g.NoteId == noteId);
+                AdminRL adminRL = new AdminRL(appDbContext, configuration);
+                List<ResponseToUser> users = adminRL.UserList(userId);
+                foreach (var colab in collabs)
+                {
+                    foreach(var user in users)
+                    {
+                        if (colab.CollaboratedWith == user.Id)
+                        {
+                            var ob = new CollaborateResponse()
+                            {
+                                NoteId=noteId,
+                                CollaboratedWithId= user.Id,
+                                CollaboratedWithEmail=user.Email,
+                                CollaboratedWithImage=user.ProfilePicture
+                            };
+                            collaborates.Add(ob);
+                        }
+                    }
+                }
+
+                foreach (var noteLabel in noteLables)
+                {
+                    if (noteId == noteLabel.NoteId && userId == noteLabel.UserId)
+                    {
+                        foreach (var label in lables)
+                        {
+                            if (label.Id == noteLabel.LabelId && label.UserId == userId)
+                            {
+                                labels.Add(label);
+                            }
+                        }
+                    }
+                }
+
+                var noteResponse = new NoteResponse()
+                {
+                    Id = note.Id,
+                    Title = note.Title,
+                    Description = note.Description,
+                    Image = note.Image,
+                    Color = note.Color,
+                    IsPin = note.IsPin,
+                    AddReminder = note.AddReminder,
+                    UserId = note.UserId,
+                    IsNote = note.IsNote,
+                    IsArchive = note.IsArchive,
+                    IsTrash = note.IsTrash,
+                    labelModels = labels,
+                    collaborateResponses = collaborates
+                };
+
+                return noteResponse;
+
+            }
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

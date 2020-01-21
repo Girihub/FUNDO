@@ -15,6 +15,7 @@ import {MatDialogModule,MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/d
 import {DatePipe} from '@angular/common';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatSnackBarModule,
         MatDialogModule,
         MatChipsModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatCheckboxModule
 
     ],
 
@@ -52,7 +54,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
         MatSnackBarModule,
         MatDialogModule,
         MatChipsModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatCheckboxModule
 
     ],
 

@@ -56,7 +56,15 @@
         </mat-menu>
         <mat-menu #addLabel="matMenu">
             <button mat-menu-item  *ngFor="let label of allLabels" (click)="$event.stopPropagation()">
-                <input type="checkbox">{{label.lable}}
+                <span *ngFor="let item of noteIds.labelModels">                        
+                    <span *ngIf="item['lable']==label['lable']?change():hi"></span>                
+                </span> 
+                {{check}}
+                <!-- <input type="checkbox"  checked={{check}} >  -->
+                <mat-checkbox [checked]="checkLabel(label.lable)" class="example-margin" >Checked</mat-checkbox>
+                <!-- <mat-checkbox checked={{check}}></mat-checkbox>                                -->
+                {{label.lable}}
+                <span *ngIf="check?reset():hi">gg</span>           
             </button>
             <button mat-menu-item>OK</button>
         </mat-menu>        

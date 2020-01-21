@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,ChangeDetectorRef,AfterContentChecked } from '@angular/core';
 import { NoteService } from '../../Services/note.service';
 import {DataOneService} from '../../Services/DataServiceOne/data-one.service'
 import { DatePipe } from '@angular/common';
@@ -13,9 +13,14 @@ import{DataServiceService} from '../../Services/DataService/data-service.service
   templateUrl: './icon.component.html',
   styleUrls: ['./icon.component.scss']
 })
-export class IconComponent implements OnInit {
+export class IconComponent implements OnInit, AfterContentChecked  {
+
+  ngAfterContentChecked() : void {
+    this.changeDetector.detectChanges();
+}
   
   constructor(
+    public changeDetector:ChangeDetectorRef,
     public dialog : MatDialog,
     private snackbar: MatSnackBar,
     private noteService : NoteService,
@@ -35,16 +40,36 @@ export class IconComponent implements OnInit {
   isArchive=false;
 // isTrash=true;
   allLabels=[];
+  check=true;
+  hi=false
 
-  ngOnInit() {   
+  ngOnInit() {        
   }   
 
+  change(){
+    // this.check=true;
+  }
+  reset(){
+    // this.check=false;
+  }
+  // checkPresent(key,label):Boo {
+  //   return  key == label;
+  // }
+  checkLabel(label){
+    // console.log('label is ',this.noteIds.labelModels);
+   return this.noteIds.labelModels.some((key)=>{
+      console.log(key.lable ,label);
+      return label == key.lable
+      
+    })
+    // return true;
+    
+  }
   getLabels(){
     this.dataService.currentLabel.subscribe(response =>{
-      if(response.type='icon'){
+      if(response.type=='icon'){
         var result: any[][] = response.data;
         this.allLabels=result;
-        console.log(response)
       }
     })  
   }

@@ -26,9 +26,9 @@
 
     <div>
         <mat-form-field>
-            <input (click)=usersList() placeholder="Collaborate with?" matInput [formControl]="myControl" [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let user of filteredUsers | async" [value]="user['email']" (onSelectionChange)="userId=user['id']">
+            <input [(ngModel)]=input (click)=usersList() placeholder="Collaborate with?" matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)=check($event) (optionSelected)='selectedEmail=$event.option.value' >
+                <mat-option *ngFor="let user of filteredUsers | async" [value]="user"  (onSelectionChange)="userId=user['id']">
                   {{user['email']}}
                 </mat-option>
               </mat-autocomplete>

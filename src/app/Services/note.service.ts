@@ -72,8 +72,12 @@ export class NoteService {
     return this.httpService.post('api/Note/Collaborate',data)
   }
 
-  removeNoteLabel(labelId,noteId){
+  removeNoteLabel(noteId,labelId){
     return this.httpService.delete('api/Note/Note/'+noteId+'/Label/'+labelId);
+  }
+
+  addNoteLabel(data){
+    return this.httpService.post('api/Note/Note/'+data.noteId+'/Label/'+data.labelId,data);
   }
 
   deleteCollaborate(data){

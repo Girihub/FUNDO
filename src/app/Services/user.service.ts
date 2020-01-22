@@ -28,7 +28,7 @@ export class UserService {
   }  
 
   getUsers(){
-    return this.httpService.get('api/Admin/UserList');
+    return this.httpService.get('api/Account/AllUsers');
   }
 
   uploadProfilePicture(data){

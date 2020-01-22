@@ -40,31 +40,40 @@ export class IconComponent implements OnInit, AfterContentChecked  {
   isArchive=false;
 // isTrash=true;
   allLabels=[];
-  check=true;
-  hi=false
 
   ngOnInit() {        
-  }   
+  } 
 
-  change(){
-    // this.check=true;
-  }
-  reset(){
-    // this.check=false;
-  }
-  // checkPresent(key,label):Boo {
-  //   return  key == label;
-  // }
   checkLabel(label){
-    // console.log('label is ',this.noteIds.labelModels);
    return this.noteIds.labelModels.some((key)=>{
-      console.log(key.lable ,label);
-      return label == key.lable
-      
-    })
-    // return true;
-    
+        return label == key.lable 
+    })    
   }
+
+  addDeleteLabel(value,labelId){
+    let data={
+      noteId:this.noteIds.id,
+      labelId:labelId
+    }
+    if(value){
+      this.dataOneService.changeMessage({
+        type:'deleteNoteLabel',
+        data:data
+      })      
+    }else{
+      this.noteService.addNoteLabel(data).subscribe(response=>{
+        console.log('response in addNoteLabel',response);
+        this.dataOneService.changeMessage({
+          type:'addNoteLabel'
+        })
+        this.snackbar.open(response['message'],'',{duration:2000});        
+      },error=>{
+        console.log('error in addNoteLabel',error);
+        this.snackbar.open(error.statusText + '. ' + error.error.message,'',{duration:2000});
+      })
+    }    
+  }
+
   getLabels(){
     this.dataService.currentLabel.subscribe(response =>{
       if(response.type=='icon'){

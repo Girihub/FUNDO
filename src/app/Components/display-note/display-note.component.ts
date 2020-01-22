@@ -20,7 +20,7 @@ export class DisplayNoteComponent implements OnInit {
   mainDivlayOut="row wrap";
   listView=false
   imagesrc
-  
+  allLabels=[]
   constructor(
     public dialog : MatDialog,
     public datepipe: DatePipe,
@@ -31,11 +31,15 @@ export class DisplayNoteComponent implements OnInit {
     this.showIcon=false;
   }
   ngOnInit() { 
-    this.dataOneService.currentMessage.subscribe(response=>{      
+    this.dataOneService.currentMessage.subscribe(response=>{    
+      if(response.type=='deleteNoteLabel'){
+        this.removeNoteLabel(response.data['labelId'],response.data['noteId'])
+      }  
       if(response.type=='listView'){
         this.listView=true;
         this.mainDivlayOut="column wrap";
-      }else{
+      }
+      if(response.type=='gridView'){
         this.listView=false;
         this.mainDivlayOut="row wrap";
       }
@@ -80,7 +84,7 @@ export class DisplayNoteComponent implements OnInit {
   }
 
   removeNoteLabel(labelId,noteId){
-    return this.noteService.removeNoteLabel(labelId,noteId).subscribe(response=>{
+    return this.noteService.removeNoteLabel(noteId,labelId).subscribe(response=>{
       console.log('response from removeNoteLabel',response);
       this.dataOneService.changeMessage({
         type:'removeNoteLabel'

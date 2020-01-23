@@ -1,0 +1,30 @@
+.top{
+    height: 80px;
+    background-color: rgb(161, 134, 134);
+}
+
+.mid mat-grid-tile {
+    background: lightblue;
+  }
+
+.mid #item{
+    height: 100px;
+    width: 150px;
+    align-content: center;
+    text-align: center;
+    background-color: rgb(114, 234, 250);
+}
+
+.bottom{
+    margin-top: 10px;
+    background-color: rgb(114, 234, 250);
+    height: 340px;
+}
+
+table {
+    width: 100%;
+  }
+
+  .searchInput{
+    width: 70%;
+}

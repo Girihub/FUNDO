@@ -1,0 +1,11 @@
+C:\Users\admin\source\repos\Election\CommonLayer\bin\Debug\netcoreapp2.2\CommonLayer.deps.json
+C:\Users\admin\source\repos\Election\CommonLayer\bin\Debug\netcoreapp2.2\CommonLayer.dll
+C:\Users\admin\source\repos\Election\CommonLayer\bin\Debug\netcoreapp2.2\CommonLayer.pdb
+C:\Users\admin\source\repos\Election\CommonLayer\obj\Debug\netcoreapp2.2\CommonLayer.csprojAssemblyReference.cache
+C:\Users\admin\source\repos\Election\CommonLayer\obj\Debug\netcoreapp2.2\CommonLayer.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\Election\CommonLayer\obj\Debug\netcoreapp2.2\CommonLayer.AssemblyInfoInputs.cache
+C:\Users\admin\source\repos\Election\CommonLayer\obj\Debug\netcoreapp2.2\CommonLayer.AssemblyInfo.cs
+C:\Users\admin\source\repos\Election\CommonLayer\obj\Debug\netcoreapp2.2\CommonLayer.dll
+C:\Users\admin\source\repos\Election\CommonLayer\obj\Debug\netcoreapp2.2\CommonLayer.pdb
+C:\Users\admin\source\repos\Election\CommonLayer\bin\Debug\netcoreapp2.2\CommonLayer.runtimeconfig.json
+C:\Users\admin\source\repos\Election\CommonLayer\bin\Debug\netcoreapp2.2\CommonLayer.runtimeconfig.dev.json

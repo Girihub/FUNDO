@@ -1,0 +1,11 @@
+C:\Users\admin\source\repos\Election\BusinessLayer\bin\Debug\netcoreapp2.2\BusinessLayer.deps.json
+C:\Users\admin\source\repos\Election\BusinessLayer\bin\Debug\netcoreapp2.2\BusinessLayer.dll
+C:\Users\admin\source\repos\Election\BusinessLayer\bin\Debug\netcoreapp2.2\BusinessLayer.pdb
+C:\Users\admin\source\repos\Election\BusinessLayer\obj\Debug\netcoreapp2.2\BusinessLayer.csprojAssemblyReference.cache
+C:\Users\admin\source\repos\Election\BusinessLayer\obj\Debug\netcoreapp2.2\BusinessLayer.csproj.CoreCompileInputs.cache
+C:\Users\admin\source\repos\Election\BusinessLayer\obj\Debug\netcoreapp2.2\BusinessLayer.AssemblyInfoInputs.cache
+C:\Users\admin\source\repos\Election\BusinessLayer\obj\Debug\netcoreapp2.2\BusinessLayer.AssemblyInfo.cs
+C:\Users\admin\source\repos\Election\BusinessLayer\obj\Debug\netcoreapp2.2\BusinessLayer.dll
+C:\Users\admin\source\repos\Election\BusinessLayer\obj\Debug\netcoreapp2.2\BusinessLayer.pdb
+C:\Users\admin\source\repos\Election\BusinessLayer\bin\Debug\netcoreapp2.2\BusinessLayer.runtimeconfig.json
+C:\Users\admin\source\repos\Election\BusinessLayer\bin\Debug\netcoreapp2.2\BusinessLayer.runtimeconfig.dev.json

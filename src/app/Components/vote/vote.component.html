@@ -1,0 +1,33 @@
+<form [formGroup]="voteForm">
+    <div fxLayout="column">
+        <div fxLayout="row" fxLayoutGap="2%">
+            <mat-form-field style="font-size: 12px" appearance="outline" fxFlex=50>
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" class="form-control" placeholder="First Name"
+                    [ngClass]="{ 'is-invalid': submitted && f.firstName.errors}" required />
+                <mat-error *ngIf="registerForm.hasError('required', 'firstName')">
+                    First Name is required
+                </mat-error>
+                <mat-error *ngIf="registerForm.hasError('pattern', 'firstName')">
+                    First name should be only of letters with atleast 2 characters
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field style="font-size: 12px" appearance="outline" fxFlex=50>
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" class="form-control" placeholder="Last Name"
+                    [ngClass]="{ 'is-invalid': submitted && f.lastName.errors}" required />
+                <mat-error *ngIf="registerForm.hasError('required', 'lastName')">
+                    Last Name is required
+                </mat-error>
+                <mat-error *ngIf="registerForm.hasError('pattern', 'lastName')">
+                    Last name should be only of letters with atleast 2 characters
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout='row' fxLayoutAlign="space-evenly center" >    
+        <button mat-button  mat-flat-button [color]="'success'"  [disabled]="!loginForm.valid" (click)="login(this.loginForm)">Login</button>                          
+    </div>
+
+</form>

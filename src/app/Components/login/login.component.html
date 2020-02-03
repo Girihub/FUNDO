@@ -1,0 +1,47 @@
+<button mat-button class="dashboard" (click) = dashboard()>
+    <mat-icon>keyboard_backspace</mat-icon>
+    Back to dashboard
+</button>
+
+<div fxLayout="row" fxLayoutAlign="center center" class="login">
+    <mat-card fxFlex="30%" fxFlex.xs="100%" class="container">
+        <mat-card-content fxLayoutAlign='center center' style="font-size: 22px">
+            Admin Login
+        </mat-card-content>
+
+        <form [formGroup]="loginForm">
+            <div fxLayout="column">
+                <mat-form-field style="font-size: 12px" appearance="outline" fxFlex=90>
+                    <mat-label>User Name</mat-label>
+                    <input matInput formControlName="userName" class="form-control" placeholder="User Name"
+                     [ngClass]="{ 'is-invalid': submitted && f.userName.errors}" required/>
+                    <mat-error *ngIf="loginForm.hasError('required', 'userName')">
+                        User Name is required
+                    </mat-error>                   
+                </mat-form-field>
+
+                <mat-form-field style="font-size: 12px" appearance="outline" fxFlex=90>
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" placeholder="Enter your password" [type]="hide ? 'password' : 'text'"
+                     class="form-control" placeholder="password" [ngClass]="{ 'is-invalid': submitted && f.username.errors}" required>                                
+                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                     <mat-error *ngIf="loginForm.hasError('required', 'password')">
+                        Password is required
+                    </mat-error> 
+                    <mat-error *ngIf="loginForm.hasError('pattern', 'password')">
+                        Enter valid password
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout='row' fxLayoutAlign="space-evenly center" > 
+                <button mat-button><a [routerLink]="['/register']" style="color: aliceblue;">
+                    Register
+                </a></button>    
+                <button mat-button  mat-flat-button [color]="'success'"  [disabled]="!loginForm.valid" (click)="login()">Login</button>                                       
+            </div>
+
+        </form>
+
+    </mat-card>
+</div>

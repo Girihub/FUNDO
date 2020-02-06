@@ -15,4 +15,16 @@ export class VoterService {
   getPartyWiseResult(state){
     return this.httpService.get('api/Voting/PartyWiseResult?state='+state)
   }
+
+  vote(data){
+    return this.httpService.post('api/Voting/Vote',data);
+  }
+
+  reElection(){
+    return this.httpService.reElection('api/Voting/Re-Election');
+  }
+
+  allVoters(){
+    return this.httpService.get('api/Voting/AllVoters');
+  }
 }

@@ -36,7 +36,11 @@ export class PartyWiseComponent implements OnInit {
         }
         this.newStates=[...new Set(this.newStates)]   
         this.newStates.push("All");
-      }      
+      }  
+      
+      if(response.type=='vote'){
+        this.getData('All'); 
+      }
     })     
     this.getData('All'); 
   }

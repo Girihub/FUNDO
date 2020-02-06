@@ -17,6 +17,10 @@ import { ConstituencyWiseComponent } from './Components/constituency-wise/consti
 import { PartyWiseComponent } from './Components/party-wise/party-wise.component';
 import { AllCandidateComponent } from './Components/all-candidate/all-candidate.component';
 import { VoteComponent } from './Components/vote/vote.component';
+import { VotersComponent } from './Components/voters/voters.component';
+import { ConstituencyComponent } from './Components/constituency/constituency.component';
+import { PartyComponent } from './Components/party/party.component';
+import { CandidateComponent } from './Components/candidate/candidate.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,10 @@ import { VoteComponent } from './Components/vote/vote.component';
     PartyWiseComponent,
     AllCandidateComponent,
     VoteComponent,
+    VotersComponent,
+    ConstituencyComponent,
+    PartyComponent,
+    CandidateComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +52,11 @@ import { VoteComponent } from './Components/vote/vote.component';
     
   ],
   entryComponents: [
-    VoteComponent
+    VoteComponent,
+    VotersComponent,
+    CandidateComponent,
+    PartyComponent,
+    ConstituencyComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

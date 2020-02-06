@@ -5,10 +5,10 @@
                 <mat-label>First Name</mat-label>
                 <input matInput formControlName="firstName" class="form-control" placeholder="First Name"
                     [ngClass]="{ 'is-invalid': submitted && f.firstName.errors}" required />
-                <mat-error *ngIf="registerForm.hasError('required', 'firstName')">
+                <mat-error *ngIf="voteForm.hasError('required', 'firstName')">
                     First Name is required
                 </mat-error>
-                <mat-error *ngIf="registerForm.hasError('pattern', 'firstName')">
+                <mat-error *ngIf="voteForm.hasError('pattern', 'firstName')">
                     First name should be only of letters with atleast 2 characters
                 </mat-error>
             </mat-form-field>
@@ -17,17 +17,43 @@
                 <mat-label>Last Name</mat-label>
                 <input matInput formControlName="lastName" class="form-control" placeholder="Last Name"
                     [ngClass]="{ 'is-invalid': submitted && f.lastName.errors}" required />
-                <mat-error *ngIf="registerForm.hasError('required', 'lastName')">
+                <mat-error *ngIf="voteForm.hasError('required', 'lastName')">
                     Last Name is required
                 </mat-error>
-                <mat-error *ngIf="registerForm.hasError('pattern', 'lastName')">
+                <mat-error *ngIf="voteForm.hasError('pattern', 'lastName')">
                     Last name should be only of letters with atleast 2 characters
                 </mat-error>
             </mat-form-field>
         </div>
+
+        <div fxLayout="row" fxLayoutGap="2%">
+            <mat-form-field style="font-size: 12px" appearance="outline" fxFlex=50>
+                <mat-label>Mobile Number</mat-label>
+                <input matInput formControlName="mobileNumber" class="form-control" placeholder="Mobile Number"
+                    [ngClass]="{ 'is-invalid': submitted && f.mobileNumber.errors}" required />
+                <mat-error *ngIf="voteForm.hasError('required', 'mobileNumber')">
+                    Mobile Number is required
+                </mat-error>
+                <mat-error *ngIf="voteForm.hasError('pattern', 'mobileNumber')">
+                    Enter 10 digits mobile starts from 7,8,9
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Select Candidate</mat-label>
+                <mat-select formControlName="candidateId">
+                <mat-option *ngFor="let candidate of data" value="{{candidate['candidateId']}}">{{candidate['candidateName']}}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="voteForm.hasError('required', 'candidateId')">
+                    Select Candidate
+                </mat-error>
+            </mat-form-field>
+        </div>
+
     </div>
-    <div fxLayout='row' fxLayoutAlign="space-evenly center" >    
-        <button mat-button  mat-flat-button [color]="'success'"  [disabled]="!loginForm.valid" (click)="login(this.loginForm)">Login</button>                          
+    <div fxLayout='row' fxLayoutAlign="space-evenly center" >  
+        <button mat-flat-button (click)="cancel()">Cancel</button>  
+        <button mat-button  mat-flat-button [color]="'success'"  [disabled]="!voteForm.valid" (click)="vote()">Vote</button>                          
     </div>
 
 </form>

@@ -9,7 +9,10 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSelectModule} from '@angular/material/select';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatDividerModule} from '@angular/material/divider';
+import {DatePipe} from '@angular/common';
 
 @NgModule({
     imports: [
@@ -23,7 +26,9 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatTableModule,
         MatPaginatorModule,
         MatSelectModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSidenavModule,
+        MatDividerModule
     ],
     exports:[
         MatCardModule,
@@ -36,9 +41,14 @@ import {MatDialogModule} from '@angular/material/dialog';
         MatTableModule,
         MatPaginatorModule,
         MatSelectModule,
-        MatDialogModule
+        MatDialogModule,
+        MatSidenavModule,
+        MatDividerModule
     ],
-    providers: []
+    providers: [DatePipe,
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: [] }
+    ]
   })
 
 export class MaterialModule{}

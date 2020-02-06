@@ -32,7 +32,12 @@ export class ConstituencyWiseComponent implements OnInit {
   constituencies=[]
   dataSource = new MatTableDataSource<element>(this.showData);
   ngOnInit() {
-    this.getAllResult();    
+    this.getAllResult(); 
+    this.dataService.currentMessage.subscribe(response=>{
+      if(response.type=='vote'){
+        this.getAllResult();
+      }
+    })   
   } 
 
   getAllResult(){

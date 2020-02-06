@@ -1,44 +1,82 @@
 <div fxLayout="column" fxLayoutAlign="center center">
-    <div class="top" fxLayout="row" fxLayoutAlign="end center">        
-        <div style="width: 10%;" *ngIf="adminLogin=='false'">
+    <div class="top" fxLayout="row" fxLayoutAlign={{flex}}>
+        <div style="width: 10%;" *ngIf="adminLogin==null">
             <button mat-button (click)=login()>Admin Login</button>
         </div>
-        <div style="width: 10%;" *ngIf="adminLogin=='true'">
-            <button mat-button (click)=logout()>Logout</button>
+
+        <div *ngIf="adminLogin!=null">
+            <button mat-icon-button="" matTooltip="Main Menu" class="mat-icon-button" (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+        </div>
+
+        <div style="width: 10%;" *ngIf="adminLogin!=null">
+            <button mat-button (click)=logout() (click)="drawer.close()">Logout</button>
         </div>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" class="vote">
-        <button mat-button (click)=vote() style="width: 100%;">
-            <div>
-                Vote
+
+    <mat-drawer-container class="example-container" autosize>
+        <mat-drawer #drawer class="example-sidenav" mode="side" >
+            <div fxLayout="column" fxLayoutAlign="center center" style="width: 200px;">
+                <button mat-button id="options"(click)=openCandidate()>
+                    Candidate
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-button id="options"(click)=openConstituency()>
+                    Constituency
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-button id="options"(click)=openParty()>
+                    Party
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-button id="options"(click)=reElection() disabled>
+                    Re-election
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-button id="options"(click)=allVoters()>
+                    All Voters
+                </button>
             </div>
-        </button>           
-    </div>
+        </mat-drawer>
 
-    <div fxLayout="row" fxLayoutAlign="center center" class='buttons'>
-        <div>
-            <button mat-button (click)=partywise()>Partywise</button>
-        </div>
-        <div>
-            <button mat-button (click)=candidateswise()>All Candidates</button>
-        </div>
-        <div>
-            <button mat-button (click)=constituencywise()>Constituencywise Trends</button>
-        </div>
-    </div>
+        <div fxLayout="column" fxLayoutAlign="center center" (click)="drawer.close()">
+            <div fxLayout="row" fxLayoutAlign="center center" class="vote">
+                <button mat-button (click)=vote() style="width: 100%;">
+                    <div>
+                        Vote
+                    </div>
+                </button>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" class='buttons'>
+                <div>
+                    <button mat-button (click)=partywise()>Partywise</button>
+                </div>
+                <div>
+                    <button mat-button (click)=candidateswise()>All Candidates</button>
+                </div>
+                <div>
+                    <button mat-button (click)=constituencywise()>Constituencywise Trends</button>
+                </div>
+            </div>
 
-    <div >
-        <div *ngIf=consti>
-            <app-constituency-wise fxLayout="row" fxLayoutAlign="center center"></app-constituency-wise>
+            <div>
+                <div *ngIf=consti>
+                    <app-constituency-wise fxLayout="row" fxLayoutAlign="center center"></app-constituency-wise>
+                </div>
+
+                <div *ngIf=party>
+                    <app-party-wise fxLayout="row" fxLayoutAlign="center center"></app-party-wise>
+                </div>
+
+                <div *ngIf=candidate>
+                    <app-all-candidate fxLayout="row" fxLayoutAlign="center center"></app-all-candidate>
+                </div>
+            </div>
         </div>
 
-        <div *ngIf=party>
-            <app-party-wise fxLayout="row" fxLayoutAlign="center center"></app-party-wise>
-        </div>
+    </mat-drawer-container>
 
-        <div *ngIf=candidate>
-            <app-all-candidate fxLayout="row" fxLayoutAlign="center center"></app-all-candidate>>
-        </div>
-    </div>
+
 </div>

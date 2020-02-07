@@ -1,5 +1,6 @@
 ﻿using CommonLayer.Model;
 using CommonLayer.Request;
+using CommonLayer.Response;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +14,6 @@ namespace BusinessLayer.Interface
 
         Task<Candidate> UpdateCandidate(int candidateId, CandidateRequest candidateRequest);
 
-        IList<Candidate> GetCandidates();
+        IList<CandidateResponse> GetCandidates();
     }
 }

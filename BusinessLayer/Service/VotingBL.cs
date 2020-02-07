@@ -78,5 +78,17 @@ namespace BusinessLayer.Service
                 throw new Exception(e.Message);
             }
         }
+
+        public IList<AllVoters> AllVoters()
+        {
+            try
+            {
+                return this.repositoryVoting.AllVoters();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

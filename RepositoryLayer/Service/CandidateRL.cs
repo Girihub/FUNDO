@@ -1,5 +1,6 @@
 ﻿using CommonLayer.Model;
 using CommonLayer.Request;
+using CommonLayer.Response;
 using Microsoft.EntityFrameworkCore;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
@@ -78,15 +79,34 @@ namespace RepositoryLayer.Service
             }
         }
 
-        public IList<Candidate> GetCandidates()
+        public IList<CandidateResponse> GetCandidates()
         {
             try
             {
                 var allCandidates = this.authenticationContext.Candidates;
 
-                List<Candidate> candidates = new List<Candidate>();
+                List<CandidateResponse> candidates = new List<CandidateResponse>();
 
-                foreach(var candidate in allCandidates)
+                var newTable = (from c in this.authenticationContext.Candidates
+                                join p in this.authenticationContext.Parties
+                                on c.PartyId equals p.Id
+                                join con in this.authenticationContext.Constituencies
+                                on c.ConstituencyId equals con.Id
+
+                                select new CandidateResponse()
+                                {
+                                    Id = c.Id,
+                                    FirstName = c.FirstName,
+                                    LastName = c.LastName,
+                                    PartyId = c.PartyId,
+                                    PartyName = p.PartyName,
+                                    ConstituencyId = con.Id,
+                                    ConstituencyName = con.Name,
+                                    Votes = c.Votes
+                                }
+                              ).ToList();
+
+                foreach (var candidate in newTable)
                 {
                     candidates.Add(candidate);
                 }

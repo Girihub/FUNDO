@@ -68,13 +68,13 @@ namespace RepositoryLayer.Service
                 }
                 else
                 {
-                    foreach(var candidate in this.authenticationContext.Candidates)
+                    foreach (var candidate in this.authenticationContext.Candidates)
                     {
                         candidate.Votes = 0;
                     }
                     await this.authenticationContext.SaveChangesAsync();
 
-                    foreach(var voters in this.authenticationContext.UserVotings)
+                    foreach (var voters in this.authenticationContext.UserVotings)
                     {
                         this.authenticationContext.UserVotings.Remove(voters);
                     }
@@ -213,6 +213,7 @@ namespace RepositoryLayer.Service
                                     CandidateName = can.FirstName + " " + can.LastName,
                                     Votes = can.Votes,
                                     ConstituencyName = con.Name,
+                                    CandidateId=can.Id,
                                     PartyName = p.PartyName,
                                     State=con.State
                                 }
@@ -224,6 +225,42 @@ namespace RepositoryLayer.Service
                 }
 
                 return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public IList<AllVoters> AllVoters()
+        {
+            try
+            {
+                List<AllVoters> allVoters = new List<AllVoters>();
+                var voters = this.authenticationContext.UserVotings;
+                if (!voters.Any())
+                {
+                    return allVoters;
+                }
+
+                var newTabel = (from voter in this.authenticationContext.UserVotings
+                                join candidate in this.authenticationContext.Candidates
+                                on voter.CandidateId equals candidate.Id
+
+                                select new AllVoters()
+                                {
+                                    Name = voter.FirstName + " " + voter.LastName,
+                                    MobileNumber = voter.MobileNumber,
+                                    CandidateName = candidate.FirstName + " " + candidate.LastName,
+                                    Date = voter.CreatedDate
+                                }).ToList();
+
+                foreach(var voter in newTabel)
+                {
+                    allVoters.Add(voter);
+                }
+
+                return allVoters;
             }
             catch (Exception e)
             {

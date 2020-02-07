@@ -21,7 +21,7 @@ namespace Election.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCandidate([FromForm] CandidateRequest candidateRequest)
+        public async Task<IActionResult> AddCandidate(CandidateRequest candidateRequest)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Election.Controllers
                 {
                     var message = "Candidate added";
                     bool status = true;
-                    return this.Ok(new { status, message });
+                    return this.Ok(new { status, message, data });
                 }
             }
             catch (Exception e)
@@ -73,7 +73,7 @@ namespace Election.Controllers
         }
 
         [HttpPut("{candidateId}")]
-        public async Task<IActionResult> UpdateCandidate(int candidateId, [FromForm] CandidateRequest candidateRequest)
+        public async Task<IActionResult> UpdateCandidate(int candidateId, CandidateRequest candidateRequest)
         {
             try
             {

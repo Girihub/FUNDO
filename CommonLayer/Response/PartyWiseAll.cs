@@ -10,6 +10,8 @@ namespace CommonLayer.Response
 
         public string CandidateName { get; set; }
 
+        public int CandidateId { get; set; }
+
         public int Votes { get; set; }
 
         public string ConstituencyName { get; set; }

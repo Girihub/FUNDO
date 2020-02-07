@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Interface;
 using CommonLayer.Model;
 using CommonLayer.Request;
+using CommonLayer.Response;
 using RepositoryLayer.Interface;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace BusinessLayer.Service
             }
         }
 
-        public IList<Candidate> GetCandidates()
+        public IList<CandidateResponse> GetCandidates()
         {
             try
             {

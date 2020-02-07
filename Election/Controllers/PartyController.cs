@@ -22,7 +22,7 @@ namespace Election.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddParty([FromForm] PartyRequest partyRequest)
+        public async Task<IActionResult> AddParty(PartyRequest partyRequest)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Election.Controllers
         }
 
         [HttpPut("{partyId}")]
-        public async Task<IActionResult> UpdateParty(int partyId, [FromForm]PartyRequest partyRequest)
+        public async Task<IActionResult> UpdateParty(int partyId, PartyRequest partyRequest)
         {
             try
             {

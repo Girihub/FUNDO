@@ -21,7 +21,7 @@ namespace Election.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddConstituent([FromForm] ConstituentRequest constituentRequest)
+        public async Task<IActionResult> AddConstituent(ConstituentRequest constituentRequest)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace Election.Controllers
         }
 
         [HttpPut("{constituentId}")]
-        public async Task<IActionResult> UpdateConstituent(int constituentId, [FromForm] ConstituentRequest constituentRequest)
+        public async Task<IActionResult> UpdateConstituent(int constituentId, ConstituentRequest constituentRequest)
         {
             try
             {

@@ -19,5 +19,7 @@ namespace RepositoryLayer.Interface
         IList<PartyWiseResponse> PartWiseResultState(string state);
 
         IList<PartyWiseAll> PartyWiseAll();
+
+        IList<AllVoters> AllVoters();
     }
 }

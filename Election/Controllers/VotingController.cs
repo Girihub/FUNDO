@@ -21,7 +21,7 @@ namespace Election.Controllers
         }
 
         [HttpPost("Vote")]
-        public async Task<IActionResult> Vote([FromForm] VotingRequest votingRequest)
+        public async Task<IActionResult> Vote(VotingRequest votingRequest)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace Election.Controllers
 
                 if (data.FirstName == null)
                 {
-                    var message = "Either you voted already or the candidate Id you provided is not present";
+                    var message = "You already voted by this mobile number";
                     bool status = false;
                     return this.BadRequest(new { status, message });
                 }
@@ -46,7 +46,7 @@ namespace Election.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Re-Election")]
         public async Task<IActionResult> ReElection()
         {
             try
@@ -145,6 +145,32 @@ namespace Election.Controllers
                 }
             }
             catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("AllVoters")]
+        public IActionResult AllVoters()
+        {
+            try
+            {
+                var data = this.businessVoting.AllVoters();
+
+                if (data.Count > 0)
+                {
+                    var message = "Following result found";
+                    bool status = true;
+                    return this.Ok(new { status, message, data });
+                }
+                else
+                {
+                    var message = "No result found";
+                    bool status = false;
+                    return this.BadRequest(new { status, message });
+                }
+            }
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

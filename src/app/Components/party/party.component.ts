@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { PartyService } from '../../Service/Party/party.service'
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { PartyService } from '../../Service/Party/party.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialogRef } from '@angular/material'
-import {MatSnackBar} from '@angular/material'
+import {MatSnackBar} from '@angular/material';
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-party',
@@ -17,6 +18,7 @@ export class PartyComponent implements OnInit {
     private snackBar:MatSnackBar
   ) { }
   
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   data
   dataSource = new MatTableDataSource<any>(this.data);
   displayedColumns: string[] = ['id', 'partyName', 'action'];
@@ -34,6 +36,7 @@ export class PartyComponent implements OnInit {
       console.log('response in getParties', response)
       this.data = response['data']
       this.dataSource = new MatTableDataSource<any>(this.data);
+      this.dataSource.paginator = this.paginator;
     }, error => {
       console.log('error in getParties', error);
     })
@@ -54,6 +57,8 @@ export class PartyComponent implements OnInit {
       }
       this.data.push(addData);
       this.dataSource = new MatTableDataSource<any>(this.data);
+      this.dataSource.paginator = this.paginator;
+      this.newParty='';
     },error=>{
       console.log('error in addParty',error);
       this.snackBar.open(error.error.message,'',{duration:2000})
@@ -79,7 +84,8 @@ export class PartyComponent implements OnInit {
       console.log('response in deleteParty',response);
       this.snackBar.open(response['message'],'',{duration:2000});
       this.data=this.data.filter(item=>item.id!==data.id);
-      this.dataSource = new MatTableDataSource<any>(this.data);      
+      this.dataSource = new MatTableDataSource<any>(this.data); 
+      this.dataSource.paginator = this.paginator;     
     },error=>{
       console.log('error in deleteParty',error);
       this.snackBar.open(error.error.message,'',{duration:2000})

@@ -16,11 +16,11 @@ export class CandidateService {
     return this.httpService.post('api/Candidate',data);
   }
 
-  updateCandidate(data){
-    return this.httpService.put('api/Candidate/'+data.candidateId,data)
+  updateCandidate(id,data){
+    return this.httpService.put('api/Candidate/'+id,data)
   }
 
-  deleteCandidate(id){
+  deleteCandidate(id){    
     return this.httpService.delete('api/Candidate/'+id);
   }
 }

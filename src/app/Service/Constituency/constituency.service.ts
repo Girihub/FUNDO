@@ -16,8 +16,8 @@ export class ConstituencyService {
     return this.httpService.post('api/Constituent',data);
   }
 
-  updateConstituency(data){
-    return this.httpService.put('api/Constituent/'+data.constituentId ,data)
+  updateConstituency(id,data){
+    return this.httpService.put('api/Constituent/'+id ,data)
   }
 
   deleteConstituency(id){

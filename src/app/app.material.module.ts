@@ -28,7 +28,7 @@ import {DatePipe} from '@angular/common';
         MatSelectModule,
         MatDialogModule,
         MatSidenavModule,
-        MatDividerModule
+        MatDividerModule,
     ],
     exports:[
         MatCardModule,

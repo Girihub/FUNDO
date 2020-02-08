@@ -41,5 +41,7 @@ namespace BussinessLayer.Interfaces
         /// <param name="userId">Id of user as a parameter</param>
         /// <returns>returns result</returns>
         List<ResponseToUser> UserList(int userId);
+
+        
     }
 }

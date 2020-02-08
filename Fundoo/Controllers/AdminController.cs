@@ -17,6 +17,7 @@ namespace Fundoo.Controllers
     using CommonLayer.Request;
     using CommonLayer.Response;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,7 @@ namespace Fundoo.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("CorsPolicy")]
     public class AdminController : ControllerBase
     {
         /// <summary>
@@ -99,7 +101,7 @@ namespace Fundoo.Controllers
         /// <returns>returns result</returns>
         [HttpPost]
         [Route("AdminLogin")]
-        public async Task<IActionResult> LoginAdmin([FromForm] LoginModel loginModel)
+        public async Task<IActionResult> LoginAdmin(LoginModel loginModel)
         {
             try
             {
@@ -183,6 +185,7 @@ namespace Fundoo.Controllers
                 return this.BadRequest(new { status, message });
             }            
         }
+        
 
         /// <summary>
         /// API to generate token

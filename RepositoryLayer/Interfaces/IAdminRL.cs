@@ -21,5 +21,6 @@ namespace RepositoryLayer.Interfaces
         Task<IDictionary<string, int>> UserStatistics(int userId);
 
         List<ResponseToUser> UserList(int userId);
+        
     }
 }

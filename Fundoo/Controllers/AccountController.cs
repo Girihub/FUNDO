@@ -284,7 +284,27 @@ namespace Fundoo.Controllers
                 throw new Exception(e.Message);
             }
         }
-        
+
+        [HttpGet("AllUsers")]
+        [Authorize]
+        public ActionResult AllUsers()
+        {
+            var userId = Convert.ToInt32(HttpContext.User.Claims.First(c => c.Type == "Id").Value);
+            var data = this.businessRegistration.AllUsers(userId);
+
+            if (data.Count != 0)
+            {
+                bool status = true;
+                var message = "Following are the users";
+                return this.Ok(new { status, message, data });
+            }
+            {
+                bool status = false;
+                var message = "No users found";
+                return this.BadRequest(new { status, message });
+            }
+        }
+
         /// <summary>
         /// API to generate token
         /// </summary>

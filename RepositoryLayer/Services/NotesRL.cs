@@ -967,20 +967,20 @@ namespace RepositoryLayer.Services
                 var lables = this.appDbContext.Lables.Where(g => g.UserId == userId);
                 var noteLables = this.appDbContext.NoteLabel.Where(g => g.UserId == userId && g.NoteId == noteId);
                 var collabs = this.appDbContext.Collaborate.Where(g => g.CollaboratedBy == userId && g.NoteId == noteId);
-                AdminRL adminRL = new AdminRL(appDbContext, configuration);
-                List<ResponseToUser> users = adminRL.UserList(userId);
+                AccountRL accountRL = new AccountRL(appDbContext, configuration);
+                List<ResponseToUser> users = accountRL.AllUsers(userId);
                 foreach (var colab in collabs)
                 {
-                    foreach(var user in users)
+                    foreach (var user in users)
                     {
                         if (colab.CollaboratedWith == user.Id)
                         {
                             var ob = new CollaborateResponse()
                             {
-                                NoteId=noteId,
-                                CollaboratedWithId= user.Id,
-                                CollaboratedWithEmail=user.Email,
-                                CollaboratedWithImage=user.ProfilePicture
+                                NoteId = noteId,
+                                CollaboratedWithId = user.Id,
+                                CollaboratedWithEmail = user.Email,
+                                CollaboratedWithImage = user.ProfilePicture
                             };
                             collaborates.Add(ob);
                         }
@@ -1021,10 +1021,10 @@ namespace RepositoryLayer.Services
                 return noteResponse;
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
-    }   
+    }
 }

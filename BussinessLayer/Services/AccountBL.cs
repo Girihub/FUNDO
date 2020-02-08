@@ -155,6 +155,18 @@ namespace BussinessLayer.Services
                 throw new Exception(e.Message);
             }
         }
-        
+
+        public List<ResponseToUser> AllUsers(int userId)
+        {
+            try
+            {
+                return this.repository.AllUsers(userId);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
     }
 }

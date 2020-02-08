@@ -41,6 +41,8 @@ namespace RepositoryLayer.Interfaces
 
         Task<bool> ResetPassword(ResetPasswordModel resetPassword);
 
-        Task<string> UploadProfilePicture(int id, IFormFile formFile);        
+        Task<string> UploadProfilePicture(int id, IFormFile formFile);
+
+        List<ResponseToUser> AllUsers(int userId);
     }
 }

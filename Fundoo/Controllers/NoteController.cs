@@ -575,10 +575,12 @@ namespace Fundoo.Controllers
         /// <param name="labelId">id of label to be added in note</param>
         /// <returns>returns message</returns>
         [HttpPost("Note/{noteId}/Label/{labelId}")]
-        public async Task<IActionResult> AddLabel(int noteId, int labelId)
+        public async Task<IActionResult> AddLabel(AddNoteLabel addNoteLabel)
         {
             try
             {
+                int noteId = addNoteLabel.noteId;
+                int labelId = addNoteLabel.labelId;
                 int userId = Convert.ToInt32(User.FindFirst("Id")?.Value);
                 var status = await this.businessNotes.AddLabel(noteId, labelId, userId);
                 if (status)
@@ -605,6 +607,7 @@ namespace Fundoo.Controllers
         /// <param name="labelId">id of label to be removed from note</param>
         /// <returns>returns message</returns>
         [HttpDelete("Note/{noteId}/Label/{labelId}")]
+        [EnableCors("CorsPolicy")]
         public async Task<IActionResult> RemoveLabel(int noteId, int labelId)
         {
             try

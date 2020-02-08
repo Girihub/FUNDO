@@ -12,6 +12,7 @@ namespace Fundoo.Controllers
     using CommonLayer.Model;
     using CommonLayer.Request;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -20,6 +21,7 @@ namespace Fundoo.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
+    [EnableCors("CorsPolicy")]
     public class LableController : ControllerBase
     {
         /// <summary>

@@ -197,9 +197,8 @@ namespace RepositoryLayer.Services
         {
             List<ResponseToUser> users = new List<ResponseToUser>();
 
-            //var admin = this.appDbContext.Registration.Where(c => c.Id == userId && c.UserType.Equals("Admin")).FirstOrDefault();
+            var admin = this.appDbContext.Registration.Where(c => c.Id == userId && c.UserType.Equals("Admin")).FirstOrDefault();
 
-            var admin = this.appDbContext.Registration.Where(c => c.Id == userId).FirstOrDefault();
             if (admin != null)
             {
                 foreach (var row in this.appDbContext.Registration)
@@ -221,5 +220,6 @@ namespace RepositoryLayer.Services
 
             return users;
         }
+       
     }
 }

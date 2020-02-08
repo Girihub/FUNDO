@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryLayer", "Reposito
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLayer", "CommonLayer\CommonLayer.csproj", "{36ADEB7F-847C-4987-BB35-AB519541A9F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FundooTestCases", "FundooTestCases\FundooTestCases.csproj", "{B1211BA7-BC26-4C26-8BA9-8DC55E8E990F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FundooTestCases", "FundooTestCases\FundooTestCases.csproj", "{56A6050B-83F1-4493-A48C-53887BBE148A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{36ADEB7F-847C-4987-BB35-AB519541A9F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36ADEB7F-847C-4987-BB35-AB519541A9F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36ADEB7F-847C-4987-BB35-AB519541A9F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1211BA7-BC26-4C26-8BA9-8DC55E8E990F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1211BA7-BC26-4C26-8BA9-8DC55E8E990F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1211BA7-BC26-4C26-8BA9-8DC55E8E990F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1211BA7-BC26-4C26-8BA9-8DC55E8E990F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A6050B-83F1-4493-A48C-53887BBE148A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A6050B-83F1-4493-A48C-53887BBE148A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A6050B-83F1-4493-A48C-53887BBE148A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A6050B-83F1-4493-A48C-53887BBE148A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

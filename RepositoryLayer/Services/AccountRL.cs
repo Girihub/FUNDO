@@ -7,6 +7,7 @@
 namespace RepositoryLayer.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Threading.Tasks;
@@ -303,6 +304,33 @@ namespace RepositoryLayer.Services
             {
                 throw e;
             }
-        }        
+        }
+
+        public List<ResponseToUser> AllUsers(int userId)
+        {
+            List<ResponseToUser> users = new List<ResponseToUser>();
+
+            var admin = this.appDbContext.Registration.Where(c => c.Id == userId).FirstOrDefault();
+            if (admin != null)
+            {
+                foreach (var row in this.appDbContext.Registration)
+                {
+                    var user = new ResponseToUser()
+                    {
+                        Id = row.Id,
+                        FirstName = row.FirstName,
+                        LastName = row.LastName,
+                        MobileNumber = row.MobileNumber,
+                        Email = row.Email,
+                        ProfilePicture = row.ProfilePicture,
+                        ServiceType = row.ServiceType,
+                        UserType = row.UserType
+                    };
+                    users.Add(user);
+                }
+            }
+
+            return users;
+        }
     }
 }

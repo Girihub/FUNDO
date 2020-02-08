@@ -67,6 +67,8 @@ namespace BussinessLayer.Interfaces
         /// <param name="id">id of user</param>
         /// <param name="formFile">formFile to upload profile picture</param>
         /// <returns>returns result</returns>
-        Task<string> UploadProfilePicture(int id, IFormFile formFile);        
+        Task<string> UploadProfilePicture(int id, IFormFile formFile);
+
+        List<ResponseToUser> AllUsers(int userId);
     }
 }
